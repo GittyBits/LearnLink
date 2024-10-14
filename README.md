@@ -23,3 +23,33 @@ LearnLink is an online platform designed for students to upload, share, and down
 
 ## Setup
 
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/your-username/learnlink.git
+   ```
+2. Install dependencies
+   ```bash
+   cd learnlink
+   npm install
+   ```
+3. Configure environment variables:
+
+    Create a .env file and add necessary configurations (e.g., database URL, cloud storage keys).
+4. Run the development server:
+```bash
+    npm run dev
+```
+
+## Contribution Guidelines
+
+We welcome contributions to improve LearnLink. Here’s how you can get involved:
+
+- Fork the repository.
+- Create a new branch (git checkout -b feature-branch).
+- Make your changes.
+- Push your changes and create a pull request.
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
