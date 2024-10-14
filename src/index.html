@@ -11,6 +11,7 @@
             background-color: #f9f7f2;
             font-family: Arial, sans-serif;
         }
+
         /* Top Navigation Bar */
         .topnav {
             background-color: #d9cbb5;
@@ -23,6 +24,10 @@
             font-size: 24px;
             cursor: pointer;
             color: #333;
+            background-color: #fff;
+            padding: 5px 10px;
+            border-radius: 5px;
+            border: 2px solid #333;
         }
         .topnav .brand {
             font-size: 24px;
@@ -32,14 +37,33 @@
             display: flex;
             align-items: center;
         }
+
+        /* Sign In Button */
         .topnav .nav-right .login {
             margin-right: 20px;
-            font-size: 18px;
         }
-        .topnav .nav-right img {
+        .topnav .nav-right .login-btn {
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .topnav .nav-right .login-btn:hover {
+            background-color: #45a049;
+        }
+
+        /* Profile Image */
+        .topnav .nav-right .profile-img {
             width: 40px;
             height: 40px;
             border-radius: 50%;
+            background-color: #fff;
+            border: 2px solid #333;
+            cursor: pointer;
         }
 
         /* Side Navigation */
@@ -47,7 +71,7 @@
             height: 100%;
             width: 0;
             position: fixed;
-            top: 0;
+            top: 70px;
             left: 0;
             background-color: #d9cbb5;
             overflow-x: hidden;
@@ -55,13 +79,32 @@
             padding-top: 60px;
         }
         .sidenav a {
-            padding: 10px 15px;
+            padding: 30px 15px;
             text-decoration: none;
             font-size: 18px;
             color: #333;
             display: block;
             transition: 0.3s;
             text-align: center;
+        }
+        .sidenav p {
+            padding: 0px 15px;
+            text-decoration: none;
+            font-size: 18px;
+            color: #333;
+            display: block;
+            transition: 0.3s;
+            text-align: center;
+        }
+        .sidenav div {
+            padding: 100px 15px;
+            text-decoration: none;
+            font-size: 18px;
+            color: #333;
+            display: block;
+            transition: 0.3s;
+            text-align: center;
+            bottom: 0px;
         }
         .sidenav a:hover {
             background-color: #f1f1f1;
@@ -77,6 +120,7 @@
         }
         .hero {
             background-image: url('your-image-path.jpg');
+            background-color: #ded7c3;
             background-size: cover;
             background-position: center;
             height: 70vh;
@@ -134,23 +178,25 @@
 
     <!-- Top Navigation Bar -->
     <div class="topnav">
-        <span class="toggle-btn" onclick="toggleNav()"><i class="fas fa-bars"></i></span>
+        <span class="toggle-btn" onclick="toggleNav()">☰</span>
         <div class="brand">LearnLink</div>
         <div class="nav-right">
-            <a href="#" class="login">Login</a>
-            <img src="profile-image.jpg" alt="Profile">
+            <button class="login-btn">Sign In</button>
+            <a href="profile.html"><div class="profile-img"></div></a>
         </div>
     </div>
 
     <!-- Side Navigation -->
     <div id="mySidenav" class="sidenav">
-        <a href="javascript:void(0)" class="closebtn" onclick="toggleNav()">&times;</a>
         <a href="#"><i class="fas fa-home"></i> Home</a>
         <a href="#"><i class="fas fa-file-alt"></i> Shared Documents</a>
         <a href="#"><i class="fas fa-video"></i> VideoHub</a>
         <a href="#"><i class="fas fa-edit"></i> Editor</a>
         <a href="#"><i class="fas fa-upload"></i> Publish</a>
         <a href="#"><i class="fas fa-search"></i> Browse</a>
+        <div>
+        <a href="#">Contact Us</a>
+        <p> &copy; Learnlink</p></div>
     </div>
 
     <!-- Main Content -->
