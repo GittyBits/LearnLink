@@ -1,23 +1,26 @@
-import logo from './logo.svg';
+import React, { useState } from 'react';
+import TopNav from './components/topnav';
+import SideNav from './components/sidenav';
+import Hero from './components/hero';
+import Features from './components/feautures';
 import './App.css';
 
 function App() {
+  const [sideNavOpen, setSideNavOpen] = useState(false);
+
+  // Toggle the sidebar open/close
+  const toggleNav = () => {
+    setSideNavOpen(prevState => !prevState);
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <TopNav toggleNav={toggleNav} />
+      <SideNav isOpen={sideNavOpen} />
+      <div className={`main-content ${sideNavOpen ? 'shifted' : ''}`}>
+        <Hero />
+        <Features />
+      </div>
     </div>
   );
 }

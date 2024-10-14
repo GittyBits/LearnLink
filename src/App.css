@@ -1,38 +1,188 @@
-.App {
+body {
+  background-color: #f9f7f2;
+  font-family: Arial, sans-serif;
+  margin: 0;
+}
+
+/* Top Navigation Bar */
+.topnav {
+  background-color: #d9cbb5;
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  align-items: center;
+  z-index: 100;
+}
+.topnav .toggle-btn {
+  font-size: 24px;
+  cursor: pointer;
+  color: #333;
+  background-color: #fff;
+  padding: 5px 10px;
+  border-radius: 5px;
+  border: 2px solid #333;
+}
+.topnav .brand {
+  font-size: 24px;
+  font-weight: bold;
+}
+.topnav .nav-right {
+  display: flex;
+  align-items: center;
+}
+
+/* Sign In Button */
+.topnav .nav-right .login {
+  margin-right: 20px;
+}
+.topnav .nav-right .login-btn {
+  background-color: #4CAF50;
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+.topnav .nav-right .login-btn:hover {
+  background-color: #45a049;
+}
+
+/* Profile Image */
+.topnav .nav-right .profile-img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #fff;
+  border: 2px solid #333;
+  cursor: pointer;
+}
+
+/* Side Navigation */
+.sidenav {
+  height: 100%;
+  width: 0; /* Closed by default */
+  position: fixed;
+  top: 60px; /* Start below the navbar */
+  left: 0;
+  background-color: #d9cbb5;
+  overflow-x: hidden;
+  transition: 0.5s; /* Smooth transition for opening */
+  padding-top: 60px;
+  z-index: 999; /* Ensures it is above other content */
+}
+.sidenav.open {
+  width: 12%; /* Width when open */
+}
+
+.sidenav a {
+  padding: 30px 15px;
+  text-decoration: none;
+  font-size: 18px;
+  color: #333;
+  display: block;
+  transition: 0.3s;
+  text-align: center;
+}
+.sidenav p {
+  padding: 0px 15px;
+  text-decoration: none;
+  font-size: 18px;
+  color: #333;
+  display: block;
+  transition: 0.3s;
+  text-align: center;
+}
+.sidenav div {
+  padding: 100px 15px;
+  text-decoration: none;
+  font-size: 18px;
+  color: #333;
+  display: block;
+  transition: 0.3s;
+  text-align: center;
+  bottom: 0px;
+}
+.sidenav a:hover {
+  background-color: #f1f1f1;
+}
+.sidenav i {
+  margin-right: 10px;
+}
+
+/* Main Content */
+.main-content {
+  margin-left: 0; /* No left margin when the sidebar is closed */
+  transition: margin-left 0.5s ease; /* Smooth transition for margin */
+  margin-top: 70px; /* Adjusted for the fixed top navigation height */
+  padding: 20px; /* Add some padding */
+}
+
+.main-content.shifted {
+  margin-left: 250px; /* Shifted margin when sidebar is open */
+}
+.hero {
+  background-color: #ded7c3;
+  background-size: cover;
+  background-position: center;
+  height: 70vh;
+  position: relative;
+}
+.hero .overlay-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 48px;
+  font-weight: bold;
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+/* Features Section */
+.features {
+  padding: 50px 0;
 }
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.feature-box {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  padding: 30px;
+  margin: 20px;
+}
+.feature-box:nth-child(even) {
+  flex-direction: row-reverse;
+  text-align: right;
+}
+.feature-image {
+  flex: 1;
+  height: 300px;
+  background-color: #ded7c3;
+}
+.feature-content {
+  flex: 2;
+  padding: 20px;
+}
+.feature-content h4 {
+  font-weight: bold;
 }
 
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+@media (max-width: 768px) {
+  .feature-box {
+    flex-direction: column;
   }
-  to {
-    transform: rotate(360deg);
+  
+  .main-content {
+    margin-left: 0; /* No margin when sidebar is closed */
+    width: 100%; /* Full width when sidebar is closed */
+  }
+
+  .main-content.shifted {
+    margin-left: 12%; /* Adjust margin when sidebar is open */
+    width: calc(100% - 12%); /* Adjust width based on sidebar */
   }
 }
