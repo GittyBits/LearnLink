@@ -1,7 +1,24 @@
-body {
+body,html {
   background-color: #f9f7f2;
   font-family: Arial, sans-serif;
   margin: 0;
+  width: 100%;
+  height: 100%;
+}
+#root{
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background-color: #f9f7f2;
+}
+
+.App {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background-color: #f9f7f2;
 }
 
 /* Top Navigation Bar */
@@ -11,6 +28,7 @@ body {
   justify-content: space-between;
   padding: 10px;
   position: fixed;
+  height: 50px;
   top: 0;
   left: 0;
   right: 0;
@@ -35,15 +53,11 @@ body {
   align-items: center;
 }
 
-/* Sign In Button */
-.topnav .nav-right .login {
-  margin-right: 20px;
-}
 .topnav .nav-right .login-btn {
-  background-color: #4CAF50;
+  background-color: #b3b5b3;
   border: none;
   color: white;
-  padding: 10px 20px;
+  padding: 10px 40px;
   font-size: 16px;
   border-radius: 25px;
   cursor: pointer;
@@ -55,8 +69,10 @@ body {
 
 /* Profile Image */
 .topnav .nav-right .profile-img {
-  width: 40px;
-  height: 40px;
+  width: 30px;
+  height: 30px;
+  padding: 10px 10px;
+  margin: 10px;
   border-radius: 50%;
   background-color: #fff;
   border: 2px solid #333;
@@ -119,18 +135,22 @@ body {
 .main-content {
   margin-left: 0; /* No left margin when the sidebar is closed */
   transition: margin-left 0.5s ease; /* Smooth transition for margin */
-  margin-top: 70px; /* Adjusted for the fixed top navigation height */
-  padding: 20px; /* Add some padding */
+  margin-top: 50px; /* Adjusted for the fixed top navigation height */
+  padding: 50px; /* Add some padding */
+  width: 90%;
+  margin-right: 0;
 }
 
 .main-content.shifted {
   margin-left: 250px; /* Shifted margin when sidebar is open */
 }
+
 .hero {
   background-color: #ded7c3;
   background-size: cover;
   background-position: center;
-  height: 70vh;
+  height: 400px;
+  margin-top: 900px;
   position: relative;
 }
 .hero .overlay-text {
@@ -146,13 +166,15 @@ body {
 
 /* Features Section */
 .features {
-  padding: 50px 0;
+  padding: 50px 10px;
 }
 .feature-box {
   display: flex;
   align-items: center;
   padding: 30px;
   margin: 20px;
+  width: 100%;
+  text-align: left;
 }
 .feature-box:nth-child(even) {
   flex-direction: row-reverse;
@@ -160,25 +182,29 @@ body {
 }
 .feature-image {
   flex: 1;
-  height: 300px;
+  height: 30vh;
   background-color: #ded7c3;
 }
 .feature-content {
   flex: 2;
   padding: 20px;
+  color: black;
 }
 .feature-content h4 {
   font-weight: bold;
 }
 
-@media (max-width: 768px) {
+@media (max-width:1400px) {
   .feature-box {
     flex-direction: column;
+    width: 100%;
   }
   
   .main-content {
     margin-left: 0; /* No margin when sidebar is closed */
     width: 100%; /* Full width when sidebar is closed */
+    transition: margin-left 0.5s ease; /* Smooth transition for margin */
+    margin-top: 100px; /* Adjusted for the fixed top navigation height */
   }
 
   .main-content.shifted {
