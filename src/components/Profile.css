@@ -1,55 +1,123 @@
-.profile-container {
-width: 60%;
-margin: 20px auto;
-text-align: center;
+/* Profile Page Layout */
+.profile-page {
+display: flex;
+flex-direction: row;
+margin-top: 350px;
+margin-bottom: 30px;
+padding: 10px;
+border-radius: 10px;
+gap: 20px;
+-moz-box-shadow: 0 0 10px #ccc;
+-webkit-box-shadow: 0 0 10px #ccc;
+box-shadow: 0 0 10px #ccc;
 }
 
-.profile-container img {
+.profile-sidebar {
+width: 25%;
+background-color: #f9f7f2;
+padding: 20px;
+border-radius: 10px;
+-moz-box-shadow: 0 0 3px #ccc;
+-webkit-box-shadow: 0 0 3px #ccc;
+box-shadow: 0 0 3px #ccc;
+}
+
+.profile-info {
+text-align: center;
+margin-bottom: 20px;
+}
+
+.profile-image {
 width: 150px;
 height: 150px;
+background-color: #ccc;
 border-radius: 50%;
-margin-bottom: 20px;
+margin: 0 auto;
 }
 
-.profile-container h2 {
+.username {
+font-size: 24px;
+color: #ff7200;
+}
+
+.userid {
+color: #666;
 margin-bottom: 10px;
 }
 
-.profile-container p {
+.profile-details {
+text-align: left;
 font-size: 16px;
-margin-bottom: 20px;
+color: #333;
 }
 
-.notes-list {
+.profile-quote {
+margin-top: 20px;
+background-color: #f0f0f0;
+padding: 10px;
+border-radius: 5px;
+}
+
+.profile-bio, .profile-badges {
+margin-top: 20px;
+}
+
+.badges-list {
 display: flex;
 flex-wrap: wrap;
-gap: 20px;
-justify-content: center;
+gap: 10px;
 }
 
-.note-card {
-width: 300px;
-padding: 15px;
-border: 1px solid #ddd;
+.badge {
+background-color: #eee;
+padding: 10px;
 border-radius: 5px;
-background-color: #f1f1f1;
+text-align: center;
+width: 70px;
+}
+
+/* Uploads Section */
+.uploads-section {
+width: 70%;
+}
+
+.uploads-grid {
+display: grid;
+grid-template-columns: repeat(4, 1fr);
+gap: 20px;
+}
+
+.upload-card {
+background-color: #f9f7f2;
+padding: 20px;
+border-radius: 10px;
+box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 text-align: center;
 }
 
-.note-card h3 {
+.upload-preview {
+width: 100%;
+height: 150px;
+background-color: #ccc;
 margin-bottom: 10px;
 }
 
-.note-card a {
-display: block;
-padding: 8px;
-background-color: #007bff;
-color: white;
-border-radius: 5px;
-text-decoration: none;
-margin-top: 10px;
+.tags {
+display: flex;
+justify-content: center;
+gap: 5px;
+margin: 10px 0;
 }
 
-.note-card a:hover {
-background-color: #0056b3;
+.tag {
+background-color: #ded7c3;
+padding: 5px 10px;
+border-radius: 20px;
+font-size: 12px;
+}
+
+.card-footer {
+margin-top: 10px;
+font-size: 14px;
+color: #333;
 }

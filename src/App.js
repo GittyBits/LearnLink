@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+
 import TopNav from './components/topnav';
 import SideNav from './components/sidenav';
 import Hero from './components/hero';
 import Features from './components/features';
 import SignIn from './components/SignIn';
+import SignUp from './components/SignUp';
 import Profile from './components/Profile';
 import Upload from './components/Upload';  // Import Upload Page Component
 import Browse from './components/Browse';  // Import Browse Page Component
@@ -40,6 +42,7 @@ function App() {
           <Routes>
             <Route path="/" element={<HomePage />} />           {/* Home Route */}
             <Route path="/signin" element={<SignIn />} />       {/* Sign In Route */}
+            <Route path="/SignUp" element={<SignUp />} />       {/* Sign In Route */}
             <Route path="/profile" element={<Profile />} />     {/* Profile Route */}
             <Route path="/upload" element={<Upload />} />       {/* Upload Page Route */}
             <Route path="/browse" element={<Browse />} />       {/* Browse Page Route */}
