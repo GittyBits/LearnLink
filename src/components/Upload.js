@@ -1,35 +1,56 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import './Upload.css';  // Assuming a CSS file for custom styles
-import { FaFileAlt } from 'react-icons/fa';  // File icon from react-icons
+import './Upload.css';
+import { FaFileAlt, FaTimes } from 'react-icons/fa';  // Added FaTimes for the remove icon
 
-const Upload = () => {
+const Upload = ({ isSidenavOpen }) => {
     const [file, setFile] = useState(null);
     const [description, setDescription] = useState('');
+    const [dragActive, setDragActive] = useState(false);
     const navigate = useNavigate();
+    const inputRef = useRef(null);
 
-    // Handle file input change
     const handleFileChange = (e) => {
         setFile(e.target.files[0]);
     };
 
-    // Handle drag and drop file selection
+    const handleDragEnter = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        setDragActive(true);
+    };
+
+    const handleDragLeave = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        setDragActive(false);
+    };
+
+    const handleDragOver = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        setDragActive(true);
+    };
+
     const handleDrop = (e) => {
         e.preventDefault();
-        e.stopPropagation();  // Prevent the default behavior
+        e.stopPropagation();
+        setDragActive(false);
         const droppedFile = e.dataTransfer.files[0];
         if (droppedFile) {
             setFile(droppedFile);
         }
     };
 
-    // Allow drag events
-    const handleDragOver = (e) => {
-        e.preventDefault();
+    const handleClick = () => {
+        inputRef.current.click();
     };
 
-    // Handle file upload on submit
+    const handleRemoveFile = () => {
+        setFile(null);  // Reset the file state
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         const formData = new FormData();
@@ -43,57 +64,62 @@ const Upload = () => {
             console.error('Error uploading file:', err);
             alert('File upload failed');
         } finally {
-            navigate('/profile');  // Redirect to profile page in both success and failure cases
+            navigate('/profile');
         }
     };
 
-    // Navigate to the editor page
     const goToEditor = () => {
         navigate('/editor');
     };
 
     return (
-        <div className="upload-container">
+        <div className={`upload-container ${isSidenavOpen ? 'sidenav-open' : 'sidenav-closed'}`}>
             <div className="upload-content">
-                {/* Title Field */}
                 <label htmlFor="title" className="upload-label">Title:</label>
-                <input 
-                    type="text" 
-                    id="title" 
-                    className="upload-input" 
+                <input
+                    type="text"
+                    id="title"
+                    className="upload-input"
                     placeholder="Enter a title"
-                    value={description} 
-                    onChange={(e) => setDescription(e.target.value)} 
-                    required 
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
+                    required
                 />
 
-                {/* Drag and Drop Area */}
-                <div 
-                    className="drag-drop-area" 
-                    onDrop={handleDrop} 
+                <div
+                    className={`drag-drop-area ${dragActive ? 'drag-active' : ''}`}
+                    onDragEnter={handleDragEnter}
+                    onDragLeave={handleDragLeave}
                     onDragOver={handleDragOver}
+                    onDrop={handleDrop}
+                    onClick={!file ? handleClick : undefined}
                 >
                     {file ? (
                         <div className="file-info">
                             <FaFileAlt className="file-icon" />
                             <span className="file-name">{file.name}</span>
+                            <FaTimes className="remove-file" onClick={handleRemoveFile} title="Remove file" />
                         </div>
                     ) : (
                         <>
                             <p>Drag and drop file to upload</p>
                             <p>or</p>
                             <label className="upload-button">
-                                <input type="file" onChange={handleFileChange} hidden />
+                                <input
+                                    type="file"
+                                    ref={inputRef}
+                                    onChange={handleFileChange}
+                                    hidden
+                                />
                                 Upload from your device
                             </label>
                         </>
                     )}
                 </div>
 
-                {/* Editor and Publish Buttons */}
                 <div className="button-container">
                     <button onClick={goToEditor} className="action-button">Editor</button>
-                    <button onClick={handleSubmit} className="action-button">Publish</button>
+                    <button onClick={handleSubmit} className="action-button" disabled={!file}>Publish</button>
                 </div>
             </div>
         </div>
@@ -101,3 +127,4 @@ const Upload = () => {
 };
 
 export default Upload;
+    
