@@ -1,0 +1,187 @@
+.html {
+    color: black;
+  }
+  
+  .document-view {
+    color: black;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    margin-top: 5%;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    height: calc(100vh - 40px); /* Ensure the view takes the remaining height */
+  }
+  
+  .document-content {
+    overflow-y: auto; /* Allow scrolling */
+    max-height: 60vh; /* Set a maximum height for scrolling */
+    border: 1px solid #ccc;
+    background-color: #e0e0e0;
+    padding: 10px;
+    margin: 10px 0;
+  }
+  
+  .document-actions {
+    display: flex;
+    justify-content: space-between; /* Spread out buttons evenly */
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  
+  .document-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .edit-btn {
+    background-color: #d9cbb5;
+    border: none;
+    color: white;
+    padding: 10px 15px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  
+  .uploaded-by {
+    font-size: 12px;
+    color: #888;
+  }
+  
+  .document-actions button {
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    color: #333; /* Ensure button text is visible */
+  }
+  
+  .document-actions button:hover {
+    opacity: 0.8; /* Add hover effect for better visibility */
+  }
+  
+  .starred {
+    color: gold;
+  }
+  
+  .comments-section {
+    margin-top: 20px;
+  }
+  
+  .comments-section form {
+    display: flex;
+    margin-bottom: 10px;
+  }
+  
+  .comments-section input {
+    flex: 1;
+    padding: 10px;
+    margin-right: 10px;
+  }
+  
+  .comments-section ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .comments-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+.html {
+  color: black;
+}
+
+.document-view {
+  color: black;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  margin-top: 5%;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  height: calc(100vh - 40px); /* Ensure the view takes the remaining height */
+}
+
+.document-content {
+  overflow-y: auto; /* Allow scrolling */
+  max-height: 60vh; /* Set a maximum height for scrolling */
+  border: 1px solid #ccc;
+  background-color: #e0e0e0;
+  padding: 10px;
+  margin: 10px 0;
+}
+
+.document-actions {
+  display: flex;
+  justify-content: space-between; /* Spread out buttons evenly */
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.document-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.edit-btn {
+  background-color: #d9cbb5;
+  border: none;
+  color: white;
+  padding: 10px 15px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.uploaded-by {
+  font-size: 12px;
+  color: #888;
+}
+
+.document-actions button {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  color: #333; /* Ensure button text is visible */
+}
+
+.document-actions button:hover {
+  opacity: 0.8; /* Add hover effect for better visibility */
+}
+
+.starred {
+  color: gold;
+}
+
+.comments-section {
+  margin-top: 20px;
+}
+
+.comments-section form {
+  display: flex;
+  margin-bottom: 10px;
+}
+
+.comments-section input {
+  flex: 1;
+  padding: 10px;
+  margin-right: 10px;
+}
+
+.comments-section ul {
+  list-style: none;
+  padding: 0;
+}
+
+.comments-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+  

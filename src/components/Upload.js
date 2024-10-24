@@ -69,7 +69,12 @@ const Upload = ({ isSidenavOpen }) => {
     };
 
     const goToEditor = () => {
-        navigate('/editor');
+        if (file) {
+            // Navigate to the DocumentView page with file details
+            navigate('/document', { state: { file, description } });
+        } else {
+            alert("Please upload a file first.");
+        }
     };
 
     return (
@@ -127,4 +132,3 @@ const Upload = ({ isSidenavOpen }) => {
 };
 
 export default Upload;
-    

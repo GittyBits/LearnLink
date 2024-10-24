@@ -133,7 +133,7 @@ body,html,.layout {
 .main-content {
   margin-left: 0; /* No left margin when the sidebar is closed */
   transition: margin-left 0.5s ease; /* Smooth transition for margin */
-  margin-top: 20px; /* Adjusted for the fixed top navigation height */
+  margin-top: 100px; /* Adjusted for the fixed top navigation height */
   padding:10px 50px; /* Add some padding */
   width: 95%;
   margin-right: 0;

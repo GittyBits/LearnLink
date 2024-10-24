@@ -10,6 +10,7 @@ import SignUp from './components/SignUp';
 import Profile from './components/Profile';
 import Upload from './components/Upload';  // Import Upload Page Component
 import Browse from './components/Browse';  // Import Browse Page Component
+import DocumentView from './components/DocumentView'; 
 import './App.css';
 
 function App() {
@@ -49,6 +50,7 @@ function App() {
             <Route path="/starred" element={<div>Satrred Page Placeholder</div>}/>    
             <Route path="/videohub" element={<div>VideoHub Page Placeholder</div>} />
             <Route path="/editor" element={<div>Editor Page Placeholder</div>} />
+            <Route path="/document/" element={<DocumentView />} />
           </Routes>
         </div>
       </div>
