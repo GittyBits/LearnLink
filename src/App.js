@@ -8,20 +8,19 @@ import Features from './components/features';
 import SignIn from './components/SignIn';
 import SignUp from './components/SignUp';
 import Profile from './components/Profile';
-import Upload from './components/Upload';  // Import Upload Page Component
-import Browse from './components/Browse';  // Import Browse Page Component
-import DocumentView from './components/DocumentView'; 
+import Upload from './components/Upload';
+import Browse from './components/Browse';
+import DocumentView from './components/DocumentView';
+import VideoHub from './components/VideoHub';  // Ensure this matches the file name and path
 import './App.css';
 
 function App() {
   const [sideNavOpen, setSideNavOpen] = useState(false);
 
-  // Toggle the sidebar open/close
   const toggleNav = () => {
     setSideNavOpen(prevState => !prevState);
   };
 
-  // HomePage component to render Hero and Features
   const HomePage = () => (
     <div className="main-content">
       <Hero />
@@ -32,25 +31,21 @@ function App() {
   return (
     <Router>
       <div className="App">
-        {/* Top Navigation */}
         <TopNav toggleNav={toggleNav} />
-
-        {/* Side Navigation */}
         <SideNav isOpen={sideNavOpen} />
-
-        {/* Main Content Area */}
         <div className={`main-content ${sideNavOpen ? 'shifted' : ''}`}>
           <Routes>
-            <Route path="/" element={<HomePage />} />           {/* Home Route */}
-            <Route path="/signin" element={<SignIn />} />       {/* Sign In Route */}
-            <Route path="/SignUp" element={<SignUp />} />       {/* Sign In Route */}
-            <Route path="/profile" element={<Profile />} />     {/* Profile Route */}
-            <Route path="/upload" element={<Upload />} />       {/* Upload Page Route */}
-            <Route path="/browse" element={<Browse />} />       {/* Browse Page Route */}
-            <Route path="/starred" element={<div>Satrred Page Placeholder</div>}/>    
-            <Route path="/videohub" element={<div>VideoHub Page Placeholder</div>} />
+            <Route path="/" element={<HomePage />} />
+            <Route path="/signin" element={<SignIn />} />
+            <Route path="/signup" element={<SignUp />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/upload" element={<Upload />} />
+            <Route path="/browse" element={<Browse />} />
+            <Route path="/starred" element={<div>Starred Page Placeholder</div>} />
+            <Route path="/videohub" element={<VideoHub />} />  {/* VideoHub Route */}
             <Route path="/editor" element={<div>Editor Page Placeholder</div>} />
-            <Route path="/document/" element={<DocumentView />} />
+            <Route path="/document" element={<DocumentView />} />
+            <Route path="*" element={<div>404 Page Not Found</div>} />
           </Routes>
         </div>
       </div>
@@ -59,3 +54,4 @@ function App() {
 }
 
 export default App;
+
