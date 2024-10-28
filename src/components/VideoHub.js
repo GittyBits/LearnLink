@@ -2,7 +2,7 @@ import React from 'react';
 import './VideoHub.css';
 
 function VideoHub() {
-  const videos = Array(8).fill({
+  const videos = Array(16).fill({
     title: "-------------------",
     channel: "XYZ",
     views: "1.5M views",
@@ -14,7 +14,6 @@ function VideoHub() {
       <div className="search-bar">
         <input type="text" placeholder="Search" />
         <button className="search-button">Search</button>
-        <button className="icon-button"><i className="fa fa-microphone" /></button>
       </div>
       <div className="video-grid">
         {videos.map((video, index) => (
