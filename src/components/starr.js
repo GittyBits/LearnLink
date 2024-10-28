@@ -1,5 +1,5 @@
 import React from 'react';
-import './App.css'; // Make sure to create CSS styles similar to the layout in the image
+import './starr.css'; // Make sure to create CSS styles similar to the layout in the image
 
 const documents = Array(8).fill({
   title: "title of document",

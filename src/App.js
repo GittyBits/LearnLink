@@ -14,6 +14,7 @@ import Browse from './components/Browse';
 import DocumentView from './components/DocumentView';
 import VideoHub from './components/VideoHub';
 import Editor from './components/Editor';
+import Star from './components/starr';
 
 import './App.css';
 
@@ -44,7 +45,7 @@ function App() {
             <Route path="/profile" element={<Profile />} />
             <Route path="/upload" element={<Upload />} />
             <Route path="/browse" element={<Browse />} />
-            <Route path="/starred" element={<div>Starred Page Placeholder</div>} />
+            <Route path="/starred" element={<Star/>} />
             <Route path="/videohub" element={<VideoHub />} />
             {/* Replace the placeholder with the Editor component */}
             <Route path="/editor" element={<Editor />} />
