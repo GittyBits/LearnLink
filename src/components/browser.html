@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notes Browser</title>
+    <style>
+        /* Container styling */
+        .browse-container {
+            width: 80%;
+            margin: 20px auto;
+        }
+
+        .browse-container h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .browse-container input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        /* Filters styling */
+        .filters {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            justify-content: center;
+        }
+
+        .filters select,
+        #filterButton {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .filters select {
+            width: 150px;
+        }
+
+        #filterButton {
+            background-color: #28a745;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        #filterButton:hover {
+            background-color: #218838;
+        }
+
+        /* Notes list styling */
+        .notes-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .note-card {
+            width: 300px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #f1f1f1;
+            text-align: center;
+        }
+
+        .note-card h3 {
+            margin-bottom: 10px;
+        }
+
+        .note-card a {
+            display: block;
+            padding: 8px;
+            background-color: #007bff;
+            color: white;
+            border-radius: 5px;
+            text-decoration: none;
+            margin-top: 10px;
+            transition: background-color 0.3s ease;
+        }
+
+        .note-card a:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+<div class="browse-container">
+    <h2>Notes Browser</h2>
+    
+    <div class="filters">
+        <select name="semester" id="semester">
+            <option value="">Select Semester</option>
+            <option value="semester1">Semester 1</option>
+            <option value="semester2">Semester 2</option>
+            <!-- Add more semesters as needed -->
+        </select>
+        
+        <select name="subject" id="subject">
+            <option value="">Select Subject</option>
+            <option value="subject1">Subject 1</option>
+            <option value="subject2">Subject 2</option>
+            <!-- Add more subjects as needed -->
+        </select>
+        
+        <select name="unit" id="unit">
+            <option value="">Select Unit</option>
+            <option value="unit1">Unit 1</option>
+            <option value="unit2">Unit 2</option>
+            <!-- Add more units as needed -->
+        </select>
+        
+        <button id="filterButton" onclick="filterNotes()">Filter</button>
+    </div>
+
+    <input type="text" placeholder="Search for notes..." />
+
+    <div class="notes-list" id="notesList">
+        <!-- Sample Notes -->
+        <div class="note-card" data-semester="semester1" data-subject="subject1" data-unit="unit1">
+            <h3>Note Title 1</h3>
+            <p>Description of Note 1...</p>
+            <a href="#">View Note</a>
+        </div>
+        <div class="note-card" data-semester="semester2" data-subject="subject2" data-unit="unit2">
+            <h3>Note Title 2</h3>
+            <p>Description of Note 2...</p>
+            <a href="#">View Note</a>
+        </div>
+        <div class="note-card" data-semester="semester1" data-subject="subject2" data-unit="unit1">
+            <h3>Note Title 3</h3>
+            <p>Description of Note 3...</p>
+            <a href="#">View Note</a>
+        </div>
+        <!-- Add more note cards with appropriate data attributes as needed -->
+    </div>
+</div>
+
+<script>
+    function filterNotes() {
+        // Get the selected values from each dropdown
+        const semester = document.getElementById('semester').value;
+        const subject = document.getElementById('subject').value;
+        const unit = document.getElementById('unit').value;
+
+        // Get all the note cards
+        const notes = document.querySelectorAll('.note-card');
+
+        // Loop through each note card and show/hide based on filter
+        notes.forEach(note => {
+            // Check if the note matches the selected filters
+            const matchSemester = !semester || note.dataset.semester === semester;
+            const matchSubject = !subject || note.dataset.subject === subject;
+            const matchUnit = !unit || note.dataset.unit === unit;
+
+            // Display the note if it matches all filters, hide otherwise
+            if (matchSemester && matchSubject && matchUnit) {
+                note.style.display = 'block';
+            } else {
+                note.style.display = 'none';
+            }
+        });
+    }
+</script>
+
+</body>
+</html>
