@@ -10,6 +10,7 @@ function SideNav({ isOpen }) {
       <Link to="/editor"><i className="fas fa-edit"></i> Editor</Link>  {/* Placeholder for Editor */}
       <Link to="/upload"><i className="fas fa-upload"></i> Publish</Link>  {/* Link to Upload */}
       <Link to="/browse"><i className="fas fa-search"></i> Browse</Link>  {/* Link to Browse */}
+      <Link to="/document"><i className="fas fa-search"></i> DocumentView</Link>  {/* Link to Browse */}
       <div>
         <a href="#">Contact Us</a>
         <p> &copy; LearnLink</p>

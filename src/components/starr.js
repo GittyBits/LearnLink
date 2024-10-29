@@ -1,7 +1,7 @@
 import React from 'react';
 import './starr.css'; // Make sure to create CSS styles similar to the layout in the image
 
-const documents = Array(8).fill({
+const documents = Array(16).fill({
   title: "title of document",
   likes: 1069,
   comments: 57,
@@ -34,14 +34,13 @@ function DocumentCard({ title, likes, comments, field, branch, tags }) {
   );
 }
 
-function App() {
+function star() {
   return (
-    <div className="app">
+    <div className="stars">
       <header>
-        <h1>LearnLink</h1>
+        <h1>Starred Documents</h1>
       </header>
       <main>
-        <h2>Starred Documents</h2>
         <p>Total Starred: {documents.length}</p>
         <div className="document-grid">
           {documents.map((doc, index) => (
@@ -53,4 +52,4 @@ function App() {
   );
 }
 
-export default App;
+export default star;

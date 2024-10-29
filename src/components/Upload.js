@@ -1,54 +1,26 @@
+// Updated Upload.js
 import React, { useState, useRef } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import './Upload.css';
-import { FaFileAlt, FaTimes } from 'react-icons/fa';  // Added FaTimes for the remove icon
+import { FaFileAlt, FaTimes } from 'react-icons/fa';
 
 const Upload = ({ isSidenavOpen }) => {
     const [file, setFile] = useState(null);
+    const [fileData, setFileData] = useState(null);
     const [description, setDescription] = useState('');
     const [dragActive, setDragActive] = useState(false);
     const navigate = useNavigate();
     const inputRef = useRef(null);
 
     const handleFileChange = (e) => {
-        setFile(e.target.files[0]);
-    };
+        const selectedFile = e.target.files[0];
+        setFile(selectedFile);
 
-    const handleDragEnter = (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        setDragActive(true);
-    };
-
-    const handleDragLeave = (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        setDragActive(false);
-    };
-
-    const handleDragOver = (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        setDragActive(true);
-    };
-
-    const handleDrop = (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        setDragActive(false);
-        const droppedFile = e.dataTransfer.files[0];
-        if (droppedFile) {
-            setFile(droppedFile);
-        }
-    };
-
-    const handleClick = () => {
-        inputRef.current.click();
-    };
-
-    const handleRemoveFile = () => {
-        setFile(null);  // Reset the file state
+        // Convert file to base64 for passing to Editor
+        const reader = new FileReader();
+        reader.onloadend = () => setFileData(reader.result);
+        if (selectedFile) reader.readAsDataURL(selectedFile);
     };
 
     const handleSubmit = async (e) => {
@@ -69,9 +41,8 @@ const Upload = ({ isSidenavOpen }) => {
     };
 
     const goToEditor = () => {
-        if (file) {
-            // Navigate to the DocumentView page with file details
-            navigate('/editor', { state: { file, description } });
+        if (fileData) {
+            navigate('/editor', { state: { fileData, description } });
         } else {
             alert("Please upload a file first.");
         }
@@ -93,29 +64,25 @@ const Upload = ({ isSidenavOpen }) => {
 
                 <div
                     className={`drag-drop-area ${dragActive ? 'drag-active' : ''}`}
-                    onDragEnter={handleDragEnter}
-                    onDragLeave={handleDragLeave}
-                    onDragOver={handleDragOver}
-                    onDrop={handleDrop}
-                    onClick={!file ? handleClick : undefined}
+                    onDragEnter={(e) => e.preventDefault()}
+                    onDragOver={(e) => e.preventDefault()}
+                    onDrop={(e) => {
+                        e.preventDefault();
+                        handleFileChange(e);
+                    }}
+                    onClick={() => inputRef.current.click()}
                 >
                     {file ? (
                         <div className="file-info">
                             <FaFileAlt className="file-icon" />
                             <span className="file-name">{file.name}</span>
-                            <FaTimes className="remove-file" onClick={handleRemoveFile} title="Remove file" />
+                            <FaTimes className="remove-file" onClick={() => setFile(null)} />
                         </div>
                     ) : (
                         <>
                             <p>Drag and drop file to upload</p>
-                            <p>or</p>
                             <label className="upload-button">
-                                <input
-                                    type="file"
-                                    ref={inputRef}
-                                    onChange={handleFileChange}
-                                    hidden
-                                />
+                                <input type="file" ref={inputRef} onChange={handleFileChange} hidden />
                                 Upload from your device
                             </label>
                         </>

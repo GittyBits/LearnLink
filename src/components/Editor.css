@@ -1,57 +1,101 @@
 .editor-container {
-    display: flex;
-    height: 100vh;
-    background-color: #f0eada;
-  }
-  
-  .editor-sidebar {
-    width: 150px;
-    padding: 20px;
-    background-color: #f0eada;
-    font-weight: bold;
-  }
-  
-  .editor-canvas {
-    flex: 1;
-    background-color: #b3b3b3;
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  
-  #drawingCanvas {
-    width: 90%;
-    height: 90%;
-    background-color: white;
-  }
-  
-  .editor-tools {
-    width: 150px;
-    padding: 20px;
-    background-color: #f0eada;
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .tool-icons button {
-    font-size: 20px;
-    margin-bottom: 10px;
-  }
-  
-  label {
-    margin-top: 10px;
-  }
-  
-  input[type="range"],
-  input[type="color"] {
-    margin-top: 5px;
-    width: 100%;
-  }
-  
-  .highlighter-preview {
-    margin-top: 10px;
-    border-radius: 50%;
-    background-color: #cccccc;
-  }
-  
+  display: flex;
+  height: 100vh;
+  background-color: #f0eada;
+}
+
+.editor-sidebar {
+  width: 150px;
+  padding: 20px;
+  background-color: #f0eada;
+  font-weight: bold;
+}
+
+.editor-canvas {
+  flex: 1;
+  background-color: #b3b3b3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+#drawingCanvas {
+  width: 90%;
+  height: 90%;
+  background-color: white;
+}
+
+.editor-tools {
+  width: 180px;
+  padding: 20px;
+  background-color: #f0eada;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.tool-icons {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 20px;
+}
+
+.tool-icons button {
+  font-size: 20px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  padding: 8px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.tool-icons button:hover {
+  background-color: #45a049;
+}
+
+h2 {
+  font-size: 1.2em;
+  color: #333;
+  margin: 15px 0 5px;
+}
+
+.tool-section {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+  width: 100%;
+}
+
+input[type="range"] {
+  flex: 1;
+}
+
+.color-selector {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 2px solid #ccc;
+  cursor: pointer;
+  margin-left: 8px;
+}
+
+.color-selector:hover {
+  border-color: #888;
+}
+
+.tool-section button {
+  font-size: 20px;
+  margin: 5px;
+  padding: 8px;
+  background-color: #2196F3;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.tool-section button:hover {
+  background-color: #1e88e5;
+}
