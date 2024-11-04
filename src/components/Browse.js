@@ -21,11 +21,9 @@ const App = () => {
   return (
     <div className="app">
       <aside className="sidebar">
-        <div className="logo">LearnLink</div>
+        
         <input type="text" placeholder="Search" className="search-input" />
-        <button className="scroll-btn">▲</button>
-        <button className="scroll-btn">▼</button>
-      </aside>
+              </aside>
       
       <div className="content" onScroll={scrollSync} ref={scrollRef}>
         {documents.map(doc => (
