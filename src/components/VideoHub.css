@@ -2,8 +2,8 @@
   color: black;
     width: 100%;
     margin: 0 auto;
-    padding: 0px;
-    margin-top: 10%;
+    padding: 20px 0px 20px 0px;
+    margin-top: 10em;
   }
   
   .search-bar {
@@ -40,16 +40,17 @@
   }
   
   .video-card {
-    background-color: #f4f4f4;
+    background-color: #d4d1d1;
     border-radius: 8px;
     overflow: hidden;
     display: flex;
     flex-direction: column;
   }
   
-  .thumbnail {
-    background-color: #b3b3b3;
+  .video-card .thumbnail {
+    background-color: #ffb2b2;
     height: 150px;
+    width: 450px;
   }
   
   .video-info {

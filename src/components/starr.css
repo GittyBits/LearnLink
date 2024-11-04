@@ -2,7 +2,9 @@
     font-family: Arial, sans-serif;
     color: #333;
     padding: 20px;
-    margin-top: 45%;
+    margin-top: 5em;
+    height: 100vh; /* Use full viewport height */
+    overflow-y: auto; /* Allow scrolling if content exceeds height */
   }
   
   header h1 {
@@ -27,6 +29,7 @@
     border-radius: 8px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     text-align: center;
+    flex-direction: column;
   }
   
   .document-image-placeholder {
