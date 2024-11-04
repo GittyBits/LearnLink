@@ -40,7 +40,7 @@ const Upload = ({ isSidenavOpen }) => {
         } catch (err) {
             alert('File error');
             console.error('Error uploading file:', err);
-            alert('File upload failed');
+            setError('File upload failed. Please try again.');
         } finally {
             setLoading(false);
             navigate('/profile');
@@ -54,6 +54,7 @@ const Upload = ({ isSidenavOpen }) => {
             alert("Please upload a file first.");
         }
     };
+
     const handleDragEnter = (e) => {
         e.preventDefault();
         setDragActive(true);
@@ -69,6 +70,7 @@ const Upload = ({ isSidenavOpen }) => {
         setDragActive(false);
         handleFileChange(e);
     };
+
     return (
         <div className={`upload-container ${isSidenavOpen ? 'sidenav-open' : 'sidenav-closed'}`}>
             <div className="upload-content">
@@ -107,14 +109,15 @@ const Upload = ({ isSidenavOpen }) => {
                         </>
                     )}
                 </div>
-                {error && <div className="error-message">{error}</div>}
 
+                {error && <div className="error-message">{error}</div>}
 
                 <div className="button-container">
                     <button onClick={goToEditor} className="action-button">Editor</button>
                     <button onClick={handleSubmit} className="action-button" disabled={!file || loading}>
                         {loading ? 'Uploading...' : 'Publish'}
-                    </button> </div>
+                    </button>
+                </div>
             </div>
         </div>
     );

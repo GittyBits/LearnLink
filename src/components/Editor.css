@@ -1,101 +1,46 @@
 .editor-container {
   display: flex;
-  height: 100vh;
-  background-color: #f0eada;
+  flex-direction: row;
 }
 
 .editor-sidebar {
-  width: 150px;
-  padding: 20px;
-  background-color: #f0eada;
-  font-weight: bold;
+  width: 20%;
+  padding: 10px;
 }
 
 .editor-canvas {
-  flex: 1;
-  background-color: #b3b3b3;
+  width: 60%;
+  padding: 10px;
   display: flex;
-  align-items: center;
   justify-content: center;
-  position: relative;
+  align-items: center;
 }
 
-#drawingCanvas {
-  width: 90%;
-  height: 90%;
-  background-color: white;
+canvas {
+  border: 1px solid #ccc;
+  cursor: crosshair;
 }
 
 .editor-tools {
-  width: 180px;
-  padding: 20px;
-  background-color: #f0eada;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.tool-icons {
-  display: flex;
-  justify-content: space-around;
-  margin-bottom: 20px;
+  width: 20%;
+  padding: 10px;
 }
 
 .tool-icons button {
-  font-size: 20px;
-  background-color: #4CAF50;
-  color: white;
-  border: none;
-  padding: 8px;
-  border-radius: 5px;
+  margin: 5px;
   cursor: pointer;
-}
-
-.tool-icons button:hover {
-  background-color: #45a049;
-}
-
-h2 {
-  font-size: 1.2em;
-  color: #333;
-  margin: 15px 0 5px;
 }
 
 .tool-section {
   display: flex;
   align-items: center;
-  margin-top: 10px;
-  width: 100%;
-}
-
-input[type="range"] {
-  flex: 1;
+  margin-bottom: 10px;
 }
 
 .color-selector {
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  border: 2px solid #ccc;
+  width: 25px;
+  height: 25px;
+  border: 1px solid #000;
+  margin: 0 5px;
   cursor: pointer;
-  margin-left: 8px;
-}
-
-.color-selector:hover {
-  border-color: #888;
-}
-
-.tool-section button {
-  font-size: 20px;
-  margin: 5px;
-  padding: 8px;
-  background-color: #2196F3;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.tool-section button:hover {
-  background-color: #1e88e5;
 }
