@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import './App.css';
+import './Browse.css';
 
 const documents = Array.from({ length: 8 }, (_, i) => ({
   id: i,
