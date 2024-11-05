@@ -1,5 +1,6 @@
 body,html,.layout {
-  background-color: #f9f7f2;
+  background-color: #bfae84;
+  background-image: url('/images/cute-watercolor-leaves-frame-with-watercolor-background_1361-3335.avif');
   color: black;
   font-family: Arial, sans-serif;
   margin: 0;
@@ -19,8 +20,12 @@ body,html,.layout {
   height: 100%;
   margin: 0;
   padding: 0;
-  background-color: #f9f7f2;
+  background-image: url('/images/cute-watercolor-leaves-frame-with-watercolor-background_1361-3335.avif'); /* Use path relative to public */
+  background-size: cover; /* Cover the entire area */
+  background-position: center; /* Center the image */
+  background-repeat: no-repeat; /* Prevent the image from repeating */
 }
+
 
 /* Top Navigation Bar */
 .topnav {
@@ -54,7 +59,7 @@ body,html,.layout {
   padding: 0px 20px;
 }
 .topnav .nav-right .login-btn {
-  background-color: #b3b5b3;
+  background-color: #277b14;
   border: none;
   color: white;
   width: max-content;
@@ -147,7 +152,7 @@ body,html,.layout {
 }
 
 .hero {
-  background-color: #ded7c3;
+  background-color: #5b5644;
   background-size: cover;
   background-position: center;
   height: 400px;
@@ -159,7 +164,7 @@ body,html,.layout {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  color: white;
+  color: rgb(255, 255, 255);
   font-size: 48px;
   font-weight: bold;
   text-align: center;
@@ -167,11 +172,12 @@ body,html,.layout {
 
 /* Features Section */
 .features {
-  background-color:#f9f7f2;
+  background-color:#efe0bb;
   padding: 50px 10px;
   z-index: 0;
   box-shadow:none;
   width: 100%;
+  width:165vh;
 }
 .feature-box {
   display: flex;
