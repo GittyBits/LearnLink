@@ -1,5 +1,5 @@
 body,html,.layout {
-  background-color: #bfae84;
+  background-color:#fff6df;
   color: black;
   font-family: Arial, sans-serif;
   margin: 0;
@@ -19,13 +19,13 @@ body,html,.layout {
   height: 100%;
   margin: 0;
   padding: 0;
-  background-color: #bfae84;
+  background-color:#fff6df;
 }
 
 
 /* Top Navigation Bar */
 .topnav {
-  background-color: #d9cbb5;
+  background-color: #c9b089;
   display: flex;
   justify-content: space-between;
   padding: 10px;
@@ -86,7 +86,7 @@ body,html,.layout {
   position: fixed;
   top: 60px; /* Start below the navbar */
   left: 0;
-  background-color: #d9cbb5;
+  background-color: #c9b089;
   overflow-x: hidden;
   transition: 0.5s; /* Smooth transition for opening */
   padding-top: 60px;
@@ -172,7 +172,7 @@ body,html,.layout {
 
 /* Features Section */
 .features {
-  background-color:#efe0bb;
+  background-color:#fff6df;
   padding: 50px 10px;
   z-index: 0;
   box-shadow:none;
