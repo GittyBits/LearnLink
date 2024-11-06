@@ -1,202 +1,119 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { useLocation } from 'react-router-dom';
+import React, { useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import './Editor.css';
 
 function Editor() {
-    const location = useLocation();
-    const { description } = location.state || {};
-    const canvasRef = useRef(null);
-    const [isDrawing, setIsDrawing] = useState(false);
-    const [activeTool, setActiveTool] = useState(null);
-    const [penColor, setPenColor] = useState('#000000');
-    const [penSize, setPenSize] = useState(5);
-    const [highlightColor, setHighlightColor] = useState('#ffff00');
-    const [highlightSize, setHighlightSize] = useState(20);
-    const [scale, setScale] = useState(1);
-    const [eraserSize, setEraserSize] = useState(10);
-    const [fileData, setFileData] = useState(null);
+  const location = useLocation();
+  const navigate = useNavigate();
 
-    // Load the file data onto the canvas as an image
-    useEffect(() => {
-        if (fileData && canvasRef.current) {
-            const canvas = canvasRef.current;
-            const ctx = canvas.getContext('2d');
-            const img = new Image();
-            img.src = fileData;
-            img.onload = () => {
-                canvas.width = img.width * scale;
-                canvas.height = img.height * scale;
-                ctx.scale(scale, scale);
-                ctx.drawImage(img, 0, 0, img.width, img.height);
-            };
-        }
-    }, [fileData, scale]);
+  // Retrieve fileData and description from location state
+  const { fileData, description } = location.state || {};
 
-    // Start drawing
-    const startDrawing = (e) => {
-        if (!activeTool) return;
-        setIsDrawing(true);
-        const canvas = canvasRef.current;
-        const ctx = canvas.getContext('2d');
-        
-        if (activeTool === 'pen') {
-            ctx.strokeStyle = penColor;
-            ctx.lineWidth = penSize;
-        } else if (activeTool === 'highlighter') {
-            ctx.strokeStyle = highlightColor;
-            ctx.lineWidth = highlightSize;
-        }
-        ctx.lineCap = 'round';
-        ctx.beginPath();
-        ctx.moveTo(e.nativeEvent.offsetX, e.nativeEvent.offsetY);
-    };
+  // State for managing file, new file upload, and unique key for re-rendering
+  const [file, setFile] = useState(fileData);
+  const [newFile, setNewFile] = useState(null);
+  const [key, setKey] = useState(0); // Key for forcing re-render
 
-    // Draw on canvas
-    const draw = (e) => {
-        if (!isDrawing) return;
-        const canvas = canvasRef.current;
-        const ctx = canvas.getContext('2d');
-        
-        if (activeTool === 'eraser') {
-            ctx.clearRect(e.nativeEvent.offsetX, e.nativeEvent.offsetY, eraserSize, eraserSize);
-        } else {
-            ctx.lineTo(e.nativeEvent.offsetX, e.nativeEvent.offsetY);
-            ctx.stroke();
-        }
-    };
+  // Handle navigating back to DocumentView
+  const handleView = () => {
+    navigate('/document', { state: { file, description } });
+  };
 
-    // Stop drawing
-    const stopDrawing = () => {
-        setIsDrawing(false);
-        const ctx = canvasRef.current.getContext('2d');
-        ctx.closePath();
-    };
+  // Handle clearing all modifications and restoring the original file
+  const handleClearAll = () => {
+    setFile(null); // Temporarily clear the file
+    setTimeout(() => {
+      setFile(fileData); // Restore original fileData
+      setKey(prevKey => prevKey + 1); // Update key to force re-render
+    }, 0);
+  };
 
-    // Clear canvas
-    const clearCanvas = () => {
-        const canvas = canvasRef.current;
-        const ctx = canvas.getContext('2d');
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        if (fileData) {
-            const img = new Image();
-            img.src = fileData;
-            img.onload = () => ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-        }
-    };
+  // Handle file selection
+  const handleFileChange = (e) => {
+    const selectedFile = e.target.files[0];
+    if (selectedFile) {
+      setNewFile(selectedFile);
+    }
+  };
 
-    // Zoom in/out
-    const zoomIn = () => setScale((prev) => prev + 0.1);
-    const zoomOut = () => setScale((prev) => Math.max(prev - 0.1, 0.1));
+  // Handle file upload
+  const handleFileUpload = async () => {
+    if (!newFile) {
+      alert('Please select a file first.');
+      return;
+    }
 
-    // Download the edited image
-    const downloadCanvas = () => {
-        const canvas = canvasRef.current;
-        const link = document.createElement('a');
-        link.href = canvas.toDataURL('image/png');
-        link.download = 'edited-image.png';
-        link.click();
-    };
+    const formData = new FormData();
+    formData.append('file', newFile);
 
-    // Handle file upload
-    const handleFileUpload = (e) => {
-        const file = e.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = (e) => setFileData(e.target.result);
-            reader.readAsDataURL(file);
-        }
-    };
+    try {
+      const response = await axios.post('http://localhost:5000/notes/upload', formData);
+      setFile(newFile);
+      alert('File uploaded successfully.');
+      setNewFile(null);
+    } catch (err) {
+      alert('File upload failed.');
+      console.error('Error uploading file:', err);
+    }
+  };
 
-    return (
-        <div className="editor-container">
-            <div className="editor-sidebar">
-                <h1>{description}</h1>
-                <p>@userid</p>
-                <input type="file" accept="image/*" onChange={handleFileUpload} />
-            </div>
+  return (
+    <div className="editor">
+      {/* Document Header with View button aligned to the right */}
+      <div className="editor-header">
+        <h2>{description || 'Untitled Document - Editor'}</h2>
+        <button className="view-btn" onClick={handleView}>
+          <i className="fas fa-eye"></i> View
+        </button>
+      </div>
 
-            <div className="editor-canvas">
-                <canvas
-                    ref={canvasRef}
-                    width="800"
-                    height="600"
-                    onMouseDown={startDrawing}
-                    onMouseMove={draw}
-                    onMouseUp={stopDrawing}
-                    onMouseLeave={stopDrawing}
-                />
-            </div>
+      {/* Document Display Area */}
+      <div className="editor-content">
+        {file ? (
+          <div key={key} className="document-placeholder">
+            <p>
+              File uploaded: {file.name} &nbsp; &nbsp; Type: {file.type} &nbsp;
+              &nbsp; Size: {(file.size / 1024).toFixed(2)} KB
+            </p>
 
-            <div className="editor-tools">
-                <div className="tool-icons">
-                    <button onClick={zoomIn} title="Zoom In">🔍+</button>
-                    <button onClick={zoomOut} title="Zoom Out">🔍-</button>
-                    <button onClick={downloadCanvas} title="Download">⬇️</button>
-                </div>
+            {/* Render file based on type */}
+            {file.type.startsWith('image/') && (
+              <img
+                src={URL.createObjectURL(file)}
+                alt={file.name}
+                style={{ width: '100%', height: 'auto' }}
+              />
+            )}
+            {file.type === 'application/pdf' && (
+              <iframe
+                src={URL.createObjectURL(file)}
+                title={file.name}
+                width="100%"
+                height="600px"
+              />
+            )}
+          </div>
+        ) : (
+          <div className="document-placeholder">
+            <p>No document available. Please upload a file first.</p>
+          </div>
+        )}
+      </div>
 
-                <h2>Pen</h2>
-                <div className="tool-section">
-                    <input
-                        type="range"
-                        min="1"
-                        max="10"
-                        value={penSize}
-                        onChange={(e) => setPenSize(e.target.value)}
-                    />
-                    <button
-                        className="color-selector"
-                        style={{ backgroundColor: penColor }}
-                        onClick={() => document.getElementById('penColorPicker').click()}
-                    />
-                    <input
-                        type="color"
-                        id="penColorPicker"
-                        value={penColor}
-                        onChange={(e) => setPenColor(e.target.value)}
-                        style={{ display: 'none' }}
-                    />
-                    <button onClick={() => setActiveTool('pen')} title="Use Pen">✏️</button>
-                </div>
-
-                <h2>Highlighter</h2>
-                <div className="tool-section">
-                    <input
-                        type="range"
-                        min="10"
-                        max="50"
-                        value={highlightSize}
-                        onChange={(e) => setHighlightSize(e.target.value)}
-                    />
-                    <button
-                        className="color-selector"
-                        style={{ backgroundColor: highlightColor }}
-                        onClick={() => document.getElementById('highlightColorPicker').click()}
-                    />
-                    <input
-                        type="color"
-                        id="highlightColorPicker"
-                        value={highlightColor}
-                        onChange={(e) => setHighlightColor(e.target.value)}
-                        style={{ display: 'none' }}
-                    />
-                    <button onClick={() => setActiveTool('highlighter')} title="Use Highlighter">🖍️</button>
-                </div>
-
-                <h2>Eraser</h2>
-                <div className="tool-section">
-                    <input
-                        type="range"
-                        min="5"
-                        max="50"
-                        value={eraserSize}
-                        onChange={(e) => setEraserSize(e.target.value)}
-                    />
-                    <button onClick={() => setActiveTool('eraser')} title="Eraser">🧽</button>
-                    <button onClick={clearCanvas} title="Clear All">🗑️</button>
-                </div>
-            </div>
-        </div>
-    );
+      {/* Upload Button and Action Buttons */}
+      <div className="editor-actions">
+        <input type="file" onChange={handleFileChange} hidden id="file-upload-input" />
+        <label htmlFor="file-upload-input" className="upload-btn">Upload New File</label>
+        {newFile && (
+          <button className="upload-btn" onClick={handleFileUpload}>Upload File</button>
+        )}
+        <button onClick={handleClearAll}>
+          <i className="fas fa-eraser"></i> Clear All
+        </button>
+      </div>
+    </div>
+  );
 }
 
 export default Editor;

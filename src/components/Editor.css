@@ -1,46 +1,82 @@
 .editor-container {
   display: flex;
-  flex-direction: row;
-}
-
-.editor-sidebar {
-  width: 20%;
-  padding: 10px;
-}
-
-.editor-canvas {
-  width: 60%;
-  padding: 10px;
-  display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
+  margin: 20px;
 }
 
-canvas {
-  border: 1px solid #ccc;
-  cursor: crosshair;
+.document-header {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 20px;
 }
 
-.editor-tools {
-  width: 20%;
-  padding: 10px;
+.document-header h2 {
+  font-size: 24px;
+  margin: 0;
+  color: #333;
 }
 
-.tool-icons button {
-  margin: 5px;
+.editor-content {
+  width: 100ev;
+  margin-bottom: 20px;
+}
+
+.document-placeholder {
+  padding: 20px;
+  background-color: #f4f4f4;
+  border-radius: 8px;
+}
+.pdf-viewer {
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  overflow: hidden;
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+.upload-new-file {
+  margin-top: 20px;
+}
+
+.upload-btn {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
   cursor: pointer;
 }
 
-.tool-section {
-  display: flex;
-  align-items: center;
-  margin-bottom: 10px;
+.upload-btn:hover {
+  background-color: #0056b3;
 }
 
-.color-selector {
-  width: 25px;
-  height: 25px;
-  border: 1px solid #000;
-  margin: 0 5px;
+.restore-btn {
+  padding: 10px 20px;
+  background-color: #28a745;
+  color: white;
+  border: none;
   cursor: pointer;
+}
+
+.restore-btn:hover {
+  background-color: #218838;
+}
+
+.editor-actions {
+  margin-top: 20px;
+}
+
+.view-btn {
+  padding: 10px 20px;
+  background-color: #17a2b8;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.view-btn:hover {
+  background-color: #138496;
 }
