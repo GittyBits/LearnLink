@@ -1,6 +1,5 @@
 body,html,.layout {
   background-color: #bfae84;
-  background-image: url('/images/cute-watercolor-leaves-frame-with-watercolor-background_1361-3335.avif');
   color: black;
   font-family: Arial, sans-serif;
   margin: 0;
@@ -20,10 +19,7 @@ body,html,.layout {
   height: 100%;
   margin: 0;
   padding: 0;
-  background-image: url('/images/cute-watercolor-leaves-frame-with-watercolor-background_1361-3335.avif'); /* Use path relative to public */
-  background-size: cover; /* Cover the entire area */
-  background-position: center; /* Center the image */
-  background-repeat: no-repeat; /* Prevent the image from repeating */
+  background-color: #bfae84;
 }
 
 
@@ -158,13 +154,17 @@ body,html,.layout {
   height: 400px;
   margin-top: 900px;
   position: relative;
+  background-image: url('/images/cute-watercolor-leaves-frame-with-watercolor-background_1361-3335.avif'); /* Use path relative to public */
+  background-size: cover; /* Cover the entire area */
+  background-position: center; /* Center the image */
+  background-repeat: no-repeat; /* Prevent the image from repeating */
 }
 .hero .overlay-text {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  color: rgb(255, 255, 255);
+  color: rgb(98, 54, 54);
   font-size: 48px;
   font-weight: bold;
   text-align: center;

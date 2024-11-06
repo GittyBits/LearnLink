@@ -5,7 +5,8 @@ const hero = () => {
   return (
     <div className="hero">
       <div className="overlay-text">
-        <h6>Welcome to LearnLink<br/> The ultimate platform for students to upload, share, and download study notes! Discover a vibrant community where you can access a wealth of knowledge, connect with fellow learners, and make your study sessions more engaging and productive. Whether you're preparing for exams or exploring new subjects, LearnLink is here to enhance your academic journey.</h6>
+        <h5>“Education is the most powerful weapon which you can use to change the world.”</h5> 
+        <h6>—Nelson Mandela</h6>
       </div>
     </div>
   );
