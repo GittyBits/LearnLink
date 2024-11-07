@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import './Browse.css';
 
 const documentData = [
-  { title: "Algebra Basics", likes: 456, comments: 23, field: "Math", branch: "Pure Mathematics", tags: ["Equations", "Numbers"] },
-  { title: "Organic Chemistry", likes: 789, comments: 56, field: "Science", branch: "Chemistry", tags: ["Reactions", "Compounds"] },
+  { title: "Algebra Bs", likes: 456, comments: 23, field: "Math", branch: "Pure Mathematics", tags: ["Equations", "Numbers"] },
+  { title: "Organic Chemistry", likes: 789, comments: 56, field: "Science", branch: "Chemistry", tags: ["Reaction", "Compounds"] },
   { title: "Computer Networks", likes: 123, comments: 34, field: "Engineering", branch: "Computer Science", tags: ["Networks", "TCP/IP"] },
   { title: "Shakespearean Plays", likes: 654, comments: 12, field: "Arts", branch: "Literature", tags: ["Drama", "Classics"] },
   { title: "Calculus II", likes: 321, comments: 45, field: "Math", branch: "Applied Mathematics", tags: ["Derivatives", "Integration"] },
@@ -111,6 +111,7 @@ function Browse() {
           <option value="">Course</option>
           <option value="Equations">Equations</option>
           <option value="Numbers">Numbers</option>
+          <option value="Reactions">Reaction</option>
           <option value="Reactions">Reactions</option>
           <option value="Networks">Networks</option>
           <option value="Drama">Drama</option>
