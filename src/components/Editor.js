@@ -48,7 +48,7 @@ function Editor() {
     formData.append('file', newFile);
 
     try {
-      const response = await axios.post('http://localhost:5000/notes/upload', formData);
+      const response = await axios.post('http://localhost:5050/notes/upload', formData);  // Updated port to 5050
       setFile(newFile);
       alert('File uploaded successfully.');
       setNewFile(null);
