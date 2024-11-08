@@ -19,64 +19,107 @@
   color: #333;
 }
 
-.editor-content {
-  width: 100ev;
-  margin-bottom: 20px;
-}
-
-.document-placeholder {
-  padding: 20px;
-  background-color: #f4f4f4;
-  border-radius: 8px;
-}
 .pdf-viewer {
+  width: 100%;
+  margin-bottom: 20px;
   border: 1px solid #ddd;
   border-radius: 5px;
   overflow: hidden;
+}
+
+.drawing-board {
+  margin-top: 20px;
   margin-bottom: 20px;
   width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+canvas {
+  border: 2px solid #000;
+  background-color: #fff;
+  width: 100%;
+  max-width: 800px;
+  height: 400px;
 }
 
 .upload-new-file {
   margin-top: 20px;
 }
 
-.upload-btn {
+.upload-btn, .restore-btn, .view-btn {
   padding: 10px 20px;
   background-color: #007bff;
   color: white;
   border: none;
   cursor: pointer;
+  border-radius: 4px;
+  margin: 5px;
 }
 
-.upload-btn:hover {
+.upload-btn:hover, .restore-btn:hover, .view-btn:hover {
   background-color: #0056b3;
 }
 
 .restore-btn {
-  padding: 10px 20px;
   background-color: #28a745;
-  color: white;
-  border: none;
-  cursor: pointer;
 }
 
 .restore-btn:hover {
   background-color: #218838;
 }
 
-.editor-actions {
-  margin-top: 20px;
-}
-
 .view-btn {
-  padding: 10px 20px;
   background-color: #17a2b8;
-  color: white;
-  border: none;
-  cursor: pointer;
 }
 
 .view-btn:hover {
   background-color: #138496;
+}
+
+.editor-actions {
+  margin-top: 20px;
+}
+
+input[type="file"] {
+  display: none;
+}
+
+label[for="file-upload-input"] {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+  border-radius: 4px;
+  text-align: center;
+}
+
+label[for="file-upload-input"]:hover {
+  background-color: #0056b3;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .editor-container {
+    padding: 10px;
+  }
+
+  .document-header h2 {
+    font-size: 20px;
+  }
+
+  .editor-actions {
+    width: 100%;
+  }
+
+  .upload-btn,
+  .restore-btn,
+  .view-btn,
+  label[for="file-upload-input"] {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 10px;
+  }
 }

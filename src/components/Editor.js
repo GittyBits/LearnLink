@@ -7,29 +7,23 @@ function Editor() {
   const location = useLocation();
   const navigate = useNavigate();
 
-  // Retrieve fileData and description from location state
   const { fileData, description } = location.state || {};
-
-  // State for managing file, new file upload, and unique key for re-rendering
   const [file, setFile] = useState(fileData);
   const [newFile, setNewFile] = useState(null);
-  const [key, setKey] = useState(0); // Key for forcing re-render
+  const [key, setKey] = useState(0);
 
-  // Handle navigating back to DocumentView
   const handleView = () => {
     navigate('/document', { state: { file, description } });
   };
 
-  // Handle clearing all modifications and restoring the original file
   const handleClearAll = () => {
-    setFile(null); // Temporarily clear the file
+    setFile(null);
     setTimeout(() => {
-      setFile(fileData); // Restore original fileData
-      setKey(prevKey => prevKey + 1); // Update key to force re-render
+      setFile(fileData);
+      setKey(prevKey => prevKey + 1);
     }, 0);
   };
 
-  // Handle file selection
   const handleFileChange = (e) => {
     const selectedFile = e.target.files[0];
     if (selectedFile) {
@@ -37,10 +31,16 @@ function Editor() {
     }
   };
 
-  // Handle file upload
   const handleFileUpload = async () => {
     if (!newFile) {
       alert('Please select a file first.');
+      return;
+    }
+
+    const token = localStorage.getItem('authToken'); // Retrieve token from localStorage
+
+    if (!token) {
+      alert('No authentication token found.');
       return;
     }
 
@@ -48,7 +48,12 @@ function Editor() {
     formData.append('file', newFile);
 
     try {
-      const response = await axios.post('http://localhost:5050/notes/upload', formData);  // Updated port to 5050
+      const response = await axios.post('http://localhost:5050/notes/upload', formData, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'multipart/form-data', // Ensure correct content type for file upload
+        },
+      });
       setFile(newFile);
       alert('File uploaded successfully.');
       setNewFile(null);
@@ -60,7 +65,6 @@ function Editor() {
 
   return (
     <div className="editor">
-      {/* Document Header with View button aligned to the right */}
       <div className="editor-header">
         <h2>{description || 'Untitled Document - Editor'}</h2>
         <button className="view-btn" onClick={handleView}>
@@ -68,7 +72,6 @@ function Editor() {
         </button>
       </div>
 
-      {/* Document Display Area */}
       <div className="editor-content">
         {file ? (
           <div key={key} className="document-placeholder">
@@ -76,8 +79,6 @@ function Editor() {
               File uploaded: {file.name} &nbsp; &nbsp; Type: {file.type} &nbsp;
               &nbsp; Size: {(file.size / 1024).toFixed(2)} KB
             </p>
-
-            {/* Render file based on type */}
             {file.type.startsWith('image/') && (
               <img
                 src={URL.createObjectURL(file)}
@@ -101,7 +102,6 @@ function Editor() {
         )}
       </div>
 
-      {/* Upload Button and Action Buttons */}
       <div className="editor-actions">
         <input type="file" onChange={handleFileChange} hidden id="file-upload-input" />
         <label htmlFor="file-upload-input" className="upload-btn">Upload New File</label>
