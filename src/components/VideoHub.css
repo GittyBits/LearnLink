@@ -1,84 +1,85 @@
+/* Center and give some height to the search bar */
 .video-hub {
-  color: black;
-    width: 100%;
-    margin: 0 auto;
-    padding: 20px 0px 20px 0px;
-    margin-top: 10em;
-  }
-  
-  .search-bar {
-    display: flex;
-    align-items: center;
-    margin-bottom: 20px;
-  }
-  
-  .search-bar input {
-    flex-grow: 1;
-    padding: 10px;
-    font-size: 16px;
-  }
-  
-  .search-button{
-    background: #782;
-    border-radius: 10px;
-    width: max-content;
-    height: max-content;
-    border: none;
-    padding: 10px 10px 10px 10px;
-    margin: 0px 10px 0px 10px;
-    color: black;
-    font-size: 18px;
-    cursor: pointer;
-  }
-  .search-button:hover {
-    background-color: #a1f1f1;
-  }
-  .video-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 30px;
-  }
-  
-  .video-card {
-    background-color: #d4d1d1;
-    border-radius: 8px;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .video-card .thumbnail {
-    background-color: #ffb2b2;
-    height: 150px;
-    width: 450px;
-  }
-  
-  .video-info {
-    display: flex;
-    padding: 10px;
-  }
-  
-  .profile-pic {
-    background-color: #666;
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    margin-right: 10px;
-  }
-  
-  .details {
-    flex-grow: 1;
-  }
-  
-  .title {
-    font-weight: bold;
-    font-size: 14px;
-    color: #333;
-    margin-bottom: 4px;
-  }
-  
-  .channel, .views-date {
-    font-size: 12px;
-    color: #777;
-  }
-  
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px; /* Adjust spacing above the component */
+}
+
+.search-bar {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px; /* Space between search bar and video grid */
+}
+
+.search-bar input {
+  width: 300px;
+  height: 40px; /* Increase the height */
+  padding: 0 15px;
+  border-radius: 20px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.search-bar input:focus {
+  border-color: #007bff; /* Highlight border on focus */
+}
+
+.search-button {
+  margin-left: 10px;
+  height: 40px;
+  padding: 0 15px;
+  border: none;
+  background-color: #007bff;
+  color: white;
+  font-size: 16px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.search-button:hover {
+  background-color: #0056b3;
+}
+
+.video-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
+  width: 80%; /* Center the grid by reducing width */
+}
+
+.video-card {
+  display: flex;
+  flex-direction: column;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.thumbnail {
+  height: 120px;
+  background-color: #ddd;
+}
+
+.video-info {
+  display: flex;
+  padding: 10px;
+}
+
+.profile-pic {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #ccc;
+  margin-right: 10px;
+}
+
+.details .title {
+  font-weight: bold;
+  font-size: 14px;
+  margin-bottom: 5px;
+}
