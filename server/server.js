@@ -1,6 +1,9 @@
+// Load environment variables from .env file
+require('dotenv').config();
+
 const express = require('express');
 const cors = require('cors');
-const mongoose = require('mongoose');
+const connectDB = require('./db'); // Import the DB connection function
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
@@ -19,10 +22,8 @@ app.use(cors({
 }));
 app.use(express.json()); // Parse JSON bodies
 
-// MongoDB connection
-mongoose.connect('mongodb://localhost:27017/learnlink') // Remove deprecated options
-  .then(() => console.log('Connected to MongoDB'))
-  .catch((err) => console.log('MongoDB connection error:', err));
+// Connect to MongoDB (using db.js for modular connection logic)
+connectDB();
 
 // File upload directory setup
 const uploadDir = path.join(__dirname, 'uploads');
@@ -68,11 +69,13 @@ app.post('/users/signup', async (req, res) => {
     if (existingUser) return res.status(400).json({ message: 'Email already in use' });
 
     const newUser = new User({ fullName, email, phone, password });
+    console.log('New User to save:', newUser); // Log the new user object
+
     await newUser.save();
 
     res.status(201).json({ message: 'User registered successfully' });
   } catch (err) {
-    console.error(err);
+    console.error('Error during signup:', err);
     res.status(500).json({ message: 'Server error' });
   }
 });
@@ -96,30 +99,6 @@ app.post('/users/signin', async (req, res) => {
   }
 });
 
-// File upload endpoint
-app.post('/notes/upload', authenticate, upload.single('file'), async (req, res) => {
-  if (req.file) {
-    console.log('File received:', req.file);  // Log the received file
-    const newFile = new File({
-      fileName: req.file.filename,
-      fileType: req.file.mimetype,
-      fileSize: req.file.size,
-      fileURL: req.file.path, // Save file path in MongoDB
-    });
-
-    try {
-      await newFile.save(); // Save file metadata in MongoDB
-      res.json({ file: req.file });
-    } catch (err) {
-      console.error('Error saving file to database:', err);
-      res.status(500).json({ message: 'Error saving file to database' });
-    }
-  } else {
-    console.log('No file uploaded');
-    res.status(400).json({ message: 'No file uploaded.' });
-  }
-});
-
 // Profile route (requires authentication)
 app.get('/profile', authenticate, (req, res) => {
   res.json({ message: 'Welcome to your profile' });
@@ -128,4 +107,18 @@ app.get('/profile', authenticate, (req, res) => {
 // Start the server
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
+});
+
+// Add this right after your other routes, e.g. before the upload route
+app.get('/notes', authenticate, async (req, res) => {
+  try {
+    // Fetch notes from MongoDB (using your File model or a specific notes model)
+    const notes = await File.find(); // Replace with your notes model if different
+    
+    // Send back the notes as a response
+    res.json(notes);
+  } catch (err) {
+    console.error('Error fetching notes:', err);
+    res.status(500).json({ message: 'Error fetching notes from database' });
+  }
 });

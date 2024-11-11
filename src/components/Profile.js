@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import './Profile.css';
+import './Profile.css';  // Ensure this file is linked correctly
 
 const Profile = () => {
   const [userData, setUserData] = useState(null);
@@ -19,7 +19,7 @@ const Profile = () => {
           setUserData(response.data);
         })
         .catch((err) => {
-          console.error('Error fetching profile:', err);
+          console.error('Error fetching profile:', err.response || err);
           setError('Unable to fetch profile data.');
         });
 
@@ -29,10 +29,12 @@ const Profile = () => {
           headers: { Authorization: `Bearer ${token}` },
         })
         .then((response) => {
+          console.log('Uploads fetched successfully:', response.data); // Log the response
           setUploads(response.data);
         })
         .catch((err) => {
-          console.error('Error fetching uploads:', err);
+          // Log the full error to get more details
+          console.error('Error fetching uploads:', err.response || err);
           setError('Unable to fetch uploads.');
         });
     } else {
@@ -45,23 +47,22 @@ const Profile = () => {
     if (topNav) topNav.style.display = 'none';
     if (sideNav) sideNav.style.display = 'none';
 
+    // Cleanup function to restore TopNav and SideNav when component unmounts
     return () => {
       if (topNav) topNav.style.display = 'flex';
       if (sideNav) sideNav.style.display = 'block';
     };
   }, []);
 
+  // If there's an error, show it
   if (error) return <div>{error}</div>;
 
-  if (!userData) return <div>Loading...</div>; // Handle loading state
+  // If user data is not yet available, show loading
+  if (!userData) return <div>Loading...</div>;
 
   return (
     <div className="profile-page">
-      <div className="topnav" style={{ display: 'none' }}>
-        <div className="brand" onClick={() => window.location.href = '/'}>
-          LearnLink
-        </div>
-      </div>
+      {/* Profile Sidebar */}
       <div className="profile-sidebar">
         <div className="profile-info">
           <div className="profile-image"></div>
@@ -79,6 +80,8 @@ const Profile = () => {
             <p>"{userData.quote || 'No quote set.'}"</p>
           </div>
         </div>
+
+        {/* Bio and Badges */}
         <div className="profile-bio">
           <h3>Bio</h3>
           <p>{userData.bio || 'No bio available.'}</p>
@@ -93,8 +96,9 @@ const Profile = () => {
         </div>
       </div>
 
+      {/* Uploads Section */}
       <div className="uploads-section">
-        <h2>Community uploads</h2>
+        <h2>Community Uploads</h2>
         <p>Total Uploads: {uploads.length}</p>
         <div className="uploads-grid">
           {uploads.map((upload, index) => (

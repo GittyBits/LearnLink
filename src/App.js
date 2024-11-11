@@ -46,12 +46,11 @@ function App() {
             <Route path="/profile" element={<Profile />} />
             <Route path="/upload" element={<Upload />} />
             <Route path="/browse" element={<Browse />} />
-            <Route path="/starred" element={<Star/>} />
+            <Route path="/starred" element={<Star />} />
             <Route path="/videohub" element={<VideoHub />} />
-            {/* Replace the placeholder with the Editor component */}
             <Route path="/editor" element={<Editor />} />
             <Route path="/document" element={<DocumentView />} />
-            <Route path="/documentedit" element={<DocumentEditor/>} />
+            <Route path="/documentedit" element={<DocumentEditor />} />
             <Route path="*" element={<div>404 Page Not Found</div>} />
           </Routes>
         </div>

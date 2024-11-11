@@ -23,7 +23,7 @@ const SignIn = () => {
       localStorage.setItem('authToken', response.data.token);
 
       // Navigate to profile page or any protected route
-      navigate('src/components/Profile.js');
+      navigate('/Profile');
     } catch (err) {
       console.error(err);
       setError('Login failed. Please try again.');

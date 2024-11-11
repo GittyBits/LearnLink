@@ -1,11 +1,8 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import App from "./App";
-import "./App.css"; // Import global styles
+// index.js
+import React from 'react'; // Add this import to resolve the error
+import ReactDOM from 'react-dom/client';
+import App from './App'; // Assuming your main App component is in the same directory
 
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById("root")
-);
+// Create Root for React 18
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(<App />);
