@@ -37,8 +37,7 @@ function Editor() {
       return;
     }
 
-    const token = localStorage.getItem('authToken'); // Retrieve token from localStorage
-
+    const token = localStorage.getItem('authToken');
     if (!token) {
       alert('No authentication token found.');
       return;
@@ -51,15 +50,16 @@ function Editor() {
       const response = await axios.post('http://localhost:5050/notes/upload', formData, {
         headers: {
           'Authorization': `Bearer ${token}`,
-          'Content-Type': 'multipart/form-data', // Ensure correct content type for file upload
+          'Content-Type': 'multipart/form-data',
         },
       });
       setFile(newFile);
       alert('File uploaded successfully.');
       setNewFile(null);
+      console.log('Upload response:', response.data); // Log server response
     } catch (err) {
       alert('File upload failed.');
-      console.error('Error uploading file:', err);
+      console.error('Error uploading file:', err.response?.data || err.message); // More detailed error logging
     }
   };
 

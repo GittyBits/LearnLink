@@ -39,7 +39,7 @@ const storage = multer.diskStorage({
     cb(null, uploadDir);
   },
   filename: (req, file, cb) => {
-    cb(null, file.originalname);
+    cb(null, Date.now() + '-' + file.originalname); // Add timestamp to avoid overwriting files
   }
 });
 
@@ -100,25 +100,69 @@ app.post('/users/signin', async (req, res) => {
 });
 
 // Profile route (requires authentication)
-app.get('/profile', authenticate, (req, res) => {
-  res.json({ message: 'Welcome to your profile' });
+app.get('/profile', authenticate, async (req, res) => {
+  try {
+    const user = await User.findById(req.userId).select('-password'); // Fetch user info excluding password
+    if (!user) return res.status(404).json({ message: 'User not found' });
+    res.json(user);
+  } catch (err) {
+    console.error('Error fetching profile:', err);
+    res.status(500).json({ message: 'Server error' });
+  }
 });
 
-// Start the server
-app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
+// File upload route (requires authentication)
+app.post('/notes/upload', authenticate, upload.single('file'), async (req, res) => {
+  if (!req.file) {
+    return res.status(400).json({ message: 'No file uploaded' });
+  }
+
+  // Save the file details to the database (optional)
+  const newFile = new File({
+    userId: req.userId,
+    filename: req.file.filename,           // The name of the file stored in the server
+    originalName: req.file.originalname,   // The original name of the file uploaded
+    path: req.file.path,                   // The file path on the server
+    fileURL: req.file.path,                // Assuming the file URL is the server's path (you can adjust this if needed)
+    fileSize: req.file.size,               // File size in bytes
+    fileType: req.file.mimetype            // MIME type of the file (e.g., 'image/jpeg')
+  });
+
+  try {
+    await newFile.save(); // Save file details to MongoDB
+    console.log('Uploaded file details:', req.file); // Log uploaded file details for troubleshooting
+
+    res.json({ message: 'File uploaded successfully', file: req.file });
+  } catch (err) {
+    console.error('Error saving file details:', err);
+    res.status(500).json({ message: 'Server error', error: err.message });
+  }
 });
 
-// Add this right after your other routes, e.g. before the upload route
+
+// Notes retrieval route (requires authentication)
 app.get('/notes', authenticate, async (req, res) => {
   try {
-    // Fetch notes from MongoDB (using your File model or a specific notes model)
-    const notes = await File.find(); // Replace with your notes model if different
-    
-    // Send back the notes as a response
+    const notes = await File.find({ userId: req.userId }); // Fetch notes for the logged-in user
     res.json(notes);
   } catch (err) {
     console.error('Error fetching notes:', err);
     res.status(500).json({ message: 'Error fetching notes from database' });
   }
+});
+
+// Error handling middleware for multer errors
+app.use((err, req, res, next) => {
+  if (err instanceof multer.MulterError) {
+    return res.status(400).json({ message: 'File upload error', error: err.message });
+  } else if (err) {
+    console.error('Unexpected error:', err);
+    return res.status(500).json({ message: 'Server error', error: err.message });
+  }
+  next();
+});
+
+// Start the server
+app.listen(PORT, () => {
+  console.log(`Server is running on http://localhost:${PORT}`);
 });
