@@ -26,7 +26,7 @@ const SignUp = () => {
       });
       console.log('User registered:', response.data);
       // Redirect to login page after successful signup
-      window.location.href = '/login'; // Adjust the path as needed
+      window.location.href = 'src/components/Profile.js'; // Adjust the path as needed
     } catch (err) {
       console.error(err);
       setError('Failed to register. Please try again.');

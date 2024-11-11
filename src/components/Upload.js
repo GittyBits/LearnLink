@@ -33,7 +33,7 @@ const Upload = ({ isSidenavOpen }) => {
         formData.append('description', description);
 
         try {
-            await axios.post('http://localhost:5000/notes/upload', formData);
+            await axios.post('http://localhost:5050/notes/upload', formData);
             alert('File uploaded successfully');
             setFile(null);
             setDescription('');

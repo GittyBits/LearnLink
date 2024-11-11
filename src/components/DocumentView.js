@@ -84,7 +84,7 @@ function DocumentView() {
 
     try {
       // Upload the file to the server
-      const response = await axios.post('http://localhost:5000/notes/upload', formData);
+      const response = await axios.post('http://localhost:5050/notes/upload', formData);
 
       // Update the file state with the uploaded file
       setFile(newFile);
