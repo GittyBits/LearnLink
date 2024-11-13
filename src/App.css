@@ -22,7 +22,6 @@ body,html,.layout {
   background-color:#fff6df;
 }
 
-
 /* Top Navigation Bar */
 .topnav {
   background-color: #c9b089;
@@ -37,6 +36,7 @@ body,html,.layout {
   align-items: center;
   z-index: 100;
 }
+
 .topnav .toggle-btn {
   font-size: 24px;
   cursor: pointer;
@@ -46,28 +46,53 @@ body,html,.layout {
   border-radius: 5px;
   border: 2px solid #333;
 }
+
 .topnav .brand {
   font-size: 24px;
   font-weight: bold;
 }
+
+/* Right-aligned buttons container */
 .topnav .nav-right {
   display: flex;
+  align-items: center; /* Align buttons vertically centered */
+  justify-content: flex-end; /* Align buttons to the right */
   padding: 0px 20px;
+  gap: 10px; /* Adds space between buttons */
 }
+
 .topnav .nav-right .login-btn {
   background-color: #277b14;
   border: none;
   color: white;
-  width: max-content;
   padding: 10px 20px;
   font-size: 16px;
   border-radius: 25px;
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
+
+.topnav .logout-btn {
+  background-color: #ff4d4d;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.logout-btn:hover {
+  background-color: #ff1a1a;
+}
+
+.nav-right button {
+  margin-left: 10px;
+}
+
 .topnav .nav-right .login-btn:hover {
   background-color: #45a049;
 }
+
 /* Profile Image */
 .topnav .nav-right .profile-img {
   width: 30px;
@@ -79,6 +104,7 @@ body,html,.layout {
   border: 2px solid #333;
   cursor: pointer;
 }
+
 /* Side Navigation */
 .sidenav {
   height: 100%;

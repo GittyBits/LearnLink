@@ -30,7 +30,7 @@ const SignUp = () => {
       console.log('User registered:', response.data);
       
       // Navigate to the VideoHub page (you can adjust the route if needed)
-      navigate('/Profile'); // Use React Router's navigate method
+      navigate('/signin'); // Use React Router's navigate method
     } catch (err) {
       console.error(err);
       setError('Failed to register. Please try again.');

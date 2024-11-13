@@ -23,12 +23,13 @@ const SignIn = () => {
       localStorage.setItem('authToken', response.data.token);
 
       // Navigate to profile page or any protected route
-      navigate('/Profile');
+      navigate('/');
     } catch (err) {
       console.error(err);
       setError('Login failed. Please try again.');
     }
   };
+  
 
   return (
     <div className="container" style={{ marginLeft: '25%', display: 'flex', width: '50%', height: 'max-content', padding: '100px 0px', marginTop: '100px' }}>
