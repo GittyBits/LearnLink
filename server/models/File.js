@@ -1,14 +1,17 @@
+// File model (models/File.js)
 const mongoose = require('mongoose');
 
 const fileSchema = new mongoose.Schema({
-  userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
-  filename: { type: String, required: true },
-  originalName: { type: String, required: true },
-  path: { type: String, required: true },
-  fileURL: { type: String, required: true },
-  fileSize: { type: Number, required: true },
-  fileType: { type: String, required: true }
+  userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+  filename: String,
+  originalName: String,
+  path: String,
+  fileURL: String,
+  fileSize: Number,
+  fileType: String,
+  tags: [String],
+  likes: { type: Number, default: 0 },
+  views: { type: Number, default: 0 },
 });
 
-const File = mongoose.model('File', fileSchema);
-module.exports = File;
+module.exports = mongoose.model('File', fileSchema);

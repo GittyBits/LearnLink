@@ -28,17 +28,35 @@ const Upload = ({ isSidenavOpen }) => {
         e.preventDefault();
         setLoading(true);
         setError('');
+
+        // Get the token from localStorage
+        const token = localStorage.getItem('token');
+        console.log('Token retrieved:', token); // Debugging: check if token is correctly retrieved
+
+        if (!token) {
+            alert('Please log in first');
+            setLoading(false);
+            return;
+        }
+
         const formData = new FormData();
         formData.append('file', file);
         formData.append('description', description);
 
         try {
-            await axios.post('http://localhost:5050/notes/upload', formData);
+            // Add Authorization header with Bearer token
+            const response = await axios.post('http://localhost:5050/notes/upload', formData, {
+                headers: {
+                    'Authorization': `Bearer ${token}`, // Add the token here
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
+
+            console.log('Upload Response:', response); // Debugging: check the response
             alert('File uploaded successfully');
             setFile(null);
             setDescription('');
         } catch (err) {
-            alert('File error');
             console.error('Error uploading file:', err);
             alert('File upload failed');
         } finally {
@@ -54,6 +72,7 @@ const Upload = ({ isSidenavOpen }) => {
             alert("Please upload a file first.");
         }
     };
+
     const handleDragEnter = (e) => {
         e.preventDefault();
         setDragActive(true);
@@ -69,6 +88,7 @@ const Upload = ({ isSidenavOpen }) => {
         setDragActive(false);
         handleFileChange(e);
     };
+
     return (
         <div className={`upload-container ${isSidenavOpen ? 'sidenav-open' : 'sidenav-closed'}`}>
             <div className="upload-content">
@@ -109,12 +129,12 @@ const Upload = ({ isSidenavOpen }) => {
                 </div>
                 {error && <div className="error-message">{error}</div>}
 
-
                 <div className="button-container">
                     <button onClick={goToEditor} className="action-button">Editor</button>
                     <button onClick={handleSubmit} className="action-button" disabled={!file || loading}>
                         {loading ? 'Uploading...' : 'Publish'}
-                    </button> </div>
+                    </button>
+                </div>
             </div>
         </div>
     );

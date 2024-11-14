@@ -1,123 +1,201 @@
 /* Profile Page Layout */
 .profile-page {
-display: flex;
-flex-direction: row;
-margin-top: 350px;
-margin-bottom: 30px;
-padding: 10px;
-border-radius: 10px;
-gap: 20px;
--moz-box-shadow: 0 0 10px #ccc;
--webkit-box-shadow: 0 0 10px #ccc;
-box-shadow: 0 0 10px #ccc;
-}
-
-.profile-sidebar {
-width: 25%;
-background-color: #f9f7f2;
-padding: 20px;
-border-radius: 10px;
--moz-box-shadow: 0 0 3px #ccc;
--webkit-box-shadow: 0 0 3px #ccc;
-box-shadow: 0 0 3px #ccc;
-}
-
-.profile-info {
-text-align: center;
-margin-bottom: 20px;
-}
-
-.profile-image {
-width: 150px;
-height: 150px;
-background-color: #ccc;
-border-radius: 50%;
-margin: 0 auto;
-}
-
-.username {
-font-size: 24px;
-color: #ff7200;
-}
-
-.userid {
-color: #666;
-margin-bottom: 10px;
-}
-
-.profile-details {
-text-align: left;
-font-size: 16px;
-color: #333;
-}
-
-.profile-quote {
-margin-top: 20px;
-background-color: #f0f0f0;
-padding: 10px;
-border-radius: 5px;
-}
-
-.profile-bio, .profile-badges {
-margin-top: 20px;
-}
-
-.badges-list {
-display: flex;
-flex-wrap: wrap;
-gap: 10px;
-}
-
-.badge {
-background-color: #eee;
-padding: 10px;
-border-radius: 5px;
-text-align: center;
-width: 70px;
-}
-
-/* Uploads Section */
-.uploads-section {
-width: 70%;
-}
-
-.uploads-grid {
-display: grid;
-grid-template-columns: repeat(4, 1fr);
-gap: 20px;
-}
-
-.upload-card {
-background-color: #f9f7f2;
-padding: 20px;
-border-radius: 10px;
-box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-text-align: center;
-}
-
-.upload-preview {
-width: 100%;
-height: 150px;
-background-color: #ccc;
-margin-bottom: 10px;
-}
-
-.tags {
-display: flex;
-justify-content: center;
-gap: 5px;
-margin: 10px 0;
-}
-
-.tag {
-background-color: #ded7c3;
-padding: 5px 10px;
-border-radius: 20px;
-font-size: 12px;
-}
-
-.card-footer {
-margin-top: 10px;
-font-size: 14px;
-color: #333;
-}
+    display: flex;
+    flex-direction: row;
+    margin-top: 50px; /* Adjusted margin to avoid too much space on top */
+    margin-bottom: 30px;
+    padding: 10px;
+    border-radius: 10px;
+    gap: 20px;
+    -moz-box-shadow: 0 0 10px #ccc;
+    -webkit-box-shadow: 0 0 10px #ccc;
+    box-shadow: 0 0 10px #ccc;
+    flex-wrap: wrap; /* Allow content to wrap on smaller screens */
+  }
+  
+  .profile-sidebar {
+    width: 25%;
+    min-width: 300px; /* Minimum width to prevent it from shrinking too much */
+    background-color: #f9f7f2;
+    padding: 20px;
+    border-radius: 10px;
+    -moz-box-shadow: 0 0 3px #ccc;
+    -webkit-box-shadow: 0 0 3px #ccc;
+    box-shadow: 0 0 3px #ccc;
+    margin-bottom: 20px; /* Spacing below sidebar */
+  }
+  
+  .uploads-section {
+    width: 70%; /* Takes up the remaining 70% of the width */
+    min-width: 600px; /* Ensure uploads section doesn't shrink too small */
+    background-color: #f9f7f2;
+  }
+  
+  /* Adjust Upload Grid */
+  .uploads-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+  }
+  
+  .upload-card {
+    background-color: #f9f7f2;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+  }
+  
+  .upload-preview {
+    width: 100%;
+    height: 150px;
+    background-color: #ccc;
+    margin-bottom: 10px;
+  }
+  
+  .tags {
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+    margin: 10px 0;
+  }
+  
+  .tag {
+    background-color: #ded7c3;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+  }
+  
+  .card-footer {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #333;
+  }
+  
+  /* Profile Info Layout */
+  .profile-info {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .profile-image {
+    width: 150px;
+    height: 150px;
+    background-color: #ccc;
+    border-radius: 50%;
+    margin: 0 auto;
+  }
+  
+  .username {
+    font-size: 24px;
+    color: #ff7200;
+  }
+  
+  .userid {
+    color: #666;
+    margin-bottom: 10px;
+  }
+  
+  .profile-details {
+    text-align: left;
+    font-size: 16px;
+    color: #333;
+  }
+  
+  .profile-quote {
+    margin-top: 20px;
+    background-color: #f0f0f0;
+    padding: 10px;
+    border-radius: 5px;
+  }
+  
+  /* Profile Badges Layout */
+  .profile-bio,
+  .profile-badges {
+    margin-top: 20px;
+  }
+  
+  .badges-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  
+  .badge {
+    background-color: #eee;
+    padding: 10px;
+    border-radius: 5px;
+    text-align: center;
+    width: 70px;
+  }
+  
+  /* Responsive Adjustments */
+  @media (max-width: 1024px) {
+    .profile-sidebar {
+      width: 100%;
+      max-width: 100%;
+    }
+  
+    .uploads-section {
+      width: 100%;
+      max-width: 100%;
+    }
+  
+    .uploads-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .profile-page {
+      flex-direction: column; /* Stack the profile and uploads section on smaller screens */
+      margin-top: 20px; /* Less margin on top */
+      padding: 10px;
+    }
+  
+    .profile-sidebar {
+      width: 100%;
+      max-width: 100%;
+    }
+  
+    .uploads-grid {
+      grid-template-columns: repeat(1, 1fr); /* One column layout for uploads */
+    }
+  
+    .upload-preview {
+      height: 120px; /* Adjust preview image height for smaller screens */
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .profile-info {
+      text-align: center; /* Center the profile info on small screens */
+    }
+  
+    .profile-image {
+      width: 120px;
+      height: 120px;
+    }
+  
+    .username {
+      font-size: 20px; /* Adjust font size */
+    }
+  
+    .userid {
+      font-size: 14px; /* Adjust font size */
+    }
+  
+    .upload-preview {
+      height: 100px; /* Reduce size of upload preview */
+    }
+  
+    .uploads-grid {
+      grid-template-columns: repeat(1, 1fr); /* One column layout for uploads */
+    }
+  
+    .upload-card {
+      padding: 15px; /* Reduced padding for smaller screens */
+    }
+  }
+  

@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import './Profile.css';  // Ensure this file is linked correctly
+import './Profile.css';
 
 const Profile = () => {
   const [userData, setUserData] = useState(null);
   const [uploads, setUploads] = useState([]);
   const [error, setError] = useState(null);
+  const [editing, setEditing] = useState(false);
+  const [updatedUserData, setUpdatedUserData] = useState({});
 
   useEffect(() => {
     const token = localStorage.getItem('authToken');
@@ -17,6 +19,7 @@ const Profile = () => {
         })
         .then((response) => {
           setUserData(response.data);
+          setUpdatedUserData(response.data);
         })
         .catch((err) => {
           console.error('Error fetching profile:', err.response || err);
@@ -29,11 +32,9 @@ const Profile = () => {
           headers: { Authorization: `Bearer ${token}` },
         })
         .then((response) => {
-          console.log('Uploads fetched successfully:', response.data); // Log the response
           setUploads(response.data);
         })
         .catch((err) => {
-          // Log the full error to get more details
           console.error('Error fetching uploads:', err.response || err);
           setError('Unable to fetch uploads.');
         });
@@ -41,82 +42,161 @@ const Profile = () => {
       setError('No authentication token found.');
     }
 
-    // Hide TopNav and SideNav when component mounts
-    const topNav = document.querySelector('.topnav');
-    const sideNav = document.querySelector('.sidenav');
-    if (topNav) topNav.style.display = 'none';
-    if (sideNav) sideNav.style.display = 'none';
-
-    // Cleanup function to restore TopNav and SideNav when component unmounts
     return () => {
+      const topNav = document.querySelector('.topnav');
+      const sideNav = document.querySelector('.sidenav');
       if (topNav) topNav.style.display = 'flex';
       if (sideNav) sideNav.style.display = 'block';
     };
   }, []);
 
-  // If there's an error, show it
-  if (error) return <div>{error}</div>;
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setUpdatedUserData({ ...updatedUserData, [name]: value });
+  };
 
-  // If user data is not yet available, show loading
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const token = localStorage.getItem('authToken');
+    try {
+      const response = await axios.put('http://localhost:5050/profile', updatedUserData, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setUserData(response.data);
+      setEditing(false);
+    } catch (err) {
+      console.error('Error updating profile:', err);
+      setError('Unable to update profile data.');
+    }
+  };
+
+  if (error) return <div>{error}</div>;
   if (!userData) return <div>Loading...</div>;
 
   return (
     <div className="profile-page">
-      {/* Profile Sidebar */}
       <div className="profile-sidebar">
         <div className="profile-info">
           <div className="profile-image"></div>
           <h2 className="username">{userData.fullName}</h2>
           <p className="userid">@{userData.email}</p>
-          <div className="profile-details">
-            <p><strong>AGE:</strong> {userData.age || 'N/A'}</p>
-            <p><strong>GENDER:</strong> {userData.gender || 'N/A'}</p>
-            <p><strong>STATUS:</strong> {userData.status || 'N/A'}</p>
-            <p><strong>EDUCATION:</strong> {userData.education || 'N/A'}</p>
-            <p><strong>LOCATION:</strong> {userData.location || 'N/A'}</p>
-            <p><strong>LANGUAGES:</strong> {userData.languages || 'N/A'}</p>
-          </div>
+
+          {editing ? (
+            <form onSubmit={handleSubmit}>
+              <div>
+                <label>Full Name:</label>
+                <input
+                  type="text"
+                  name="fullName"
+                  value={updatedUserData.fullName}
+                  onChange={handleChange}
+                />
+              </div>
+              <div>
+                <label>Age:</label>
+                <input
+                  type="number"
+                  name="age"
+                  value={updatedUserData.age || ''}
+                  onChange={handleChange}
+                />
+              </div>
+              <div>
+                <label>Status:</label>
+                <input
+                  type="text"
+                  name="status"
+                  value={updatedUserData.status || ''}
+                  onChange={handleChange}
+                />
+              </div>
+              <div>
+                <label>Education:</label>
+                <input
+                  type="text"
+                  name="education"
+                  value={updatedUserData.education || ''}
+                  onChange={handleChange}
+                />
+              </div>
+              <div>
+                <label>Location:</label>
+                <input
+                  type="text"
+                  name="location"
+                  value={updatedUserData.location || ''}
+                  onChange={handleChange}
+                />
+              </div>
+              <div>
+                <label>Languages:</label>
+                <input
+                  type="text"
+                  name="languages"
+                  value={updatedUserData.languages || ''}
+                  onChange={handleChange}
+                />
+              </div>
+              <button type="submit">Save Changes</button>
+            </form>
+          ) : (
+            <div className="profile-details">
+              <p><strong>AGE:</strong> {userData.age || 'N/A'}</p>
+              <p><strong>STATUS:</strong> {userData.status || 'N/A'}</p>
+              <p><strong>EDUCATION:</strong> {userData.education || 'N/A'}</p>
+              <p><strong>LOCATION:</strong> {userData.location || 'N/A'}</p>
+              <p><strong>LANGUAGES:</strong> {userData.languages || 'N/A'}</p>
+            </div>
+          )}
+
           <div className="profile-quote">
             <p>"{userData.quote || 'No quote set.'}"</p>
           </div>
+          <button onClick={() => setEditing(!editing)}>
+            {editing ? 'Cancel' : 'Edit Profile'}
+          </button>
         </div>
 
-        {/* Bio and Badges */}
-        <div className="profile-bio">
-          <h3>Bio</h3>
-          <p>{userData.bio || 'No bio available.'}</p>
-        </div>
-        <div className="profile-badges">
+        {/* Badges Section */}
+        <div className="badges-section">
           <h3>Badges</h3>
-          <div className="badges-list">
-            {userData.badges?.map((badge, index) => (
-              <div className="badge" key={index}>{badge}</div>
-            ))}
+          <div className="badges-grid">
+            {userData.badges && userData.badges.length > 0 ? (
+              userData.badges.map((badge, index) => (
+                <div className="badge" key={index}>
+                  <img src={badge.image} alt={badge.name} />
+                  <p>{badge.name}</p>
+                </div>
+              ))
+            ) : (
+              <p>No badges earned yet.</p>
+            )}
           </div>
         </div>
-      </div>
 
-      {/* Uploads Section */}
-      <div className="uploads-section">
-        <h2>Community Uploads</h2>
-        <p>Total Uploads: {uploads.length}</p>
-        <div className="uploads-grid">
-          {uploads.map((upload, index) => (
-            <div className="upload-card" key={index}>
-              <div className="upload-preview"></div>
-              <h4>{upload.fileName}</h4>
-              <p>Field: {upload.field || 'N/A'}</p>
-              <p>Branch: {upload.branch || 'N/A'}</p>
-              <div className="tags">
-                {upload.tags?.map((tag, idx) => (
-                  <span key={idx} className="tag">{tag}</span>
-                ))}
+        {/* Uploads Section */}
+        <div className="uploads-section">
+          <h2>Community Uploads</h2>
+          <p>Total Uploads: {uploads.length}</p>
+          <div className="uploads-grid">
+            {uploads.map((upload, index) => (
+              <div className="upload-card" key={index}>
+                <div className="upload-preview"></div>
+                <h4>{upload.originalName}</h4>
+                <p><strong>Course:</strong> {upload.course || 'N/A'}</p> {/* Added Course Section */}
+                <p>Field: {upload.field || 'N/A'}</p>
+                <p>Branch: {upload.branch || 'N/A'}</p>
+                <div className="tags">
+                  {upload.tags?.map((tag, idx) => (
+                    <span key={idx} className="tag">{tag}</span>
+                  ))}
+                </div>
+                <div className="card-footer">
+                  <span>{upload.likes} Likes</span> <span>{upload.views} Views</span>
+                </div>
               </div>
-              <div className="card-footer">
-                <span>{upload.likes} Likes</span> <span>{upload.views} Views</span>
-              </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </div>
     </div>

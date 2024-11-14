@@ -15,8 +15,8 @@ const PORT = 5050;
 
 // Middleware
 app.use(cors({
-  origin: 'http://localhost:3000', // Allow requests from the frontend
-  methods: ['GET', 'POST', 'OPTIONS'],
+  origin: 'http://localhost:3000', // Allow requests from your frontend
+  methods: ['GET', 'POST', 'PUT', 'OPTIONS'], // Add PUT here
   allowedHeaders: ['Content-Type', 'Authorization'],
 }));
 app.use(express.json()); // Parse JSON bodies
@@ -149,6 +149,28 @@ app.get('/notes', authenticate, async (req, res) => {
     res.status(500).json({ message: 'Error fetching notes from database' });
   }
 });
+// Update Profile Route (requires authentication)
+app.put('/profile', authenticate, async (req, res) => {
+  const { fullName, age, status, education, location, languages } = req.body;
+
+  try {
+    const updatedUser = await User.findByIdAndUpdate(
+      req.userId,
+      { fullName, age, status, education, location, languages },
+      { new: true }  // Return the updated document
+    ).select('-password'); // Exclude password from the returned document
+
+    if (!updatedUser) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    res.json(updatedUser);
+  } catch (err) {
+    console.error('Error updating profile:', err);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
 
 // Error handling middleware for multer errors
 app.use((err, req, res, next) => {
