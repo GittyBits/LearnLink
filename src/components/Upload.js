@@ -8,6 +8,9 @@ const Upload = ({ isSidenavOpen }) => {
     const [file, setFile] = useState(null);
     const [fileData, setFileData] = useState(null);
     const [description, setDescription] = useState('');
+    const [selectedField, setSelectedField] = useState('');
+    const [selectedBranch, setSelectedBranch] = useState('');
+    const [selectedCourse, setSelectedCourse] = useState('');
     const [dragActive, setDragActive] = useState(false);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
@@ -28,50 +31,38 @@ const Upload = ({ isSidenavOpen }) => {
         e.preventDefault();
         setLoading(true);
         setError('');
-
-        // Get the token from localStorage
-        const token = localStorage.getItem('token');
-        console.log('Token retrieved:', token); // Debugging: check if token is correctly retrieved
-
-        if (!token) {
-            alert('Please log in first');
-            setLoading(false);
-            return;
-        }
-
+    
         const formData = new FormData();
         formData.append('file', file);
         formData.append('description', description);
-
+        formData.append('field', selectedField);
+        formData.append('branch', selectedBranch);
+        formData.append('course', selectedCourse);
+    
+        // Retrieve token from localStorage or another secure location
+        const token = localStorage.getItem('authToken'); // Ensure this matches your token's storage location
+    
         try {
-            // Add Authorization header with Bearer token
-            const response = await axios.post('http://localhost:5050/notes/upload', formData, {
+            await axios.post('http://localhost:5050/notes/upload', formData, {
                 headers: {
-                    'Authorization': `Bearer ${token}`, // Add the token here
-                    'Content-Type': 'multipart/form-data',
-                },
+                    'Authorization': `Bearer ${token}`  // Include the token in the request headers
+                }
             });
-
-            console.log('Upload Response:', response); // Debugging: check the response
             alert('File uploaded successfully');
             setFile(null);
             setDescription('');
+            setSelectedField('');
+            setSelectedBranch('');
+            setSelectedCourse('');
         } catch (err) {
+            setError('File upload failed');
             console.error('Error uploading file:', err);
-            alert('File upload failed');
         } finally {
             setLoading(false);
             navigate('/profile');
         }
     };
-
-    const goToEditor = () => {
-        if (fileData) {
-            navigate('/editor', { state: { fileData, description } });
-        } else {
-            alert("Please upload a file first.");
-        }
-    };
+    
 
     const handleDragEnter = (e) => {
         e.preventDefault();
@@ -103,6 +94,48 @@ const Upload = ({ isSidenavOpen }) => {
                     required
                 />
 
+                <div className="dropdown-row">
+                    <select
+                        className="browse-dropdown"
+                        value={selectedField}
+                        onChange={e => setSelectedField(e.target.value)}
+                    >
+                        <option value="">Field</option>
+                        <option value="Math">Math</option>
+                        <option value="Science">Science</option>
+                        <option value="Engineering">Engineering</option>
+                        <option value="Arts">Arts</option>
+                    </select>
+
+                    <select
+                        className="browse-dropdown"
+                        value={selectedBranch}
+                        onChange={e => setSelectedBranch(e.target.value)}
+                    >
+                        <option value="">Branch</option>
+                        <option value="Pure Mathematics">Pure Mathematics</option>
+                        <option value="Applied Mathematics">Applied Mathematics</option>
+                        <option value="Chemistry">Chemistry</option>
+                        <option value="Computer Science">Computer Science</option>
+                        <option value="Mechanical Engineering">Mechanical Engineering</option>
+                        <option value="Literature">Literature</option>
+                    </select>
+
+                    <select
+                        className="browse-dropdown"
+                        value={selectedCourse}
+                        onChange={e => setSelectedCourse(e.target.value)}
+                    >
+                        <option value="">Course</option>
+                        <option value="Equations">Equations</option>
+                        <option value="Numbers">Numbers</option>
+                        <option value="Reactions">Reactions</option>
+                        <option value="Networks">Networks</option>
+                        <option value="Drama">Drama</option>
+                        <option value="Flow">Flow</option>
+                    </select>
+                </div>
+
                 <div
                     className={`drag-drop-area ${dragActive ? 'drag-active' : ''}`}
                     onDragEnter={handleDragEnter}
@@ -130,7 +163,6 @@ const Upload = ({ isSidenavOpen }) => {
                 {error && <div className="error-message">{error}</div>}
 
                 <div className="button-container">
-                    <button onClick={goToEditor} className="action-button">Editor</button>
                     <button onClick={handleSubmit} className="action-button" disabled={!file || loading}>
                         {loading ? 'Uploading...' : 'Publish'}
                     </button>

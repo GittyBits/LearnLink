@@ -137,7 +137,6 @@ function Browse() {
               </div>
             </div>
             <div className="document-actions">
-              <a href="#" className="open-editor">Open in Editor</a>
               <a href="#" className="view-document">View</a>
             </div>
           </div>

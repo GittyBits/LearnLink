@@ -111,20 +111,30 @@ app.get('/profile', authenticate, async (req, res) => {
 });
 
 // File upload route (requires authentication)
+// File upload route (requires authentication)
 app.post('/notes/upload', authenticate, upload.single('file'), async (req, res) => {
+  const { field, branch, course } = req.body; // Get field, branch, and course from the request body
+
   if (!req.file) {
     return res.status(400).json({ message: 'No file uploaded' });
+  }
+
+  if (!field || !branch || !course) {
+    return res.status(400).json({ message: 'Field, branch, and course are required' });
   }
 
   // Save the file details to the database (optional)
   const newFile = new File({
     userId: req.userId,
-    filename: req.file.filename,           // The name of the file stored in the server
-    originalName: req.file.originalname,   // The original name of the file uploaded
-    path: req.file.path,                   // The file path on the server
-    fileURL: req.file.path,                // Assuming the file URL is the server's path (you can adjust this if needed)
-    fileSize: req.file.size,               // File size in bytes
-    fileType: req.file.mimetype            // MIME type of the file (e.g., 'image/jpeg')
+    filename: req.file.filename,
+    originalName: req.file.originalname,
+    path: req.file.path,
+    fileURL: req.file.path,
+    fileSize: req.file.size,
+    fileType: req.file.mimetype,
+    field,   // Add field to the database record
+    branch,  // Add branch to the database record
+    course   // Add course to the database record
   });
 
   try {
@@ -137,6 +147,7 @@ app.post('/notes/upload', authenticate, upload.single('file'), async (req, res) 
     res.status(500).json({ message: 'Server error', error: err.message });
   }
 });
+
 
 
 // Notes retrieval route (requires authentication)

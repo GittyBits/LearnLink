@@ -11,44 +11,45 @@ const Profile = () => {
 
   useEffect(() => {
     const token = localStorage.getItem('authToken');
+    
     if (token) {
       // Fetch profile data
-      axios
-        .get('http://localhost:5050/profile', {
-          headers: { Authorization: `Bearer ${token}` },
-        })
-        .then((response) => {
-          setUserData(response.data);
-          setUpdatedUserData(response.data);
-        })
-        .catch((err) => {
-          console.error('Error fetching profile:', err.response || err);
+      axios.get('http://localhost:5050/profile', {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((response) => {
+        setUserData(response.data);
+        setUpdatedUserData(response.data);
+      })
+      .catch((err) => {
+        console.error('Error fetching profile:', err.response || err);
+        if (err.response && err.response.status === 403) {
+          setError('Access denied: You do not have permission to view this profile.');
+        } else {
           setError('Unable to fetch profile data.');
-        });
-
+        }
+      });
+  
       // Fetch user uploads
-      axios
-        .get('http://localhost:5050/notes', {
-          headers: { Authorization: `Bearer ${token}` },
-        })
-        .then((response) => {
-          setUploads(response.data);
-        })
-        .catch((err) => {
-          console.error('Error fetching uploads:', err.response || err);
+      axios.get('http://localhost:5050/notes', {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((response) => {
+        setUploads(response.data);
+      })
+      .catch((err) => {
+        console.error('Error fetching uploads:', err.response || err);
+        if (err.response && err.response.status === 403) {
+          setError('Access denied: You do not have permission to view uploads.');
+        } else {
           setError('Unable to fetch uploads.');
-        });
+        }
+      });
     } else {
       setError('No authentication token found.');
     }
-
-    return () => {
-      const topNav = document.querySelector('.topnav');
-      const sideNav = document.querySelector('.sidenav');
-      if (topNav) topNav.style.display = 'flex';
-      if (sideNav) sideNav.style.display = 'block';
-    };
   }, []);
+  
 
   const handleChange = (e) => {
     const { name, value } = e.target;

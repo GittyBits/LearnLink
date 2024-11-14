@@ -12,9 +12,7 @@ import Profile from './components/Profile';
 import Upload from './components/Upload';
 import Browse from './components/Browse';
 import DocumentView from './components/DocumentView';
-import DocumentEditor from './components/DocumentEditor';
 import VideoHub from './components/VideoHub';
-import Editor from './components/Editor';
 import Star from './components/starr';
 
 import './App.css';
@@ -70,9 +68,7 @@ function App() {
             <Route path="/browse" element={isAuthenticated() ? <Browse /> : <Navigate to="/signin" />} />
             <Route path="/starred" element={isAuthenticated() ? <Star /> : <Navigate to="/signin" />} />
             <Route path="/videohub" element={isAuthenticated() ? <VideoHub /> : <Navigate to="/signin" />} />
-            <Route path="/editor" element={<Editor />} />
             <Route path="/document" element={<DocumentView />} />
-            <Route path="/documentedit" element={<DocumentEditor />} />
             <Route path="*" element={<div>404 Page Not Found</div>} />
           </Routes>
         </div>
