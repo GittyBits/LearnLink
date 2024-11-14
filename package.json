@@ -10,7 +10,9 @@
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.7.7",
+    "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
+    "dotenv-expand": "^11.0.7",
     "express": "^4.21.1",
     "fast-glob": "^3.3.2",
     "jsonwebtoken": "^9.0.2",
@@ -25,6 +27,7 @@
     "react-pdf": "^9.1.1",
     "react-router-dom": "^6.28.0",
     "react-scripts": "^3.4.4",
+    "snapdragon-node": "^3.0.0",
     "upath": "^2.0.1",
     "web-vitals": "^2.1.4",
     "webpack-dev-middleware": "^5.3.4"
