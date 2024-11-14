@@ -6,11 +6,9 @@ import './DocumentView.css';
 function DocumentView() {
   const location = useLocation();
   const navigate = useNavigate();
+  
+  const { file: initialFile, description, userId } = location.state || {}; // Get userId from location state
 
-  // Retrieve file and description from location state
-  const { file: initialFile, description } = location.state || {};
-
-  // States for likes, comments, starring, and file upload
   const [likes, setLikes] = useState(0);
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState('');
@@ -20,22 +18,33 @@ function DocumentView() {
   const [newFile, setNewFile] = useState(null);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-  // Prevent PDF refresh when typing in the comment box
   useEffect(() => {
-    // Reset any viewer refresh issues
-  }, []);
+    // Check if the user has already liked or starred the document
+    axios.get(`http://localhost:5050/notes/${file._id}/status`, { params: { userId } })
+      .then((response) => {
+        const { liked, starred } = response.data;
+        setLikes(liked ? 1 : 0);
+        setStarred(starred);
+      })
+      .catch(err => console.error('Error checking status:', err));
+  }, [file._id, userId]);
 
-  // Handle liking the document
   const handleLike = () => {
-    setLikes((prevLikes) => (prevLikes === 0 ? 1 : 0));
+    axios.post(`http://localhost:5050/notes/${file._id}/rate`, { likes: likes === 1 ? 0 : 1, stars: starred ? 1 : 0, userId })
+      .then(() => {
+        setLikes(likes === 1 ? 0 : 1);
+      })
+      .catch(err => console.error('Error liking document:', err));
   };
 
-  // Handle starring the document
   const handleStar = () => {
-    setStarred(!starred);
+    axios.post(`http://localhost:5050/notes/${file._id}/rate`, { likes, stars: starred ? 0 : 1, userId })
+      .then(() => {
+        setStarred(!starred);
+      })
+      .catch(err => console.error('Error starring document:', err));
   };
 
-  // Handle submitting a comment
   const handleCommentSubmit = (e) => {
     e.preventDefault();
     if (newComment.trim()) {
@@ -44,14 +53,12 @@ function DocumentView() {
     }
   };
 
-  // Handle replying to a comment
   const handleReply = (index, replyText) => {
     const updatedComments = [...comments];
     updatedComments[index].replies.push(replyText);
     setComments(updatedComments);
   };
 
-  // Handle liking a comment (toggle like)
   const handleCommentLike = (index) => {
     setCommentLikes((prevLikes) => ({
       ...prevLikes,
@@ -59,44 +66,10 @@ function DocumentView() {
     }));
   };
 
-  // Handle navigating to the editor with the file
   const handleEdit = () => {
     navigate('/editor', { state: { file, description } });
   };
 
-  // Handle file selection
-  const handleFileChange = (e) => {
-    const selectedFile = e.target.files[0];
-    if (selectedFile) {
-      setNewFile(selectedFile);
-    }
-  };
-
-  // Handle file upload
-  const handleFileUpload = async () => {
-    if (!newFile) {
-      alert('Please select a file first.');
-      return;
-    }
-
-    const formData = new FormData();
-    formData.append('file', newFile);
-
-    try {
-      // Upload the file to the server
-      const response = await axios.post('http://localhost:5050/notes/upload', formData);
-
-      // Update the file state with the uploaded file
-      setFile(newFile);
-      alert('File uploaded successfully.');
-      setNewFile(null);
-    } catch (err) {
-      alert('File upload failed.');
-      console.error('Error uploading file:', err);
-    }
-  };
-
-  // Toggle the comment sidebar
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
@@ -119,7 +92,6 @@ function DocumentView() {
               File uploaded: {file.name} &nbsp; &nbsp; Type: {file.type} &nbsp;
               &nbsp; Size: {(file.size / 1024).toFixed(2)} KB
             </p>
-
             {/* Render file based on type */}
             {file.type.startsWith('image/') && (
               <img
@@ -136,7 +108,6 @@ function DocumentView() {
                 height="600px"
               />
             )}
-            {/* Add more conditions for other file types if needed */}
           </div>
         ) : (
           <div className="document-placeholder">
@@ -144,24 +115,6 @@ function DocumentView() {
           </div>
         )}
         <p className="uploaded-by">Uploaded by: User123</p>
-      </div>
-
-      {/* Upload from Files Button */}
-      <div className="upload-new-file">
-        <input
-          type="file"
-          onChange={handleFileChange}
-          style={{ display: 'none' }}
-          id="file-upload-input"
-        />
-        <label htmlFor="file-upload-input" className="upload-btn">
-          Upload from Files
-        </label>
-        {newFile && (
-          <button className="upload-btn" onClick={handleFileUpload}>
-            Upload File
-          </button>
-        )}
       </div>
 
       {/* Action Buttons */}

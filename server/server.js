@@ -16,7 +16,7 @@ const PORT = 5050;
 // Middleware
 app.use(cors({
   origin: 'http://localhost:3000', // Allow requests from your frontend
-  methods: ['GET', 'POST', 'PUT', 'OPTIONS'], // Add PUT here
+  methods: ['GET', 'POST', 'PUT', 'OPTIONS','DELETE'], // Add PUT here
   allowedHeaders: ['Content-Type', 'Authorization'],
 }));
 app.use(express.json()); // Parse JSON bodies
@@ -47,17 +47,23 @@ const upload = multer({
   limits: { fileSize: 20 * 1024 * 1024 } // Limit file size to 20MB
 });
 
-// Middleware to verify JWT token for protected routes
 const authenticate = (req, res, next) => {
   const token = req.headers['authorization']?.split(' ')[1];
-  if (!token) return res.status(401).json({ message: 'No token provided' });
+  if (!token) {
+    console.log('No token provided');
+    return res.status(401).json({ message: 'No token provided' });
+  }
 
   jwt.verify(token, 'secretkey', (err, decoded) => {
-    if (err) return res.status(403).json({ message: 'Invalid token' });
+    if (err) {
+      console.log('Invalid token', err);
+      return res.status(403).json({ message: 'Invalid token' });
+    }
     req.userId = decoded.userId;
     next();
   });
 };
+
 
 // Signup route
 app.post('/users/signup', async (req, res) => {
@@ -98,6 +104,25 @@ app.post('/users/signin', async (req, res) => {
   }
 });
 
+app.get('/notes', authenticate, async (req, res) => {
+  const { field, branch, course } = req.query; // Get filter values from query parameters
+  
+  try {
+    let filter = {}; // Initialize an empty filter object
+
+    // Only add filters to the filter object if the corresponding value is provided
+    if (field) filter.field = field;
+    if (branch) filter.branch = branch;
+    if (course) filter.course = course;
+
+    // Fetch all files if no filters are provided, else fetch based on filter
+    const files = await File.find(filter);
+    res.json(files); // Return the filtered documents or all files
+  } catch (err) {
+    console.error('Error fetching documents:', err);
+    res.status(500).json({ message: 'Server error', error: err.message });
+  }
+});
 // Profile route (requires authentication)
 app.get('/profile', authenticate, async (req, res) => {
   try {
@@ -110,56 +135,82 @@ app.get('/profile', authenticate, async (req, res) => {
   }
 });
 
-// File upload route (requires authentication)
-// File upload route (requires authentication)
+
+
 app.post('/notes/upload', authenticate, upload.single('file'), async (req, res) => {
-  const { field, branch, course } = req.body; // Get field, branch, and course from the request body
+  const { field, branch, course, title,likes,stars } = req.body; // Get the fields from the request body
+
+  console.log('Received data:', req.body); // Debugging line
 
   if (!req.file) {
-    return res.status(400).json({ message: 'No file uploaded' });
+      return res.status(400).json({ message: 'No file uploaded' });
   }
 
-  if (!field || !branch || !course) {
-    return res.status(400).json({ message: 'Field, branch, and course are required' });
+  if (!field || !branch || !course || !title) {
+      return res.status(400).json({ message: 'Field, branch, course, and title are required' });
   }
 
-  // Save the file details to the database (optional)
+  // Save the file details to the database
   const newFile = new File({
-    userId: req.userId,
-    filename: req.file.filename,
-    originalName: req.file.originalname,
-    path: req.file.path,
-    fileURL: req.file.path,
-    fileSize: req.file.size,
-    fileType: req.file.mimetype,
-    field,   // Add field to the database record
-    branch,  // Add branch to the database record
-    course   // Add course to the database record
+      userId: req.userId,
+      filename: req.file.filename,
+      originalName: req.file.originalname,
+      path: req.file.path,
+      fileURL: req.file.path,
+      fileSize: req.file.size,
+      fileType: req.file.mimetype,
+      title,  // Store the title in the database
+      field,  // Add field to the database record
+      branch, // Add branch to the database record
+      course,  // Add course to the database record
+      likes: likes || 0,  // Set likes to 0 by default if not provided
+      stars: stars || 0   // Set stars to 0 by default if not provided
   });
 
   try {
-    await newFile.save(); // Save file details to MongoDB
-    console.log('Uploaded file details:', req.file); // Log uploaded file details for troubleshooting
+      await newFile.save(); // Save file details to MongoDB
+      console.log('Uploaded file details:', req.file); // Log uploaded file details
 
-    res.json({ message: 'File uploaded successfully', file: req.file });
+      res.json({ message: 'File uploaded successfully', file: req.file });
   } catch (err) {
-    console.error('Error saving file details:', err);
+      console.error('Error saving file details:', err);
+      res.status(500).json({ message: 'Server error', error: err.message });
+  }
+});
+
+app.post('/notes/:fileId/rate', authenticate, async (req, res) => {
+  const { fileId } = req.params;
+  const { likes, stars, userId } = req.body;
+
+  if (typeof likes !== 'number' || typeof stars !== 'number') {
+    return res.status(400).json({ message: 'Likes and stars must be numbers' });
+  }
+
+  try {
+    const file = await File.findById(fileId);
+    if (!file) {
+      return res.status(404).json({ message: 'File not found' });
+    }
+
+    // Check if the user has already liked or starred
+    if (file.likes[userId] || file.stars[userId]) {
+      return res.status(400).json({ message: 'You have already liked or starred this file.' });
+    }
+
+    // Update likes and stars for the user
+    file.likes[userId] = likes;
+    file.stars[userId] = stars;
+
+    // Save the file with updated likes and stars
+    await file.save();
+
+    res.json({ message: 'File updated', file });
+  } catch (err) {
+    console.error('Error updating file:', err);
     res.status(500).json({ message: 'Server error', error: err.message });
   }
 });
 
-
-
-// Notes retrieval route (requires authentication)
-app.get('/notes', authenticate, async (req, res) => {
-  try {
-    const notes = await File.find({ userId: req.userId }); // Fetch notes for the logged-in user
-    res.json(notes);
-  } catch (err) {
-    console.error('Error fetching notes:', err);
-    res.status(500).json({ message: 'Error fetching notes from database' });
-  }
-});
 // Update Profile Route (requires authentication)
 app.put('/profile', authenticate, async (req, res) => {
   const { fullName, age, status, education, location, languages } = req.body;

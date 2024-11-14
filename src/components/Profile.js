@@ -13,7 +13,6 @@ const Profile = () => {
     const token = localStorage.getItem('authToken');
     
     if (token) {
-      // Fetch profile data
       axios.get('http://localhost:5050/profile', {
         headers: { Authorization: `Bearer ${token}` },
       })
@@ -23,14 +22,9 @@ const Profile = () => {
       })
       .catch((err) => {
         console.error('Error fetching profile:', err.response || err);
-        if (err.response && err.response.status === 403) {
-          setError('Access denied: You do not have permission to view this profile.');
-        } else {
-          setError('Unable to fetch profile data.');
-        }
+        setError(err.response?.status === 403 ? 'Access denied: You do not have permission to view this profile.' : 'Unable to fetch profile data.');
       });
-  
-      // Fetch user uploads
+
       axios.get('http://localhost:5050/notes', {
         headers: { Authorization: `Bearer ${token}` },
       })
@@ -39,17 +33,12 @@ const Profile = () => {
       })
       .catch((err) => {
         console.error('Error fetching uploads:', err.response || err);
-        if (err.response && err.response.status === 403) {
-          setError('Access denied: You do not have permission to view uploads.');
-        } else {
-          setError('Unable to fetch uploads.');
-        }
+        setError(err.response?.status === 403 ? 'Access denied: You do not have permission to view uploads.' : 'Unable to fetch uploads.');
       });
     } else {
       setError('No authentication token found.');
     }
   }, []);
-  
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -84,60 +73,12 @@ const Profile = () => {
 
           {editing ? (
             <form onSubmit={handleSubmit}>
-              <div>
-                <label>Full Name:</label>
-                <input
-                  type="text"
-                  name="fullName"
-                  value={updatedUserData.fullName}
-                  onChange={handleChange}
-                />
-              </div>
-              <div>
-                <label>Age:</label>
-                <input
-                  type="number"
-                  name="age"
-                  value={updatedUserData.age || ''}
-                  onChange={handleChange}
-                />
-              </div>
-              <div>
-                <label>Status:</label>
-                <input
-                  type="text"
-                  name="status"
-                  value={updatedUserData.status || ''}
-                  onChange={handleChange}
-                />
-              </div>
-              <div>
-                <label>Education:</label>
-                <input
-                  type="text"
-                  name="education"
-                  value={updatedUserData.education || ''}
-                  onChange={handleChange}
-                />
-              </div>
-              <div>
-                <label>Location:</label>
-                <input
-                  type="text"
-                  name="location"
-                  value={updatedUserData.location || ''}
-                  onChange={handleChange}
-                />
-              </div>
-              <div>
-                <label>Languages:</label>
-                <input
-                  type="text"
-                  name="languages"
-                  value={updatedUserData.languages || ''}
-                  onChange={handleChange}
-                />
-              </div>
+              <div><label>Full Name:</label><input type="text" name="fullName" value={updatedUserData.fullName} onChange={handleChange} /></div>
+              <div><label>Age:</label><input type="number" name="age" value={updatedUserData.age || ''} onChange={handleChange} /></div>
+              <div><label>Status:</label><input type="text" name="status" value={updatedUserData.status || ''} onChange={handleChange} /></div>
+              <div><label>Education:</label><input type="text" name="education" value={updatedUserData.education || ''} onChange={handleChange} /></div>
+              <div><label>Location:</label><input type="text" name="location" value={updatedUserData.location || ''} onChange={handleChange} /></div>
+              <div><label>Languages:</label><input type="text" name="languages" value={updatedUserData.languages || ''} onChange={handleChange} /></div>
               <button type="submit">Save Changes</button>
             </form>
           ) : (
@@ -150,54 +91,43 @@ const Profile = () => {
             </div>
           )}
 
-          <div className="profile-quote">
-            <p>"{userData.quote || 'No quote set.'}"</p>
-          </div>
-          <button onClick={() => setEditing(!editing)}>
-            {editing ? 'Cancel' : 'Edit Profile'}
-          </button>
+          <div className="profile-quote"><p>"{userData.quote || 'No quote set.'}"</p></div>
+          <button onClick={() => setEditing(!editing)}>{editing ? 'Cancel' : 'Edit Profile'}</button>
         </div>
 
-        {/* Badges Section */}
         <div className="badges-section">
           <h3>Badges</h3>
           <div className="badges-grid">
-            {userData.badges && userData.badges.length > 0 ? (
-              userData.badges.map((badge, index) => (
-                <div className="badge" key={index}>
-                  <img src={badge.image} alt={badge.name} />
-                  <p>{badge.name}</p>
-                </div>
-              ))
-            ) : (
-              <p>No badges earned yet.</p>
-            )}
+            {userData.badges?.length ? userData.badges.map((badge, index) => (
+              <div className="badge" key={index}>
+                <img src={badge.image} alt={badge.name} />
+                <p>{badge.name}</p>
+              </div>
+            )) : <p>No badges earned yet.</p>}
           </div>
         </div>
+      </div>
 
-        {/* Uploads Section */}
-        <div className="uploads-section">
-          <h2>Community Uploads</h2>
-          <p>Total Uploads: {uploads.length}</p>
-          <div className="uploads-grid">
-            {uploads.map((upload, index) => (
-              <div className="upload-card" key={index}>
-                <div className="upload-preview"></div>
-                <h4>{upload.originalName}</h4>
-                <p><strong>Course:</strong> {upload.course || 'N/A'}</p> {/* Added Course Section */}
-                <p>Field: {upload.field || 'N/A'}</p>
-                <p>Branch: {upload.branch || 'N/A'}</p>
-                <div className="tags">
-                  {upload.tags?.map((tag, idx) => (
-                    <span key={idx} className="tag">{tag}</span>
-                  ))}
-                </div>
-                <div className="card-footer">
-                  <span>{upload.likes} Likes</span> <span>{upload.views} Views</span>
-                </div>
+      <div className="uploads-section">
+        <h2>Community Uploads</h2>
+        <p>Total Uploads: {uploads.length}</p>
+        <div className="uploads-grid">
+          {uploads.map((upload, index) => (
+            <div className="upload-card" key={index}>
+              <div className="upload-preview"></div>
+              <h3>{upload.title || 'N/A'}</h3>
+              <p>Field: {upload.field || 'N/A'}</p>
+              <p>Branch: {upload.branch || 'N/A'}</p>
+
+              <p><strong>Course:</strong> {upload.course || 'N/A'}</p>
+              <div className="tags">
+                {upload.tags?.map((tag, idx) => <span key={idx} className="tag">{tag}</span>)}
               </div>
-            ))}
-          </div>
+              <div className="card-footer">
+                <span>{upload.likes} Likes</span> <span>{upload.views} Views</span>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </div>
