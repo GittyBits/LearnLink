@@ -11,7 +11,7 @@ body,html,.layout {
   height: 100%;
   margin: 0;
   padding: 0;
-  background-color: #f9f7f2;
+  background-color:#fff6df;
 }
 
 .App {
@@ -239,7 +239,7 @@ body,html,.layout {
   
   .main-content  {
     margin-left: 0; /* No margin when sidebar is closed */
-    width: 100%; /* Full width when sidebar is closed */
+    width: max-content;
     transition: margin-left 0.5s ease; /* Smooth transition for margin */
     margin-top: 100px; /* Adjusted for the fixed top navigation height */
   }

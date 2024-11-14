@@ -7,7 +7,7 @@ import { FaFileAlt, FaTimes } from 'react-icons/fa';
 const Upload = ({ isSidenavOpen }) => {
     const [file, setFile] = useState(null);
     const [fileData, setFileData] = useState(null);
-    const [description, setDescription] = useState('');
+    const [title, setTitle] = useState(''); // New title state
     const [selectedField, setSelectedField] = useState('');
     const [selectedBranch, setSelectedBranch] = useState('');
     const [selectedCourse, setSelectedCourse] = useState('');
@@ -26,35 +26,47 @@ const Upload = ({ isSidenavOpen }) => {
             reader.readAsDataURL(selectedFile);
         }
     };
-
     const handleSubmit = async (e) => {
         e.preventDefault();
+        if (!title.trim()) {
+            setError('Title is required');
+            return;
+        }
         setLoading(true);
         setError('');
-    
+        
         const formData = new FormData();
         formData.append('file', file);
-        formData.append('description', description);
+        formData.append('title', title);
         formData.append('field', selectedField);
         formData.append('branch', selectedBranch);
         formData.append('course', selectedCourse);
+
+        formData.append('likes', 0);   // Add likes field with initial value of 0
+        formData.append('stars', 0);   // Add stars field with initial value of 0
+
+        
+        // Log FormData for debugging
+        for (let pair of formData.entries()) {
+            console.log(pair[0] + ': ' + pair[1]);
+        }
     
-        // Retrieve token from localStorage or another secure location
-        const token = localStorage.getItem('authToken'); // Ensure this matches your token's storage location
-    
+        const token = localStorage.getItem('authToken');
+        
         try {
             await axios.post('http://localhost:5050/notes/upload', formData, {
                 headers: {
-                    'Authorization': `Bearer ${token}`  // Include the token in the request headers
+                    'Authorization': `Bearer ${token}`
                 }
             });
             alert('File uploaded successfully');
             setFile(null);
-            setDescription('');
+            setTitle('');
             setSelectedField('');
             setSelectedBranch('');
             setSelectedCourse('');
         } catch (err) {
+            alert('File upload failed');
             setError('File upload failed');
             console.error('Error uploading file:', err);
         } finally {
@@ -62,7 +74,6 @@ const Upload = ({ isSidenavOpen }) => {
             navigate('/profile');
         }
     };
-    
 
     const handleDragEnter = (e) => {
         e.preventDefault();
@@ -89,8 +100,11 @@ const Upload = ({ isSidenavOpen }) => {
                     id="title"
                     className="upload-input"
                     placeholder="Enter a title"
-                    value={description}
-                    onChange={(e) => setDescription(e.target.value)}
+                    value={title}  // This binds the input value to the title state
+                    onChange={(e) => {
+                        console.log("Title input changed: ", e.target.value);
+                        setTitle(e.target.value);
+                    }} // Updates the title state when input changes
                     required
                 />
 
