@@ -20,9 +20,12 @@ function SideNav({ isOpen, setIsOpen }) {
       <Link to="/browse"><i className="fas fa-search"></i> Browse</Link>
       <Link to="/document"><i className="fas fa-search"></i> DocumentView</Link>
       <Link to="/documentedit"><i className="fas fa-search"></i> DocumentEdit</Link>
+      
+      {/* Add Contact Us link */}
+      <Link to="/contact"><i className="fas fa-envelope"></i> Contact Us</Link>
+
       <div>
-        <a href="#">Contact Us</a>
-        <p> &copy; LearnLink</p>
+        <a href="#"> &copy; LearnLink</a>
       </div>
     </div>
   );

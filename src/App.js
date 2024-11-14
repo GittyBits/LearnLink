@@ -15,6 +15,9 @@ import DocumentView from './components/DocumentView';
 import VideoHub from './components/VideoHub';
 import Star from './components/starr';
 
+// Import the ContactUs component
+import ContactUs from './components/ContactUs';
+
 import './App.css';
 
 function App() {
@@ -69,6 +72,8 @@ function App() {
             <Route path="/starred" element={isAuthenticated() ? <Star /> : <Navigate to="/signin" />} />
             <Route path="/videohub" element={isAuthenticated() ? <VideoHub /> : <Navigate to="/signin" />} />
             <Route path="/document" element={<DocumentView />} />
+            {/* Add the ContactUs route */}
+            <Route path="/contact" element={<ContactUs />} />
             <Route path="*" element={<div>404 Page Not Found</div>} />
           </Routes>
         </div>
