@@ -164,9 +164,7 @@ const Profile = () => {
             </div>
           )}
 
-          <div className="profile-quote">
-            <p>"{userData.quote || 'No quote set.'}"</p>
-          </div>
+
           <button onClick={() => setEditing(!editing)}>
             {editing ? 'Cancel' : 'Edit Profile'}
           </button>
@@ -208,10 +206,6 @@ const Profile = () => {
                     {tag}
                   </span>
                 ))}
-              </div>
-              <div className="card-footer">
-                <span>{upload.likes} Likes</span>{' '}
-                <span>{upload.views} Views</span>
               </div>
             </div>
           ))}

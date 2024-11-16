@@ -120,7 +120,6 @@ function VideoHub() {
           <div key={index} className="video-card">
             <div className="thumbnail"></div>
             <div className="video-info">
-              <div className="profile-pic"></div>
               <div className="details">
                 <div className="title">
                   <a href={video.url} target="_blank" rel="noopener noreferrer">

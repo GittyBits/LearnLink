@@ -17,10 +17,7 @@ function SideNav({ isOpen, setIsOpen }) {
       <Link to="/starred"><i className="fas fa-file-alt"></i> Starred Documents</Link>
       <Link to="/videohub"><i className="fas fa-video"></i> VideoHub</Link>
       <Link to="/upload"><i className="fas fa-upload"></i> Publish</Link>
-      <Link to="/browse"><i className="fas fa-search"></i> Browse</Link>
-      <Link to="/document"><i className="fas fa-search"></i> DocumentView</Link>
-     
-      
+      <Link to="/browse"><i className="fas fa-search"></i> Browse</Link>      
       {/* Add Contact Us link */}
       <Link to="/contact"><i className="fas fa-envelope"></i> Contact Us</Link>
 

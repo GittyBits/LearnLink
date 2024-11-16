@@ -13,14 +13,6 @@ const fileSchema = new mongoose.Schema({
   field: { type: String, required: true },
   branch: { type: String, required: true },
   course: { type: String, required: true },
-  likes: {
-    type: Number,
-    default: 0  // Initialize likes to 0
-},
-stars: {
-    type: Number,
-    default: 0  // Initialize stars to 0
-},
 }, { timestamps: true });
 
 module.exports = mongoose.model('File', fileSchema);

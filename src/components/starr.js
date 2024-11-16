@@ -10,21 +10,15 @@ const documents = Array(16).fill({
   tags: ["Racing", "Reading", "Reading", "Reading"],
 });
 
-function DocumentCard({ title, likes, comments, field, branch, tags }) {
+function DocumentCard({ title, likes, comments, field, branch,course, tags }) {
   return (
     <div className="document-card">
       <div className="document-image-placeholder"></div>
       <h3>{title}</h3>
       <div className="document-info">
-        <p>❤️ {likes}</p>
-        <p>💬 {comments}</p>
-        <p>Field: {field}</p>
-        <p>Branch: {branch}</p>
-      </div>
-      <div className="tags">
-        {tags.map((tag, index) => (
-          <span key={index} className="tag">{tag}</span>
-        ))}
+        <p>Field: {field?field:'N/A'}</p>
+        <p>Branch: {branch?branch:'N/A'}</p>
+        <p>Course: {course?course:'N/A'}</p>
       </div>
       <div className="actions">
         <a href="/document" className="action-link">view →</a>

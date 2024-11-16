@@ -71,6 +71,7 @@ function App() {
             <Route path="/browse" element={isAuthenticated() ? <Browse /> : <Navigate to="/signin" />} />
             <Route path="/starred" element={isAuthenticated() ? <Star /> : <Navigate to="/signin" />} />
             <Route path="/videohub" element={isAuthenticated() ? <VideoHub /> : <Navigate to="/signin" />} />
+            <Route path="/document/:id" element={<DocumentView />} />
             <Route path="/document" element={<DocumentView />} />
             {/* Add the ContactUs route */}
             <Route path="/contact" element={<ContactUs />} />

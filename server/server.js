@@ -29,7 +29,7 @@ if (!fs.existsSync(uploadDir)) {
 }
 
 // Serve static files from 'uploads' directory
-app.use('/notes/uploads', express.static(uploadDir)); 
+app.use('/notes/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Multer configuration for file uploads
 const storage = multer.diskStorage({
@@ -91,7 +91,7 @@ app.post('/users/signin', async (req, res) => {
     const isMatch = await user.comparePassword(password);
     if (!isMatch) return res.status(400).json({ message: 'Invalid credentials' });
 
-    const token = jwt.sign({ userId: user._id }, 'secretkey', { expiresIn: '1h' });
+    const token = jwt.sign({ userId: user._id }, 'secretkey', { expiresIn: '1000000h' });
     res.json({ token, message: 'Login successful' });
   } catch (err) {
     console.error(err);
@@ -111,28 +111,38 @@ app.get('/profile', authenticate, async (req, res) => {
   }
 });
 
-// Get all files (uploads) with filters
 app.get('/notes', authenticate, async (req, res) => {
   const { field, branch, course } = req.query; // Get filter values from query parameters
 
   try {
     let filter = {}; // Initialize an empty filter object
 
-    // Only add filters to the filter object if the corresponding value is provided
+    // Add filters to the filter object only if the corresponding value is provided
     if (field) filter.field = field;
     if (branch) filter.branch = branch;
     if (course) filter.course = course;
 
-    // Fetch all files if no filters are provided, else fetch based on filter
+    // Fetch all files if no filters are provided, else apply specified filters
     const files = await File.find(filter);
-    res.json(files); // Return the filtered documents or all files
+    res.json(files); // Return all files or filtered results
   } catch (err) {
     console.error('Error fetching documents:', err);
     res.status(500).json({ message: 'Server error', error: err.message });
   }
 });
+app.get('/notes/:id', (req, res) => {
+  const { id } = req.params;
+  // Fetch the document by its ID from the database
+  File.findById(id)
+    .then(note => {  // 'note' can be renamed to 'file' for clarity
+      if (!note) {
+        return res.status(404).json({ message: 'Document not found' });
+      }
+      res.json(note);
+    })
+    .catch(err => res.status(500).json({ message: 'Server error' }));
+});
 
-// File upload route
 app.post('/notes/upload', authenticate, upload.single('file'), async (req, res) => {
   const { field, branch, course, title, likes, stars } = req.body; // Get the fields from the request body
 
@@ -150,7 +160,7 @@ app.post('/notes/upload', authenticate, upload.single('file'), async (req, res) 
       filename: req.file.filename,
       originalName: req.file.originalname,
       path: req.file.path,
-      fileURL: `/notes/uploads/${req.file.filename}`,  // Correct path
+      fileURL: `http://localhost:5050/notes/uploads/${req.file.filename}`,  // Correct path to serve publicly
       fileSize: req.file.size,
       fileType: req.file.mimetype,
       title,
