@@ -27,7 +27,7 @@ function DocumentCard({ title, likes, comments, field, branch, tags }) {
         ))}
       </div>
       <div className="actions">
-        <a href="/view" className="action-link">view →</a>
+        <a href="/document" className="action-link">view →</a>
       </div>
     </div>
   );
