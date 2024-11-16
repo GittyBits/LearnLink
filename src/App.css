@@ -180,7 +180,7 @@ body,html,.layout {
   height: 400px;
   margin-top: 900px;
   position: relative;
-  background-image: url('/images/cute-watercolor-leaves-frame-with-watercolor-background_1361-3335.avif'); /* Use path relative to public */
+  /*background-image: url('bg.avif');*/
   background-size: cover; /* Cover the entire area */
   background-position: center; /* Center the image */
   background-repeat: no-repeat; /* Prevent the image from repeating */
