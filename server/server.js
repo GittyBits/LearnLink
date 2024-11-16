@@ -1,5 +1,3 @@
-// Load environment variables from .env file
-
 const express = require('express');
 const cors = require('cors');
 const connectDB = require('./db'); // Import the DB connection function
@@ -196,5 +194,5 @@ app.use((err, req, res, next) => {
 
 // Start the server
 app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
+  console.log(Server is running on http://localhost:${PORT});
 });

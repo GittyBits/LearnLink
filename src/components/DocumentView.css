@@ -1,3 +1,86 @@
+/* General Styles */
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: #f5f5f5;
+  margin: 0;
+  padding: 0;
+}
+
+/* Document Viewing Area */
+.document-content {
+  background-color: #fef6e4;
+  border: 1px solid #f3d3b3;
+  border-radius: 10px;
+  padding: 200px;
+  margin: 20px 0;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  color: #333;
+}
+
+/* Document Header */
+.document-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  background-color: #fef6e4;
+  color: white;
+  border-radius: 10px;
+}
+
+.document-header h2 {
+  margin: 0;
+  font-size: 20px;
+}
+
+.edit-btn {
+  background-color: #ffffff;
+  color: #6a0dad;
+  border: 1px solid #ffffff;
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.edit-btn:hover {
+  background-color: #5a0ba5;
+  color: white;
+}
+
+/* Buttons */
+.document-actions button {
+  background-color: #e85959;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  margin-right: 10px;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.document-actions button:hover {
+  background-color: #5a0ba5;
+  transform: scale(1.05);
+}
+
+.upload-btn {
+  background-color: #5aa469;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.upload-btn:hover {
+  background-color: #4a9258;
+  transform: scale(1.05);
+}
+
 /* Comments Section */
 .comments-section {
   margin-top: 20px;
@@ -5,7 +88,7 @@
   border: 1px solid #ddd;
   border-radius: 10px;
   padding: 15px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   color: #333;
 }
 
@@ -26,7 +109,7 @@
 }
 
 .comments-section button {
-  background-color: #6a0dad;
+  background-color: #f95353;
   color: white;
   border: none;
   padding: 10px 15px;
@@ -54,14 +137,11 @@
   border-radius: 10px;
   position: relative;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s;
 }
 
-/* Comment Text and User */
-.comments-list .comment-header {
-  display: flex;
-  gap: 10px;
-  align-items: center;
-  margin-bottom: 5px;
+.comments-list li:hover {
+  background-color: #eef3fd;
 }
 
 .comments-list .comment-user {
@@ -72,15 +152,6 @@
 .comments-list .comment-text {
   font-size: 14px;
   color: #555;
-  flex: 1;
-}
-
-/* Comment Actions */
-.comments-list .comment-actions {
-  display: flex;
-  gap: 15px;
-  align-items: center;
-  margin-top: 10px;
 }
 
 .comments-list .comment-actions button {
@@ -89,29 +160,10 @@
   cursor: pointer;
   color: #6a0dad;
   font-size: 14px;
-  display: flex;
-  align-items: center;
-  gap: 5px;
 }
 
-.comments-list .comment-actions button i {
-  font-size: 16px;
-  color: #888;
-  transition: color 0.2s;
-}
-
-.comments-list .comment-actions button:hover i {
-  color: #6a0dad;
-}
-
-/* Replies Section */
-.comments-list .comment-reply {
-  margin-top: 10px;
-  padding: 10px;
-  margin-left: 20px;
-  background-color: #e9effd;
-  border-radius: 8px;
-  font-size: 13px;
+.comments-list .comment-actions button:hover {
+  text-decoration: underline;
 }
 
 .comments-list .reply-input {
@@ -136,34 +188,9 @@
   border-radius: 5px;
   font-size: 14px;
   cursor: pointer;
+  transition: background-color 0.3s;
 }
 
 .comments-list .reply-input button:hover {
   background-color: #5a0ba5;
-}
-
-/* Like Button Styling */
-.comments-list .fas.fa-heart {
-  color: #888;
-  transition: color 0.2s;
-}
-
-.comments-list .fas.fa-heart.liked {
-  color: #e65f5f;
-}
-
-/* Hover Effect for Comments */
-.comments-list li:hover {
-  background-color: #eef3fd;
-  transition: background-color 0.3s;
-}
-
-/* Delete Button Styling */
-.comments-list button i.fa-trash {
-  color: #e65f5f;
-  transition: color 0.2s;
-}
-
-.comments-list button:hover i.fa-trash {
-  color: #d13a3a;
 }

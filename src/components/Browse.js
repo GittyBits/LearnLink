@@ -1,81 +1,45 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Browse.css';
-
-const documentData = [
-  { title: "Algebra Bs", likes: 456, comments: 23, field: "Math", branch: "Pure Mathematics", tags: ["Equations", "Numbers"] },
-  { title: "Organic Chemistry", likes: 789, comments: 56, field: "Science", branch: "Chemistry", tags: ["Reaction", "Compounds"] },
-  { title: "Computer Networks", likes: 123, comments: 34, field: "Engineering", branch: "Computer Science", tags: ["Networks", "TCP/IP"] },
-  { title: "Shakespearean Plays", likes: 654, comments: 12, field: "Arts", branch: "Literature", tags: ["Drama", "Classics"] },
-  { title: "Calculus II", likes: 321, comments: 45, field: "Math", branch: "Applied Mathematics", tags: ["Derivatives", "Integration"] },
-  { title: "Fluid Dynamics", likes: 876, comments: 67, field: "Engineering", branch: "Mechanical Engineering", tags: ["Physics", "Flow"] },
-  { title: "Algebra Basics", likes: 456, comments: 23, field: "Math", branch: "Pure Mathematics", tags: ["Equations", "Numbers"] },
-  { title: "Organic Chemistry", likes: 789, comments: 56, field: "Science", branch: "Chemistry", tags: ["Reactions", "Compounds"] },
-  { title: "Computer Networks", likes: 123, comments: 34, field: "Engineering", branch: "Computer Science", tags: ["Networks", "TCP/IP"] },
-  { title: "Shakespearean Plays", likes: 654, comments: 12, field: "Arts", branch: "Literature", tags: ["Drama", "Classics"] },
-  { title: "Calculus II", likes: 321, comments: 45, field: "Math", branch: "Applied Mathematics", tags: ["Derivatives", "Integration"] },
-  { title: "Fluid Dynamics", likes: 876, comments: 67, field: "Engineering", branch: "Mechanical Engineering", tags: ["Physics", "Flow"] },
-  { title: "Algebra Basics", likes: 456, comments: 23, field: "Math", branch: "Pure Mathematics", tags: ["Equations", "Numbers"] },
-  { title: "Organic Chemistry", likes: 789, comments: 56, field: "Science", branch: "Chemistry", tags: ["Reactions", "Compounds"] },
-  { title: "Computer Networks", likes: 123, comments: 34, field: "Engineering", branch: "Computer Science", tags: ["Networks", "TCP/IP"] },
-  { title: "Shakespearean Plays", likes: 654, comments: 12, field: "Arts", branch: "Literature", tags: ["Drama", "Classics"] },
-  { title: "Calculus II", likes: 321, comments: 45, field: "Math", branch: "Applied Mathematics", tags: ["Derivatives", "Integration"] },
-  { title: "Fluid Dynamics", likes: 876, comments: 67, field: "Engineering", branch: "Mechanical Engineering", tags: ["Physics", "Flow"] },
-  { title: "Algebra Basics", likes: 456, comments: 23, field: "Math", branch: "Pure Mathematics", tags: ["Equations", "Numbers"] },
-  { title: "Organic Chemistry", likes: 789, comments: 56, field: "Science", branch: "Chemistry", tags: ["Reactions", "Compounds"] },
-  { title: "Computer Networks", likes: 123, comments: 34, field: "Engineering", branch: "Computer Science", tags: ["Networks", "TCP/IP"] },
-  { title: "Shakespearean Plays", likes: 654, comments: 12, field: "Arts", branch: "Literature", tags: ["Drama", "Classics"] },
-  { title: "Calculus II", likes: 321, comments: 45, field: "Math", branch: "Applied Mathematics", tags: ["Derivatives", "Integration"] },
-  { title: "Fluid Dynamics", likes: 876, comments: 67, field: "Engineering", branch: "Mechanical Engineering", tags: ["Physics", "Flow"] },
-  { title: "Algebra Basics", likes: 456, comments: 23, field: "Math", branch: "Pure Mathematics", tags: ["Equations", "Numbers"] },
-  { title: "Organic Chemistry", likes: 789, comments: 56, field: "Science", branch: "Chemistry", tags: ["Reactions", "Compounds"] },
-  { title: "Computer Networks", likes: 123, comments: 34, field: "Engineering", branch: "Computer Science", tags: ["Networks", "TCP/IP"] },
-  { title: "Shakespearean Plays", likes: 654, comments: 12, field: "Arts", branch: "Literature", tags: ["Drama", "Classics"] },
-  { title: "Calculus II", likes: 321, comments: 45, field: "Math", branch: "Applied Mathematics", tags: ["Derivatives", "Integration"] },
-  { title: "Fluid Dynamics", likes: 876, comments: 67, field: "Engineering", branch: "Mechanical Engineering", tags: ["Physics", "Flow"] },
-  { title: "Algebra Basics", likes: 456, comments: 23, field: "Math", branch: "Pure Mathematics", tags: ["Equations", "Numbers"] },
-  { title: "Organic Chemistry", likes: 789, comments: 56, field: "Science", branch: "Chemistry", tags: ["Reactions", "Compounds"] },
-  { title: "Computer Networks", likes: 123, comments: 34, field: "Engineering", branch: "Computer Science", tags: ["Networks", "TCP/IP"] },
-  { title: "Shakespearean Plays", likes: 654, comments: 12, field: "Arts", branch: "Literature", tags: ["Drama", "Classics"] },
-  { title: "Calculus II", likes: 321, comments: 45, field: "Math", branch: "Applied Mathematics", tags: ["Derivatives", "Integration"] },
-  { title: "Fluid Dynamics", likes: 876, comments: 67, field: "Engineering", branch: "Mechanical Engineering", tags: ["Physics", "Flow"] },
-  { title: "Algebra Basics", likes: 456, comments: 23, field: "Math", branch: "Pure Mathematics", tags: ["Equations", "Numbers"] },
-  { title: "Organic Chemistry", likes: 789, comments: 56, field: "Science", branch: "Chemistry", tags: ["Reactions", "Compounds"] },
-  { title: "Computer Networks", likes: 123, comments: 34, field: "Engineering", branch: "Computer Science", tags: ["Networks", "TCP/IP"] },
-  { title: "Shakespearean Plays", likes: 654, comments: 12, field: "Arts", branch: "Literature", tags: ["Drama", "Classics"] },
-  { title: "Calculus II", likes: 321, comments: 45, field: "Math", branch: "Applied Mathematics", tags: ["Derivatives", "Integration"] },
-  { title: "Fluid Dynamics", likes: 876, comments: 67, field: "Engineering", branch: "Mechanical Engineering", tags: ["Physics", "Flow"] },
-  { title: "Algebra Basics", likes: 456, comments: 23, field: "Math", branch: "Pure Mathematics", tags: ["Equations", "Numbers"] },
-  { title: "Organic Chemistry", likes: 789, comments: 56, field: "Science", branch: "Chemistry", tags: ["Reactions", "Compounds"] },
-  { title: "Computer Networks", likes: 123, comments: 34, field: "Engineering", branch: "Computer Science", tags: ["Networks", "TCP/IP"] },
-  { title: "Shakespearean Plays", likes: 654, comments: 12, field: "Arts", branch: "Literature", tags: ["Drama", "Classics"] },
-  { title: "Calculus II", likes: 321, comments: 45, field: "Math", branch: "Applied Mathematics", tags: ["Derivatives", "Integration"] },
-  { title: "Fluid Dynamics", likes: 876, comments: 67, field: "Engineering", branch: "Mechanical Engineering", tags: ["Physics", "Flow"] },
-  { title: "Algebra Basics", likes: 456, comments: 23, field: "Math", branch: "Pure Mathematics", tags: ["Equations", "Numbers"] },
-  { title: "Organic Chemistry", likes: 789, comments: 56, field: "Science", branch: "Chemistry", tags: ["Reactions", "Compounds"] },
-  { title: "Computer Networks", likes: 123, comments: 34, field: "Engineering", branch: "Computer Science", tags: ["Networks", "TCP/IP"] },
-  { title: "Shakespearean Plays", likes: 654, comments: 12, field: "Arts", branch: "Literature", tags: ["Drama", "Classics"] },
-  { title: "Calculus II", likes: 321, comments: 45, field: "Math", branch: "Applied Mathematics", tags: ["Derivatives", "Integration"] },
-  { title: "Fluid Dynamics", likes: 876, comments: 67, field: "Engineering", branch: "Mechanical Engineering", tags: ["Physics", "Flow"] },
-  { title: "Algebra Basics", likes: 456, comments: 23, field: "Math", branch: "Pure Mathematics", tags: ["Equations", "Numbers"] },
-  { title: "Organic Chemistry", likes: 789, comments: 56, field: "Science", branch: "Chemistry", tags: ["Reactions", "Compounds"] },
-  { title: "Computer Networks", likes: 123, comments: 34, field: "Engineering", branch: "Computer Science", tags: ["Networks", "TCP/IP"] },
-  { title: "Shakespearean Plays", likes: 654, comments: 12, field: "Arts", branch: "Literature", tags: ["Drama", "Classics"] },
-  { title: "Calculus II", likes: 321, comments: 45, field: "Math", branch: "Applied Mathematics", tags: ["Derivatives", "Integration"] },
-  { title: "Fluid Dynamics", likes: 876, comments: 67, field: "Engineering", branch: "Mechanical Engineering", tags: ["Physics", "Flow"] },
-];
+import axios from 'axios';
 
 function Browse() {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedField, setSelectedField] = useState("");
   const [selectedBranch, setSelectedBranch] = useState("");
   const [selectedCourse, setSelectedCourse] = useState("");
+  const [documents, setDocuments] = useState([]);
 
-  const filteredDocuments = documentData.filter(doc => {
+  // Fetch data from the backend when the component mounts or filters change
+  useEffect(() => {
+    const token = localStorage.getItem('token');  
+    console.log('Token:', token);  // Debug to check the token
+
+    // Build the query string with selected filters, but keep the query empty if no filter is set
+    let query = `http://localhost:5050/notes?`;
+
+    if (selectedField) query += `field=${selectedField}&`;
+    if (selectedBranch) query += `branch=${selectedBranch}&`;
+    if (selectedCourse) query += `course=${selectedCourse}&`;
+
+    // Remove trailing '&' if present
+    query = query.slice(0, -1);
+
+    axios.get(query, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+    .then(response => {
+      setDocuments(response.data);  // Store fetched documents in state
+    })
+    .catch(error => {
+      console.error("Error fetching documents:", error);
+    });
+  }, [selectedField, selectedBranch, selectedCourse]);  // Fetch data when filters change
+
+  const filteredDocuments = documents.filter(doc => {
     const matchesSearch = doc.title.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesField = selectedField ? doc.field === selectedField : true;
-    const matchesBranch = selectedBranch ? doc.branch === selectedBranch : true;
-    const matchesCourse = selectedCourse ? doc.tags.includes(selectedCourse) : true;
-    return matchesSearch && matchesField && matchesBranch && matchesCourse;
+    return matchesSearch;  // Only filter by search term, as the API already filters by field/branch/course
   });
 
   return (
@@ -91,14 +55,14 @@ function Browse() {
       </div>
 
       <div className="browse-filters">
-        <select className="browse-dropdown" onChange={e => setSelectedField(e.target.value)}>
+        <select className="browse-dropdown" onChange={e => setSelectedField(e.target.value)} value={selectedField}>
           <option value="">Field</option>
           <option value="Math">Math</option>
           <option value="Science">Science</option>
           <option value="Engineering">Engineering</option>
           <option value="Arts">Arts</option>
         </select>
-        <select className="browse-dropdown" onChange={e => setSelectedBranch(e.target.value)}>
+        <select className="browse-dropdown" onChange={e => setSelectedBranch(e.target.value)} value={selectedBranch}>
           <option value="">Branch</option>
           <option value="Pure Mathematics">Pure Mathematics</option>
           <option value="Applied Mathematics">Applied Mathematics</option>
@@ -107,40 +71,31 @@ function Browse() {
           <option value="Mechanical Engineering">Mechanical Engineering</option>
           <option value="Literature">Literature</option>
         </select>
-        <select className="browse-dropdown" onChange={e => setSelectedCourse(e.target.value)}>
+        <select className="browse-dropdown" onChange={e => setSelectedCourse(e.target.value)} value={selectedCourse}>
           <option value="">Course</option>
           <option value="Equations">Equations</option>
           <option value="Numbers">Numbers</option>
           <option value="Reactions">Reaction</option>
-          <option value="Reactions">Reactions</option>
           <option value="Networks">Networks</option>
           <option value="Drama">Drama</option>
-          <option value="Flow">Flow</option>
         </select>
       </div>
 
-      <div className="document-cards-container">
-        {filteredDocuments.map((doc, index) => (
-          <div key={index} className="document-card">
-            <h3 className="document-title">{doc.title}</h3>
-            <div className="document-preview"></div>
-            <div className="document-info">
-              <div className="document-meta">
-                <span className="likes">❤️ {doc.likes}</span>
-                <span className="comments">💬 {doc.comments}</span>
-              </div>
-              <p className="document-field-branch">{doc.field} - {doc.branch}</p>
-              <div className="document-tags">
-                {doc.tags.map((tag, idx) => (
-                  <span key={idx} className="tag">{tag}</span>
-                ))}
-              </div>
+      <div className="document-cards">
+        {filteredDocuments.length === 0 ? (
+          <p>No documents found. Try adjusting your search or filters.</p>
+        ) : (
+          filteredDocuments.map(doc => (
+            <div key={doc._id} className="document-card">
+              <h3>{doc.title}</h3> {/* Use the title from the file model */}
+              <p><strong>Branch:</strong> {doc.branch}</p>
+              <p><strong>Likes:</strong> {doc.likes}</p>
+              <p><strong>Comments:</strong> {doc.comments}</p>
+              <p><strong>Field:</strong> {doc.field}</p>
+              <p><strong>Course:</strong> {doc.course}</p>
             </div>
-            <div className="document-actions">
-              <a href="#" className="view-document">View</a>
-            </div>
-          </div>
-        ))}
+          ))
+        )}
       </div>
     </div>
   );

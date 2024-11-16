@@ -12,8 +12,10 @@ function Features() {
           />
         </div>
         <div className="feature-content">
-          <h4>Feature 1</h4>
-          <p>Feature 1 description goes here. It provides users with the ability to do XYZ.</p>
+          <h4>WHAT IS LEARNLINK?</h4>
+          <p>Providing an environment that help students to keep study with the help viewing various documents related to the topics . 
+            One platform for all your notes(not just yours even the toppers)
+          </p>
         </div>
       </div>
       <div className="feature-box">
@@ -25,8 +27,10 @@ function Features() {
           />
         </div>
         <div className="feature-content">
-          <h4>Feature 2</h4>
-          <p>Feature 2 description goes here. It provides users with the ability to do XYZ.</p>
+          <h4>WHO IS LEARNLINK??</h4>
+          <p>Helping the students to learn all the topics not just reading but visualing them with the help of VideoHub.
+            Understanding concepts made so much simpler.Why search for the best youtube videos, when learnlink is on your fingertips. 
+          </p>
         </div>
       </div>
       <div className="feature-box">
@@ -38,8 +42,11 @@ function Features() {
           />
         </div>
         <div className="feature-content">
-          <h4>Feature 3</h4>
-          <p>Feature 3 description goes here. It provides users with the ability to do XYZ.</p>
+          <h4>WHY IS LEARNLINK???</h4>
+          <p>Being a helpful student not just for the teachers even the students by uploading your own beautiful notes and getting badges.
+            Use the upload to easily forward the important documents at the last minutes instead of a whatsapp group. 
+            The comment options is there to back you when you have doubts so stop wasting time and START STUDYING PEOPLE.
+          </p>
         </div>
       </div>
     </section>

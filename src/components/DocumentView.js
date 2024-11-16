@@ -1,152 +1,155 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
-import "./DocumentView.css";
+import React, { useState, useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+/*import axios from 'axios';*/
+import './DocumentView.css';
 
-function DocumentView() {
-  const [file, setFile] = useState(null); // Uploaded file
-  const [newFile, setNewFile] = useState(null); // Selected file for upload
-  const [comments, setComments] = useState([]); // Comments for the file
-  const [newComment, setNewComment] = useState(""); // New comment input
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false); // Comments sidebar state
+function DocumentView() 
+{
+  const location = useLocation();
+  const navigate = useNavigate();
 
-  // Fetch comments when the selected file changes
+  const { file: initialFile, description } = location.state || {};
+  const [file, setFile] = useState(initialFile);
+  const [comments, setComments] = useState([]);
+  const [newComment, setNewComment] = useState('');
+  const [starred, setStarred] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [replyIndex, setReplyIndex] = useState(null);
+  const [replyText, setReplyText] = useState('');
+  const [newFile, setNewFile] = useState(null);
+  const [username] = useState('User123'); // Simulate logged-in user
+  const [objectURL, setObjectURL] = useState(null);
+
   useEffect(() => {
-    if (file) {
-      fetchComments();
+    if (file instanceof File) {
+      setObjectURL(URL.createObjectURL(file));
     }
+
+    return () => {
+      if (objectURL) {
+        URL.revokeObjectURL(objectURL);
+      }
+    };
   }, [file]);
 
-  const fetchComments = async () => {
-    try {
-      const response = await axios.get(
-        `http://localhost:5050/comments?filename=${file.filename}`
-      );
-      setComments(response.data);
-    } catch (error) {
-      console.error("Error fetching comments:", error);
-      alert("Failed to fetch comments. Please try again.");
-    }
-  };
-
-  // Handle file upload
-  const handleFileUpload = async () => {
-    if (!newFile) {
-      alert("Please select a file to upload.");
-      return;
-    }
-
-    const formData = new FormData();
-    formData.append("file", newFile);
-
-    try {
-      const response = await axios.post(
-        "http://localhost:5050/notes/upload",
-        formData,
-        {
-          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }, // Assuming auth token is in localStorage
-        }
-      );
-      setFile(response.data.file);
-      setNewFile(null);
-      alert("File uploaded successfully!");
-    } catch (error) {
-      console.error("Error uploading file:", error);
-      alert("File upload failed. Please try again.");
-    }
-  };
-
-  // Handle new comment submission
-  const handleCommentSubmit = async (e) => {
+  const handleCommentSubmit = (e) => {
     e.preventDefault();
-    if (!file) {
-      alert("Upload a file first to comment.");
-      return;
-    }
-
     if (newComment.trim()) {
-      try {
-        const response = await axios.post(
-          "http://localhost:5050/comments",
-          { filename: file.filename, comment: newComment },
-          {
-            headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-          }
-        );
-        setComments((prevComments) => [...prevComments, response.data]);
-        setNewComment("");
-      } catch (error) {
-        console.error("Error submitting comment:", error);
-        alert("Failed to post comment. Please try again.");
-      }
+      setComments([...comments, { text: newComment, replies: [], owner: username }]);
+      setNewComment('');
     }
   };
 
-  // Toggle the comments sidebar
-  const toggleSidebar = () => {
-    if (!file) {
-      alert("Upload a file first to view comments.");
-      return;
+  const handleReplySubmit = (index) => {
+    if (replyText.trim()) {
+      setComments((prevComments) => {
+        const updatedComments = [...prevComments];
+        updatedComments[index] = {
+          ...updatedComments[index],
+          replies: [...updatedComments[index].replies, replyText],
+        };
+        return updatedComments;
+      });
+      setReplyIndex(null);
+      setReplyText('');
     }
-    setIsSidebarOpen(!isSidebarOpen);
+  };
+
+  const handleDeleteComment = (index) => {
+    if (comments[index]?.owner === username) {
+      setComments((prevComments) => prevComments.filter((_, i) => i !== index));
+    } else {
+      alert("You can only delete your own comments.");
+    }
+  };
+
+  const uploadFile = () => {
+    if (newFile) {
+      console.log('Uploading file:', newFile);
+      // Add actual upload logic here
+    }
   };
 
   return (
     <div className="document-view">
-      {/* File Upload Section */}
-      <div className="upload-section">
-        <input
-          type="file"
-          onChange={(e) => setNewFile(e.target.files[0])}
-          style={{ display: "none" }}
-          id="file-upload"
-        />
-        <label htmlFor="file-upload" className="upload-btn">
-          Select File
-        </label>
-        {newFile && (
-          <button onClick={handleFileUpload} className="upload-btn">
-            Upload
-          </button>
-        )}
-      </div>
-
-      {/* Action Buttons */}
-      <div className="document-actions">
-        <button onClick={toggleSidebar}>
-          <i className="fas fa-comment"></i> Comments
+      <div className="document-header">
+        <h2>{description || 'Untitled Document'}</h2>
+        <button className="edit-btn" onClick={() => navigate('/editor', { state: { file, description } })}>
+          <i className="fas fa-edit"></i> Edit
         </button>
       </div>
 
-      {/* Comments Sidebar */}
+      <div className="document-content">
+        {file ? (
+          <div className="document-placeholder">
+            <p>
+              File uploaded: {file.name || 'N/A'} &nbsp; Type: {file.type || 'N/A'} &nbsp; Size: {file.size ? (file.size / 1024).toFixed(2) : 'N/A'} KB
+            </p>
+            {file.type?.startsWith('image/') && objectURL && <img src={objectURL} alt={file.name} />}
+            {file.type === 'application/pdf' && objectURL && <iframe src={objectURL} title={file.name} />}
+          </div>
+        ) : (
+          <div className="document-placeholder">No document available.</div>
+        )}
+        <p className="uploaded-by">Uploaded by: {username}</p>
+      </div>
+
+      <div className="upload-new-file">
+        <input type="file" onChange={(e) => setNewFile(e.target.files[0])} id="file-upload-input" hidden />
+        <label htmlFor="file-upload-input" className="upload-btn">Upload from Files</label>
+        {newFile && <button className="upload-btn" onClick={uploadFile}>Upload File</button>}
+      </div>
+
+      <div className="document-actions">
+        <button onClick={() => setIsSidebarOpen(!isSidebarOpen)}>
+          <i className="fas fa-comment"></i> Comments
+        </button>
+        <button onClick={() => setStarred(!starred)}>
+          <i className={`fas fa-star ${starred ? 'starred' : ''}`}></i>
+        </button>
+      </div>
+
       {isSidebarOpen && (
         <div className="comments-sidebar">
           <div className="comments-section">
-            {file && (
-              <>
-                <form onSubmit={handleCommentSubmit}>
-                  <input
-                    type="text"
-                    value={newComment}
-                    onChange={(e) => setNewComment(e.target.value)}
-                    placeholder="Add a comment"
-                  />
-                  <button type="submit">Post</button>
-                </form>
-                <ul className="comments-list">
-                  {comments.length > 0 ? (
-                    comments.map((comment, index) => (
-                      <li key={index}>{comment.text}</li>
-                    ))
-                  ) : (
-                    <p>No comments yet. Be the first to comment!</p>
+            <form onSubmit={handleCommentSubmit}>
+              <input
+                type="text"
+                value={newComment}
+                onChange={(e) => setNewComment(e.target.value)}
+                placeholder="Add a comment"
+              />
+              <button type="submit">Post</button>
+            </form>
+            <ul className="comments-list">
+              {comments.map((comment, index) => (
+                <li key={index}>
+                  <p>{comment.text} <span className="comment-owner">- {comment.owner}</span></p>
+                  <button onClick={() => handleDeleteComment(index)}>
+                    <i className="fas fa-trash"></i> Delete
+                  </button>
+                  {replyIndex === index && (
+                    <div className="reply-input">
+                      <input
+                        type="text"
+                        value={replyText}
+                        onChange={(e) => setReplyText(e.target.value)}
+                        placeholder="Write a reply..."
+                      />
+                      <button onClick={() => handleReplySubmit(index)}>Post Reply</button>
+                    </div>
                   )}
-                </ul>
-              </>
-            )}
+                  {comment.replies.map((reply, replyIndex) => (
+                    <p key={replyIndex} className="reply-text">{reply}</p>
+                  ))}
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
       )}
     </div>
   );
 }
+
 export default DocumentView;
