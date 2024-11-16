@@ -29,14 +29,12 @@ const SignIn = () => {
       setError('Login failed. Please try again.');
     }
   };
-  
 
   return (
     <div className="container" style={{ marginLeft: '25%', display: 'flex', width: '50%', height: 'max-content', padding: '100px 0px', marginTop: '100px' }}>
       <div className="topnav" style={{ alignItems: 'center', alignContent: 'center', alignSelf: 'center', textAlign: 'center', display: 'block' }}>
         <div className="brand" onClick={() => window.location.href = "/"}>LearnLink</div>
       </div>
-      <div className="profile-img"></div>
       <form className="login-form" onSubmit={handleLogin}>
         <div className="login-title">LOG IN</div>
         <input

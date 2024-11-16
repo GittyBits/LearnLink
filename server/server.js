@@ -16,7 +16,7 @@ const PORT = 5050;
 // Middleware
 app.use(cors({
   origin: 'http://localhost:3000', // Allow requests from your frontend
-  methods: ['GET', 'POST', 'PUT', 'OPTIONS','DELETE'], // Add PUT here
+  methods: ['GET', 'POST', 'PUT', 'OPTIONS', 'DELETE'], // Add PUT here
   allowedHeaders: ['Content-Type', 'Authorization'],
 }));
 app.use(express.json()); // Parse JSON bodies
@@ -63,7 +63,6 @@ const authenticate = (req, res, next) => {
     next();
   });
 };
-
 
 // Signup route
 app.post('/users/signup', async (req, res) => {
@@ -123,6 +122,7 @@ app.get('/notes', authenticate, async (req, res) => {
     res.status(500).json({ message: 'Server error', error: err.message });
   }
 });
+
 // Profile route (requires authentication)
 app.get('/profile', authenticate, async (req, res) => {
   try {
@@ -135,10 +135,8 @@ app.get('/profile', authenticate, async (req, res) => {
   }
 });
 
-
-
 app.post('/notes/upload', authenticate, upload.single('file'), async (req, res) => {
-  const { field, branch, course, title,likes,stars } = req.body; // Get the fields from the request body
+  const { field, branch, course, title, likes, stars } = req.body; // Get the fields from the request body
 
   console.log('Received data:', req.body); // Debugging line
 
@@ -178,39 +176,6 @@ app.post('/notes/upload', authenticate, upload.single('file'), async (req, res) 
   }
 });
 
-app.post('/notes/:fileId/rate', authenticate, async (req, res) => {
-  const { fileId } = req.params;
-  const { likes, stars, userId } = req.body;
-
-  if (typeof likes !== 'number' || typeof stars !== 'number') {
-    return res.status(400).json({ message: 'Likes and stars must be numbers' });
-  }
-
-  try {
-    const file = await File.findById(fileId);
-    if (!file) {
-      return res.status(404).json({ message: 'File not found' });
-    }
-
-    // Check if the user has already liked or starred
-    if (file.likes[userId] || file.stars[userId]) {
-      return res.status(400).json({ message: 'You have already liked or starred this file.' });
-    }
-
-    // Update likes and stars for the user
-    file.likes[userId] = likes;
-    file.stars[userId] = stars;
-
-    // Save the file with updated likes and stars
-    await file.save();
-
-    res.json({ message: 'File updated', file });
-  } catch (err) {
-    console.error('Error updating file:', err);
-    res.status(500).json({ message: 'Server error', error: err.message });
-  }
-});
-
 // Update Profile Route (requires authentication)
 app.put('/profile', authenticate, async (req, res) => {
   const { fullName, age, status, education, location, languages } = req.body;
@@ -232,36 +197,6 @@ app.put('/profile', authenticate, async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 });
-// Profile Image Upload Route (requires authentication)
-app.post('/profile/upload', authenticate, upload.single('profileImage'), async (req, res) => {
-  if (!req.file) {
-    return res.status(400).json({ message: 'No file uploaded' });
-  }
-
-  // Create the profile picture file path
-  const profileImagePath = `/uploads/${req.file.filename}`; // You can adjust this if you need to save it in the database
-  
-  try {
-    // Optional: You can save the profile image path to the user document if needed
-    const updatedUser = await User.findByIdAndUpdate(
-      req.userId,
-      { profilePicture: profileImagePath },  // Save profile picture URL/path to the user document
-      { new: true }  // Return the updated document
-    ).select('-password');  // Exclude password from the returned document
-
-    if (!updatedUser) {
-      return res.status(404).json({ message: 'User not found' });
-    }
-
-    // Respond with the new profile image path
-    res.json({ message: 'Profile picture updated successfully', profilePicture: profileImagePath });
-  } catch (err) {
-    console.error('Error updating profile image:', err);
-    res.status(500).json({ message: 'Server error', error: err.message });
-  }
-});
-
-
 
 // Error handling middleware for multer errors
 app.use((err, req, res, next) => {
