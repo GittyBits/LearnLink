@@ -1,5 +1,3 @@
-// Load environment variables from .env file
-
 const express = require('express');
 const cors = require('cors');
 const connectDB = require('./db'); // Import the DB connection function
@@ -30,7 +28,8 @@ if (!fs.existsSync(uploadDir)) {
   fs.mkdirSync(uploadDir);
 }
 
-app.use('/notes/uploads', express.static(uploadDir)); // Serve static files from 'uploads' directory
+// Serve static files from 'uploads' directory
+app.use('/notes/uploads', express.static(uploadDir)); 
 
 // Multer configuration for file uploads
 const storage = multer.diskStorage({
@@ -47,16 +46,15 @@ const upload = multer({
   limits: { fileSize: 20 * 1024 * 1024 } // Limit file size to 20MB
 });
 
+// Authentication middleware
 const authenticate = (req, res, next) => {
   const token = req.headers['authorization']?.split(' ')[1];
   if (!token) {
-    console.log('No token provided');
     return res.status(401).json({ message: 'No token provided' });
   }
 
   jwt.verify(token, 'secretkey', (err, decoded) => {
     if (err) {
-      console.log('Invalid token', err);
       return res.status(403).json({ message: 'Invalid token' });
     }
     req.userId = decoded.userId;
@@ -73,8 +71,6 @@ app.post('/users/signup', async (req, res) => {
     if (existingUser) return res.status(400).json({ message: 'Email already in use' });
 
     const newUser = new User({ fullName, email, phone, password });
-    console.log('New User to save:', newUser); // Log the new user object
-
     await newUser.save();
 
     res.status(201).json({ message: 'User registered successfully' });
@@ -103,9 +99,22 @@ app.post('/users/signin', async (req, res) => {
   }
 });
 
+// Profile route (requires authentication)
+app.get('/profile', authenticate, async (req, res) => {
+  try {
+    const user = await User.findById(req.userId).select('-password'); // Fetch user info excluding password
+    if (!user) return res.status(404).json({ message: 'User not found' });
+    res.json(user);
+  } catch (err) {
+    console.error('Error fetching profile:', err);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+// Get all files (uploads) with filters
 app.get('/notes', authenticate, async (req, res) => {
   const { field, branch, course } = req.query; // Get filter values from query parameters
-  
+
   try {
     let filter = {}; // Initialize an empty filter object
 
@@ -123,22 +132,9 @@ app.get('/notes', authenticate, async (req, res) => {
   }
 });
 
-// Profile route (requires authentication)
-app.get('/profile', authenticate, async (req, res) => {
-  try {
-    const user = await User.findById(req.userId).select('-password'); // Fetch user info excluding password
-    if (!user) return res.status(404).json({ message: 'User not found' });
-    res.json(user);
-  } catch (err) {
-    console.error('Error fetching profile:', err);
-    res.status(500).json({ message: 'Server error' });
-  }
-});
-
+// File upload route
 app.post('/notes/upload', authenticate, upload.single('file'), async (req, res) => {
   const { field, branch, course, title, likes, stars } = req.body; // Get the fields from the request body
-
-  console.log('Received data:', req.body); // Debugging line
 
   if (!req.file) {
       return res.status(400).json({ message: 'No file uploaded' });
@@ -154,21 +150,19 @@ app.post('/notes/upload', authenticate, upload.single('file'), async (req, res) 
       filename: req.file.filename,
       originalName: req.file.originalname,
       path: req.file.path,
-      fileURL: req.file.path,
+      fileURL: `/notes/uploads/${req.file.filename}`,  // Correct path
       fileSize: req.file.size,
       fileType: req.file.mimetype,
-      title,  // Store the title in the database
-      field,  // Add field to the database record
-      branch, // Add branch to the database record
-      course,  // Add course to the database record
-      likes: likes || 0,  // Set likes to 0 by default if not provided
-      stars: stars || 0   // Set stars to 0 by default if not provided
+      title,
+      field,
+      branch,
+      course,
+      likes: likes || 0,
+      stars: stars || 0
   });
 
   try {
       await newFile.save(); // Save file details to MongoDB
-      console.log('Uploaded file details:', req.file); // Log uploaded file details
-
       res.json({ message: 'File uploaded successfully', file: req.file });
   } catch (err) {
       console.error('Error saving file details:', err);
