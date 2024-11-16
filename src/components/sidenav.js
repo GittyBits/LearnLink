@@ -19,7 +19,7 @@ function SideNav({ isOpen, setIsOpen }) {
       <Link to="/upload"><i className="fas fa-upload"></i> Publish</Link>
       <Link to="/browse"><i className="fas fa-search"></i> Browse</Link>
       <Link to="/document"><i className="fas fa-search"></i> DocumentView</Link>
-      <Link to="/documentedit"><i className="fas fa-search"></i> DocumentEdit</Link>
+     
       
       {/* Add Contact Us link */}
       <Link to="/contact"><i className="fas fa-envelope"></i> Contact Us</Link>
