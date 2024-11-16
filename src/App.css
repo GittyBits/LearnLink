@@ -174,13 +174,15 @@ body,html,.layout {
 }
 
 .hero {
-  background-color: #5b5644;
+  background-color: #e2d3a0;
   background-size: cover;
   background-position: center;
   height: 400px;
   margin-top: 900px;
   position: relative;
-  background-image: url('/public/images/bg.avif');
+  background-image: url('/images/bg.avif');
+
+/* Use path relative to public */
   background-size: cover; /* Cover the entire area */
   background-position: center; /* Center the image */
   background-repeat: no-repeat; /* Prevent the image from repeating */
