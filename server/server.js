@@ -43,7 +43,7 @@ const storage = multer.diskStorage({
 
 const upload = multer({
   storage,
-  limits: { fileSize: 20 * 1024 * 1024 } // Limit file size to 20MB
+  limits: { fileSize: 200 * 1024 * 1024 } // Limit file size to 20MB
 });
 
 // Authentication middleware
@@ -131,18 +131,43 @@ app.get('/notes', authenticate, async (req, res) => {
     res.status(500).json({ message: 'Server error', error: err.message });
   }
 });
+// Fetch file details including `createdAt` and `updatedAt`
+app.get('/notes/:id', authenticate, async (req, res) => {
+  try {
+    const file = await File.findById(req.params.id);
+    if (!file) return res.status(404).json({ message: 'File not found' });
+    res.json(file);
+  } catch (err) {
+    console.error('Error fetching file details:', err);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+app.put('/notes/:id', authenticate, async (req, res) => {
+  const { title, field, branch, course } = req.body;
 
-app.get('/notes/:id', (req, res) => {
-  const { id } = req.params;
-  // Fetch the document by its ID from the database
-  File.findById(id)
-    .then(note => {  // 'note' can be renamed to 'file' for clarity
-      if (!note) {
-        return res.status(404).json({ message: 'Document not found' });
-      }
-      res.json(note);
-    })
-    .catch(err => res.status(500).json({ message: 'Server error' }));
+  // Check for required fields (only `title` is mandatory in this case)
+  if (!title) return res.status(400).json({ message: 'Title is required' });
+
+  try {
+    const updatedFile = await File.findByIdAndUpdate(
+      req.params.id,
+      {
+        title,
+        field,
+        branch,
+        course,
+        updatedAt: new Date(),
+      },
+      { new: true }
+    );
+
+    if (!updatedFile) return res.status(404).json({ message: 'File not found' });
+
+    res.json({ message: 'File updated successfully', file: updatedFile });
+  } catch (err) {
+    console.error('Error updating file:', err);
+    res.status(500).json({ message: 'Server error' });
+  }
 });
 
 app.post('/notes/upload', authenticate, upload.single('file'), async (req, res) => {
@@ -155,6 +180,8 @@ app.post('/notes/upload', authenticate, upload.single('file'), async (req, res) 
   if (!field || !branch || !course || !title) {
       return res.status(400).json({ message: 'Field, branch, course, and title are required' });
   }
+  console.log('Received file:', req.file);
+  console.log('Received body:', req.body);
 
   // Save the file details to the database
   const newFile = new File({

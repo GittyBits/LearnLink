@@ -14,7 +14,8 @@ import Browse from './components/Browse';
 import DocumentView from './components/DocumentView';
 import VideoHub from './components/VideoHub';
 import Star from './components/starr';
-
+import FileDetails from './components/FileDetails';
+import EditFilePage from './components/EditFilePage';
 // Import the ContactUs component
 import ContactUs from './components/ContactUs';
 
@@ -70,6 +71,8 @@ function App() {
             <Route path="/upload" element={isAuthenticated() ? <Upload /> : <Navigate to="/signin" />} />
             <Route path="/browse" element={isAuthenticated() ? <Browse /> : <Navigate to="/signin" />} />
             <Route path="/starred" element={isAuthenticated() ? <Star /> : <Navigate to="/signin" />} />
+            <Route path="/editfile/:fileId" element={<EditFilePage/>} />
+            <Route path="/fileview/:fileId" element={<FileDetails/>} />
             <Route path="/videohub" element={isAuthenticated() ? <VideoHub /> : <Navigate to="/signin" />} />
             <Route path="/document/:id" element={<DocumentView />} />
             <Route path="/document" element={<DocumentView />} />

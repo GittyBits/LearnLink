@@ -183,9 +183,10 @@ const Profile = () => {
           {uploads.map((upload) => (
             <div key={upload._id} className="upload-card">
               <h3>{upload.title}</h3>
+              <p>Field: {upload.field}</p>
               <p>Branch: {upload.branch}</p>
-              <p>Semester: {upload.semester}</p>
-              <button onClick={() => handleEditFileInfo(upload._id)}>
+              <p>Course: {upload.course}</p>
+              <button className="editfile" onClick={() => handleEditFileInfo(upload._id)}>
                 Edit Document Info
               </button>
             </div>

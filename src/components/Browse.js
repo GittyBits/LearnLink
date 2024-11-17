@@ -38,7 +38,6 @@ if (selectedCourse) query += `&course=${selectedCourse}`;
     const matchesSearch = doc.title.toLowerCase().includes(searchTerm.toLowerCase());
     return matchesSearch;
   });
-
   return (
     <div className="browse-page">
       <div className="browse-header">
@@ -97,14 +96,19 @@ if (selectedCourse) query += `&course=${selectedCourse}`;
               </div>
               
               <div className="actions">
-                {/* Use Link component to redirect to the DocumentView */}
                 <Link
-                  to={`/document/${doc._id}`}
-                  state={{ file: doc, title: doc.title }}
+                  to={`/fileview/${doc._id}`}
+                  className="action-link"
+                >
+                  File Details →
+                </Link>
+                <Link
+                  to={`/document/${doc._id}`}  // Passing just the ID as part of the URL
                   className="action-link"
                 >
                   View →
                 </Link>
+
               </div>
             </div>
           ))

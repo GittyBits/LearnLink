@@ -27,6 +27,10 @@ const Upload = ({ isSidenavOpen }) => {
         }
     };
     const handleSubmit = async (e) => {
+        if (!file) {
+            setError('File is required');
+            return;
+        }
         e.preventDefault();
         if (!title.trim()) {
             setError('Title is required');

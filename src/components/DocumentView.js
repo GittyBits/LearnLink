@@ -1,14 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './DocumentView.css';
 
 function DocumentView() {
-  const location = useLocation();
-  const navigate = useNavigate();
-  const { file: initialFile, title } = location.state || { file: null, title: null };
-  
-  const [file, setFile] = useState(initialFile);
+  const { id } = useParams();  // Extract `id` from the URL
+  const [file, setFile] = useState(null);
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState('');
   const [starred, setStarred] = useState(false);
@@ -18,33 +15,34 @@ function DocumentView() {
   const [newFile, setNewFile] = useState(null);
   const [username] = useState('User123');
   const [objectURL, setObjectURL] = useState(null);
+  console.log("Document ID:", id); 
 
+  console.log(localStorage.getItem('authtoken'));
   useEffect(() => {
-    if (!initialFile) return;
+    if (!id) return;  // If there's no ID, don't try to fetch data
 
     const fetchFileData = async () => {
       try {
-        const response = await axios.get(`http://localhost:5050/notes/${initialFile._id}`, {
+        const token = localStorage.getItem('authToken');
+        const response = await axios.get(`http://localhost:5050/notes/${id}`, {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem('authtoken')}`,
+            Authorization: `Bearer ${token}`,
           },
         });
-        setFile(response.data); // Set the full file data from the server
+        setFile(response.data);  // Set the file data from the API response
       } catch (error) {
         console.error("Error fetching file data:", error);
       }
     };
 
-    if (initialFile._id) {
-      fetchFileData(); // Fetch file data using file ID
-    }
-  }, [initialFile]);
+    fetchFileData();
+  }, [id]);  // Dependency on `id`, so it re-fetches when the ID changes
 
   useEffect(() => {
     if (file?.fileURL) {
-      setObjectURL(file.fileURL); // Use fileURL from the backend response
+      setObjectURL(file.fileURL);  // Use fileURL from the backend response
     } else if (file instanceof File) {
-      setObjectURL(URL.createObjectURL(file)); // For local file objects
+      setObjectURL(URL.createObjectURL(file));  // For local file objects
     }
   }, [file]);
 
@@ -87,89 +85,90 @@ function DocumentView() {
     }
   };
 
-  return (
-    <div className="document-view">
-      <div className="document-header">
-        <h2>Title : {title || 'Untitled Document'}</h2>
-      </div>
-
-      <div className="document-content">
-        {file ? (
-          <div className="document-placeholder">
-            <p>
-              File uploaded: {file.originalName || 'N/A'} &nbsp; Type: {file.fileType || 'N/A'} &nbsp; Size: {file.fileSize ? (file.fileSize / 1024).toFixed(2) : 'N/A'} KB
-            </p>
-            {file.fileType?.startsWith('image/') && objectURL && (
-              <img src={objectURL} alt={file.originalName} style={{ width: '100%', maxHeight: '600px', objectFit: 'contain' }} />
-            )}
-            {file.fileType === 'application/pdf' && objectURL && (
-              <iframe src={objectURL} title={file.originalName} style={{ width: '100%', height: '600px' }} />
-            )}
-          </div>
-        ) : (
-          <div className="document-placeholder">No document available.</div>
-        )}
-      </div>
-
-      <div className="document-actions">
-        <button onClick={() => setIsSidebarOpen(!isSidebarOpen)}>
-          <i className={`fas ${isSidebarOpen ? 'fa-times' : 'fa-comment'}`}></i> {isSidebarOpen ? 'Close' : 'Comments'}
-        </button>
-        <button onClick={() => setStarred(!starred)}>
-          <i className={`fas fa-star ${starred ? 'starred' : ''}`}></i>
-        </button>
-      </div>
-
-      {isSidebarOpen && (
-        <div className="comment-sidebar">
-          <div className="comment-sidebar-header">
-            <h3>Comments</h3>
-          </div>
-
-          <div className="comment-section">
-            {/* Move comment input to the top */}
-            <form onSubmit={handleCommentSubmit} className="add-comment-form">
-              <textarea
-                value={newComment}
-                onChange={(e) => setNewComment(e.target.value)}
-                placeholder="Add a comment..."
-              />
-              <button type="submit">Add Comment</button>
-            </form>
-
-            {comments.length === 0 ? (
-              <p>No comments yet. Be the first to comment!</p>
-            ) : (
-              comments.map((comment, index) => (
-                <div key={index} className="comment">
-                  <p>{comment.owner}: {comment.text}</p>
-                  {comment.replies.length > 0 && (
-                    <div className="replies">
-                      {comment.replies.map((reply, i) => (
-                        <p key={i} className="reply">- {reply}</p>
-                      ))}
-                    </div>
-                  )}
-                  {replyIndex === index ? (
-                    <div className="reply-form">
-                      <textarea
-                        value={replyText}
-                        onChange={(e) => setReplyText(e.target.value)}
-                        placeholder="Write a reply..."
-                      />
-                      <button onClick={() => handleReplySubmit(index)}>Submit Reply</button>
-                    </div>
-                  ) : (
-                    <button onClick={() => setReplyIndex(index)}>Reply</button>
-                  )}
-                  <button onClick={() => handleDeleteComment(index)}>Delete</button>
-                </div>
-              ))
-            )}
-          </div>
+  return (<div className="document-view">
+    <div className="document-header">
+      {/* Check if file is available */}
+      <h1>{file ? file.title : 'Loading...'}</h1>
+    </div>
+  
+    <div className="document-content">
+      {file ? (
+        <div className="document-placeholder">
+          <p>
+            File uploaded: {file.originalName || 'N/A'} &nbsp; Type: {file.fileType || 'N/A'} &nbsp; Size: {file.fileSize ? (file.fileSize / 1024).toFixed(2) : 'N/A'} KB
+          </p>
+          {file.fileType?.startsWith('image/') && objectURL && (
+            <img src={objectURL} alt={file.originalName} style={{ width: '100%', maxHeight: '600px', objectFit: 'contain' }} />
+          )}
+          {file.fileType === 'application/pdf' && objectURL && (
+            <iframe src={objectURL} title={file.originalName} style={{ width: '100%', height: '600px' }} />
+          )}
         </div>
+      ) : (
+        <div className="document-placeholder">No document available.</div>
       )}
     </div>
+  
+    <div className="document-actions">
+      <button onClick={() => setIsSidebarOpen(!isSidebarOpen)}>
+        <i className={`fas ${isSidebarOpen ? 'fa-times' : 'fa-comment'}`}></i> {isSidebarOpen ? 'Close' : 'Comments'}
+      </button>
+      <button onClick={() => setStarred(!starred)}>
+        <i className={`fas fa-star ${starred ? 'starred' : ''}`}></i>
+      </button>
+    </div>
+  
+    {isSidebarOpen && (
+      <div className="comment-sidebar">
+        <div className="comment-sidebar-header">
+          <h3>Comments</h3>
+        </div>
+  
+        <div className="comment-section">
+          {/* Move comment input to the top */}
+          <form onSubmit={handleCommentSubmit} className="add-comment-form">
+            <textarea
+              value={newComment}
+              onChange={(e) => setNewComment(e.target.value)}
+              placeholder="Add a comment..."
+            />
+            <button type="submit">Add Comment</button>
+          </form>
+  
+          {comments.length === 0 ? (
+            <p>No comments yet. Be the first to comment!</p>
+          ) : (
+            comments.map((comment, index) => (
+              <div key={index} className="comment">
+                <p>{comment.owner}: {comment.text}</p>
+                {comment.replies.length > 0 && (
+                  <div className="replies">
+                    {comment.replies.map((reply, i) => (
+                      <p key={i} className="reply">- {reply}</p>
+                    ))}
+                  </div>
+                )}
+                {replyIndex === index ? (
+                  <div className="reply-form">
+                    <textarea
+                      value={replyText}
+                      onChange={(e) => setReplyText(e.target.value)}
+                      placeholder="Write a reply..."
+                    />
+                    <button onClick={() => handleReplySubmit(index)}>Submit Reply</button>
+                  </div>
+                ) : (
+                  <button onClick={() => setReplyIndex(index)}>Reply</button>
+                )}
+                <button onClick={() => handleDeleteComment(index)}>Delete</button>
+              </div>
+            ))
+          )}
+        </div>
+      </div>
+    )}
+  </div>
+  
   );
 }
 
