@@ -1,43 +1,61 @@
 # LearnLink
 
-LearnLink is an online platform designed for students to upload, share, and download study notes. It serves as a collaborative space where students can interact with each other's content, making learning more accessible and engaging.
+**LearnLink** is a student-centric platform designed to help users upload, browse, and download academic notes. It facilitates collaborative learning by offering document editing, commenting features, and a community-driven approach. Students can filter and search for notes, making it easier to find relevant academic resources. The platform also provides a profile page for each user and a video library featuring free courses.
 
 ## Features
 
-- **Upload Notes**: Students can upload their notes in various formats.
-- **Browse & Download**: Easily browse through categories and download notes for offline study.
-- **Editor**: Make last-minute edits to your notes before publishing.
-- **Engagement**: Like, comment, and interact with others' notes to encourage collaboration.
-- **Profiles**: Each user has a personalized profile page displaying their uploaded notes and interaction history.
-- **Community Blog**: Share articles, insights, and tips through a dedicated blog page.
-- **Video Section**: Access a collection of free courses and tutorials uploaded by the community.
+- **Upload and Download Notes:** Upload your academic notes for others to download and learn from.
+- **Document Editing:** Edit your notes before publishing them for quick changes.
+- **Commenting System:** Engage with other students by commenting on notes.
+- **Advanced Search and Filters:** Search and filter notes by field, branch, and course to find exactly what you need.
+- **Profile Page:** Each user has their own profile page where their uploaded documents are displayed.
+- **Free Course Library:** Access a collection of free course videos to further your learning.
 
 ## Tech Stack
 
-- **Frontend**: HTML, CSS, JavaScript
-- **Backend**: Node.js, Express
-- **Database**: MongoDB
-- **File Storage**: Cloud storage solution (e.g., AWS S3, Firebase)
-- **Authentication**: JWT-based authentication
-- **Version Control**: Git
+- **Frontend:** React.js, HTML, CSS, JavaScript
+- **Backend:** Node.js, Express.js
+- **Database:** MongoDB
+- **File Storage:** Multer for file uploads
+- **Authentication:** JWT (JSON Web Tokens) for secure authentication
+- **Version Control:** Git, GitHub
 
-## Setup
+## Installation
 
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/your-username/learnlink.git
-   ```
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/your-username/learnlink.git
+cd learnlink
+```
 2. Install dependencies
-   ```bash
-   cd learnlink
-   npm install
-   ```
-3. Configure environment variables:
+---For Frontend (React):
+```bash
+cd client
+npm install
+```
+---For Backend (Node.js):
+```bash
+cd server
+npm install
+```
+4. Configure environment variables:
 
     Create a .env file and add necessary configurations (e.g., database URL, cloud storage keys).
-4. Run the development server:
 ```bash
-    npm run dev
+MONGO_URI=your_mongo_db_connection_string
+JWT_SECRET=your_jwt_secret_key
+```
+6. Run the development server:
+---For Frontend (React):
+```bash
+cd client
+npm start
+```
+---For Backend (Node.js):
+```bash
+cd server
+node server.js
 ```
 
 ## Contribution Guidelines
