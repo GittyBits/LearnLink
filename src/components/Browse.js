@@ -16,11 +16,10 @@ function Browse() {
     console.log(token);
 
     // Build the query string with selected filters
-    let query = `http://localhost:5050/notes?`;
-    if (selectedField) query += `field=${selectedField}&`;
-    if (selectedBranch) query += `branch=${selectedBranch}&`;
-    if (selectedCourse) query += `course=${selectedCourse}&`;
-    query = query.slice(0, -1); // Remove trailing '&' if present
+    let query = `http://localhost:5050/notes?browse=true`;
+if (selectedField) query += `&field=${selectedField}`;
+if (selectedBranch) query += `&branch=${selectedBranch}`;
+if (selectedCourse) query += `&course=${selectedCourse}`;
 
     axios
       .get(query, {
@@ -36,7 +35,7 @@ function Browse() {
   }, [selectedField, selectedBranch, selectedCourse]);
 
   const filteredDocuments = documents.filter(doc => {
-    const matchesSearch = doc.filename.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesSearch = doc.title.toLowerCase().includes(searchTerm.toLowerCase());
     return matchesSearch;
   });
 
@@ -54,16 +53,29 @@ function Browse() {
 
       <div className="browse-filters">
         <select className="browse-dropdown" onChange={e => setSelectedField(e.target.value)} value={selectedField}>
-          <option value="">Field</option>
-          {/* Add field options dynamically if needed */}
+        <option value="">Field</option>
+          <option value="Math">Math</option>
+          <option value="Science">Science</option>
+          <option value="Engineering">Engineering</option>
+          <option value="Arts">Arts</option>
         </select>
         <select className="browse-dropdown" onChange={e => setSelectedBranch(e.target.value)} value={selectedBranch}>
-          <option value="">Branch</option>
-          {/* Add branch options dynamically if needed */}
+        <option value="">Branch</option>
+          <option value="Pure Mathematics">Pure Mathematics</option>
+          <option value="Applied Mathematics">Applied Mathematics</option>
+          <option value="Chemistry">Chemistry</option>
+          <option value="Computer Science">Computer Science</option>
+          <option value="Mechanical Engineering">Mechanical Engineering</option>
+          <option value="Literature">Literature</option>
         </select>
         <select className="browse-dropdown" onChange={e => setSelectedCourse(e.target.value)} value={selectedCourse}>
-          <option value="">Course</option>
-          {/* Add course options dynamically if needed */}
+        <option value="">Course</option>
+          <option value="Equations">Equations</option>
+          <option value="Numbers">Numbers</option>
+          <option value="Reactions">Reactions</option>
+          <option value="Networks">Networks</option>
+          <option value="Drama">Drama</option>
+          <option value="Flow">Flow</option>
         </select>
       </div>
 

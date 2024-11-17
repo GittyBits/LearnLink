@@ -34,6 +34,7 @@
 }
 
 .browse-page .document-cards-container {
+  width: 100%;
   display: grid;
   grid-template-columns: repeat(4, 1fr); /* Fixed 4 columns */
   gap: 20px;

@@ -14,7 +14,6 @@ function SideNav({ isOpen, setIsOpen }) {
   return (
     <div id="mySidenav" className="sidenav" style={{ width: isOpen ? '12%' : '0' }}>
       <Link to="/"><i className="fas fa-home"></i> Home</Link>   
-      <Link to="/starred"><i className="fas fa-file-alt"></i> Starred Documents</Link>
       <Link to="/videohub"><i className="fas fa-video"></i> VideoHub</Link>
       <Link to="/upload"><i className="fas fa-upload"></i> Publish</Link>
       <Link to="/browse"><i className="fas fa-search"></i> Browse</Link>      

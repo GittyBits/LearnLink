@@ -111,22 +111,21 @@ app.get('/profile', authenticate, async (req, res) => {
   }
 });
 
-// Fetch user-specific uploads (requires authentication)
 app.get('/notes', authenticate, async (req, res) => {
-  const { field, branch, course } = req.query; // Get filter values from query parameters
-  const userId = req.userId; // The logged-in user’s ID from the JWT token
+  const { field, branch, course, browse } = req.query; // Get filter values and `browse` flag from query parameters
 
   try {
-    let filter = { userId }; // Add userId filter to only fetch the logged-in user's uploads
+    // Set filter to include `userId` only if `browse` is not specified or is false
+    let filter = browse === 'true' ? {} : { userId: req.userId };
 
-    // Add other filters if provided
+    // Add additional filters if provided
     if (field) filter.field = field;
     if (branch) filter.branch = branch;
     if (course) filter.course = course;
 
-    // Fetch uploads for the logged-in user with optional filters
+    // Fetch files based on the filter
     const files = await File.find(filter);
-    res.json(files); // Return the user's files or filtered results
+    res.json(files); // Return files based on the filter
   } catch (err) {
     console.error('Error fetching documents:', err);
     res.status(500).json({ message: 'Server error', error: err.message });
