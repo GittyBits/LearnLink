@@ -1,6 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react'; 
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom'; // Import for navigation
 import './Profile.css';
+import EditFilePage from './EditFilePage'; // Import the modal component for editing file info
 
 const Profile = () => {
   const [userData, setUserData] = useState(null);
@@ -8,6 +10,7 @@ const Profile = () => {
   const [error, setError] = useState(null);
   const [editing, setEditing] = useState(false);
   const [updatedUserData, setUpdatedUserData] = useState({});
+  const navigate = useNavigate(); // Use navigation hook
 
   useEffect(() => {
     const token = localStorage.getItem('authToken');
@@ -16,7 +19,7 @@ const Profile = () => {
       // Fetch profile data
       axios
         .get('http://localhost:5050/profile', {
-          headers: { Authorization: `Bearer ${token}` }, // Use backticks here
+          headers: { Authorization: `Bearer ${token}` },
         })
         .then((response) => {
           setUserData(response.data);
@@ -34,10 +37,10 @@ const Profile = () => {
       // Fetch user-specific uploads
       axios
         .get('http://localhost:5050/notes', {
-          headers: { Authorization: `Bearer ${token}` }, // Use backticks here
+          headers: { Authorization: `Bearer ${token}` },
         })
         .then((response) => {
-          setUploads(response.data); // This will now display the user's uploads
+          setUploads(response.data);
         })
         .catch((err) => {
           console.error('Error fetching uploads:', err.response || err);
@@ -65,7 +68,7 @@ const Profile = () => {
         'http://localhost:5050/profile',
         updatedUserData,
         {
-          headers: { Authorization: `Bearer ${token}` }, // Use backticks here
+          headers: { Authorization: `Bearer ${token}` },
         }
       );
       setUserData(response.data);
@@ -74,6 +77,10 @@ const Profile = () => {
       console.error('Error updating profile:', err);
       setError('Unable to update profile data.');
     }
+  };
+
+  const handleEditFileInfo = (fileId) => {
+    navigate(`/editfile/${fileId}`); // Navigate to the EditFilePage with the selected file ID
   };
 
   if (error) return <div>{error}</div>;
@@ -168,44 +175,19 @@ const Profile = () => {
             {editing ? 'Cancel' : 'Edit Profile'}
           </button>
         </div>
-
-        <div className="badges-section">
-          <h3>Badges</h3>
-          <div className="badges-grid">
-            {userData.badges?.length ? (
-              userData.badges.map((badge, index) => (
-                <div className="badge" key={index}>
-                  <img src={badge.image} alt={badge.name} />
-                  <p>{badge.name}</p>
-                </div>
-              ))
-            ) : (
-              <p>No badges earned yet.</p>
-            )}
-          </div>
-        </div>
       </div>
 
       <div className="uploads-section">
-        <h2>Community Uploads</h2>
-        <p>Total Uploads: {uploads.length}</p>
+        <h2>Your Uploaded Files</h2>
         <div className="uploads-grid">
-          {uploads.map((upload, index) => (
-            <div className="upload-card" key={index}>
-              <div className="upload-preview"></div>
-              <h3>{upload.title || 'N/A'}</h3>
-              <p>Field: {upload.field || 'N/A'}</p>
-              <p>Branch: {upload.branch || 'N/A'}</p>
-              <p>
-                <strong>Course:</strong> {upload.course || 'N/A'}
-              </p>
-              <div className="tags">
-                {upload.tags?.map((tag, idx) => (
-                  <span key={idx} className="tag">
-                    {tag}
-                  </span>
-                ))}
-              </div>
+          {uploads.map((upload) => (
+            <div key={upload._id} className="upload-card">
+              <h3>{upload.title}</h3>
+              <p>Branch: {upload.branch}</p>
+              <p>Semester: {upload.semester}</p>
+              <button onClick={() => handleEditFileInfo(upload._id)}>
+                Edit Document Info
+              </button>
             </div>
           ))}
         </div>
