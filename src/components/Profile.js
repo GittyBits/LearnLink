@@ -31,13 +31,13 @@ const Profile = () => {
           );
         });
 
-      // Fetch uploads
+      // Fetch user-specific uploads
       axios
         .get('http://localhost:5050/notes', {
           headers: { Authorization: `Bearer ${token}` }, // Use backticks here
         })
         .then((response) => {
-          setUploads(response.data);
+          setUploads(response.data); // This will now display the user's uploads
         })
         .catch((err) => {
           console.error('Error fetching uploads:', err.response || err);
@@ -163,7 +163,6 @@ const Profile = () => {
               </p>
             </div>
           )}
-
 
           <button onClick={() => setEditing(!editing)}>
             {editing ? 'Cancel' : 'Edit Profile'}
