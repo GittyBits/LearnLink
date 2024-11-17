@@ -23,14 +23,6 @@ body,html,.App,#react {
     width:100%;
 }
 
-/* Circular profile image placeholder */
-.profile-img {
-    width: 150px;
-    height: 150px;
-    background-color: #aaa;
-    border-radius: 50%;
-}
-
 /* Login Form */
 .login-form {
     display: flex;

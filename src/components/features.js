@@ -12,9 +12,11 @@ function Features() {
           />
         </div>
         <div className="feature-content">
-          <h4>WHAT IS LEARNLINK?</h4>
-          <p>Providing an environment that help students to keep study with the help viewing various documents related to the topics . 
-            One platform for all your notes(not just yours even the toppers)
+          <h4>Smart Study Tools for Personalized Learning</h4>
+          <p>To help students study better, the website includes smart study tools that enable note editing, progress tracking, 
+            and personalized suggestions for improving study habits. These tools adapt to individual learning needs, 
+            making the study process more efficient and effective. With features like flashcards, mind maps, and spaced repetition,
+             students can enhance their retention and achieve better academic outcomes.
           </p>
         </div>
       </div>
@@ -27,9 +29,13 @@ function Features() {
           />
         </div>
         <div className="feature-content">
-          <h4>WHO IS LEARNLINK??</h4>
-          <p>Helping the students to learn all the topics not just reading but visualing them with the help of VideoHub.
-            Understanding concepts made so much simpler.Why search for the best youtube videos, when learnlink is on your fingertips. 
+          <h4>VideoHub for Interactive Learning</h4>
+          <p>Our study website features a dynamic VideoHub that serves as a centralized resource for educational videos 
+            across various subjects. Students can easily filter content by topic, bookmark videos for future reference,
+             and access high-quality visual explanations to complement their studies. 
+             This feature encourages interactive learning and caters to different learning styles,
+              making complex concepts easier to understand.
+
           </p>
         </div>
       </div>
@@ -42,10 +48,13 @@ function Features() {
           />
         </div>
         <div className="feature-content">
-          <h4>WHY IS LEARNLINK???</h4>
-          <p>Being a helpful student not just for the teachers even the students by uploading your own beautiful notes and getting badges.
-            Use the upload to easily forward the important documents at the last minutes instead of a whatsapp group. 
-            The comment options is there to back you when you have doubts so stop wasting time and START STUDYING PEOPLE.
+          <h4>Notes Publishing and Collaboration</h4>
+          <p>We provide a platform where students and educators can publish,
+             share, and discover notes tailored to specific courses or topics. This collaborative
+              feature fosters a community-driven learning environment, allowing users to benefit from diverse 
+              perspectives and well-organized materials. Additionally, a peer-review system ensures the 
+              quality of shared content, making it reliable and beneficial for everyone.
+
           </p>
         </div>
       </div>
